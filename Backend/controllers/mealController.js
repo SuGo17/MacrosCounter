@@ -1,7 +1,9 @@
+const getParam = (req) => {
+  return req.params;
+};
+
 const getMeal = (req, res) => {
-  const id = req.params.id;
-  const date = req.params.date;
-  res.json({ msg: "This is get meal route", id, date });
+  res.json({ msg: "This is get meal route", ...getParam(req) });
 };
 
 const addMeal = (req, res) => {
@@ -9,10 +11,10 @@ const addMeal = (req, res) => {
 };
 
 const updateMeal = (req, res) => {
-  res.json({ msg: "This is update meal route" });
+  res.json({ msg: "This is update meal route", ...getParam(req) });
 };
 const deleteMeal = (req, res) => {
-  res.json({ msg: "This is delete meal route" });
+  res.json({ msg: "This is delete meal route", ...getParam(req) });
 };
 
 module.exports = { getMeal, addMeal, updateMeal, deleteMeal };

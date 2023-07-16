@@ -19,7 +19,7 @@ const updateDetails = (req, res) => {
 };
 
 const addDetails = (req, res) => {
-  res.json({ msg: "Hello this is user update details route" });
+  res.json({ msg: "Hello this is user add details route" });
 };
 
 module.exports = {
