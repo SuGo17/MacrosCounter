@@ -2,6 +2,9 @@ const express = require("express");
 const userRoutes = require("./routes/userRoutes");
 const mealRoutes = require("./routes/mealRoutes");
 const macrosRoutes = require("./routes/macrosRoutes");
+const mongoose = require("mongoose")
+const bodyParser = require("body-parser")
+
 require("dotenv").config();
 
 const app = express();
@@ -11,13 +14,23 @@ const app = express();
 //   res.send("Hello from the server!");
 // });
 
+app.use(express.json());
+app.use(express.urlencoded({extended:true}))
+
 app.use("/api/user", userRoutes);
 
 app.use("/api/meal", mealRoutes);
 
 app.use("/api/macros/", macrosRoutes);
 
+mongoose.connect(process.env.URL).then(()=>{
+  
+
 // listen for requests
-app.listen(process.env.PORT || 4000, () => {
-  console.log("Listening on port 4000!");
-});
+  app.listen(process.env.PORT, () => {
+    console.log("Listening on port 4000!");
+  });
+}).catch((err)=>{
+  console.log(err)
+})
+
