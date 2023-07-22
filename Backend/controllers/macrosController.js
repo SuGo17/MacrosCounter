@@ -1,21 +1,51 @@
+const Macros = require("../models/macrosModel")
+
 const getParam = (req) => {
-  console.log(req.params);
   return req.params;
 };
 
-const getMacros = (req, res) => {
-  res.json({ msg: "This is get macros route", ...getParam(req) });
+const getMacros = async (req, res) => {
+  const {id} = getParam(req)
+  try{
+    const macro = await Macros.findOne({_id:id})
+    macro ? res.status(200).json(macro):res.status(404).json({message:"Error, Macro not found!"})
+  }catch(err){
+    res.status(401).json({error:err.message})
+  }
+
 };
 
-const addMacros = (req, res) => {
-  res.json({ msg: "This is add macros route" });
+const addMacros = async (req, res) => {
+  const {name,qty,protein,carbohydrates,fat,fiber} = req.body
+  if(!name || !qty) return res.status(401).json({error:"All fields should not be empty"})
+  try{
+    const macro = await Macros.create({name,qty,protein,carbohydrates,fat,fiber})
+    res.status(200).json(macro)
+  }catch(err){
+    res.status(401).json({error:err.message})
+  }
 };
 
-const updateMacros = (req, res) => {
-  res.json({ msg: "This is update macros route", ...getParam(req) });
+const updateMacros = async(req, res) => {
+  const {id} = getParam(req)
+  const {name,qty,protein,carbohydrates,fat,fiber} = req.body
+
+  try{
+    const macro = await Macros.findOneAndUpdate({_id:id},{name,qty,protein,carbohydrates,fat,fiber})
+    macro ? res.status(200).json(macro):res.status(404).json({message:"Error, Macro not found!"})
+  }catch(err){
+    res.status(401).json({error:err.message})
+  }
+
 };
 
-const deleteMacros = (req, res) => {
-  res.json({ msg: "This is update macros route", ...getParam(req) });
+const deleteMacros = async (req, res) => {
+  const {id} = getParam(req)
+  try{
+    const macro = await Macros.findOneAndDelete({_id:id})
+    res.status(200).json(macro)
+  }catch(err){
+    res.status(401).json({error:err.message})
+  }
 };
 module.exports = { getMacros, addMacros, updateMacros, deleteMacros };

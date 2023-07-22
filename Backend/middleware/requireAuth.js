@@ -4,7 +4,7 @@ const User = require("../models/userModel")
 const requireAuth = async (req,res,next)=>{
     const {authorization} = req.headers
 
-    if(!authorization) return res.status(401).json({error:"Authorization toke requires"})
+    if(!authorization) return res.status(401).json({error:"Unauthorized access, please login first."})
 
     const token = authorization.split(" ")[1]
 

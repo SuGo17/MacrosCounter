@@ -7,15 +7,16 @@ const {
   deleteUser,
   getDetails,
   updateDetails,
-  addDetails,
 } = require("../controllers/userController");
+
 const router = express.Router();
+
 router.route("/login").post(login);
 router.route("/signup").post(signup);
 router.use(requireAuth)
 router.route("/delete").delete(deleteUser);
 router
-  .route("/details/")
+  .route("/details")
   .get(getDetails)
   .patch(updateDetails);
 

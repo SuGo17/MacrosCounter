@@ -15,7 +15,7 @@ const app = express();
 // });
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({extended:false}))
 
 app.use("/api/user", userRoutes);
 
@@ -24,7 +24,6 @@ app.use("/api/meal", mealRoutes);
 app.use("/api/macros/", macrosRoutes);
 
 mongoose.connect(process.env.URL).then(()=>{
-  
 
 // listen for requests
   app.listen(process.env.PORT, () => {
