@@ -2,6 +2,7 @@ const express = require("express");
 const userRoutes = require("./routes/userRoutes");
 const mealRoutes = require("./routes/mealRoutes");
 const macrosRoutes = require("./routes/macrosRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 
@@ -21,7 +22,9 @@ app.use("/api/user", userRoutes);
 
 app.use("/api/meal", mealRoutes);
 
-app.use("/api/macros/", macrosRoutes);
+app.use("/api/macros", macrosRoutes);
+
+app.use("/api/admin", adminRoutes);
 
 mongoose.connect(process.env.URL).then(()=>{
 
