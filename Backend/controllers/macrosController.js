@@ -15,6 +15,16 @@ const getMacros = async (req, res) => {
 
 };
 
+const getAllMacros = async (req,res)=>{
+  try{
+    const allMacros = await Macros.find();
+    allMacros ? res.status(200).json({all_ingredients:allMacros}):res.status(404).json({message:"Error, Macro not found!"})
+  }catch(err){
+    res.status(401).json({error:err.message})
+  }
+}
+
+
 const addMacros = async (req, res) => {
   const {name,qty,protein,carbohydrates,fat,fiber} = req.body
   if(!name || !qty) return res.status(401).json({error:"All fields should not be empty"})
@@ -32,7 +42,7 @@ const updateMacros = async(req, res) => {
 
   try{
     const macro = await Macros.findOneAndUpdate({_id:id},{name,qty,protein,carbohydrates,fat,fiber})
-    macro ? res.status(200).json(macro):res.status(404).json({message:"Error, Macro not found!"})
+    macro ? res.status(200).json(macro): res.status(404).json({message:"Error, Macro not found!"})
   }catch(err){
     res.status(401).json({error:err.message})
   }
@@ -43,9 +53,10 @@ const deleteMacros = async (req, res) => {
   const {id} = getParam(req)
   try{
     const macro = await Macros.findOneAndDelete({_id:id})
-    res.status(200).json(macro)
+
+    macro ? res.status(200).json(macro) : res.status(404).json({message:"Error, Macro not found!"})
   }catch(err){
     res.status(401).json({error:err.message})
   }
 };
-module.exports = { getMacros, addMacros, updateMacros, deleteMacros };
+module.exports = { getMacros,getAllMacros, addMacros, updateMacros, deleteMacros };
