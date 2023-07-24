@@ -59,4 +59,18 @@ const deleteMacros = async (req, res) => {
     res.status(401).json({error:err.message})
   }
 };
-module.exports = { getMacros,getAllMacros, addMacros, updateMacros, deleteMacros };
+
+const getMacrosByName = async(req,res)=>{
+  const {searchTerm} = req.query;
+  const decodedSearchTerm = decodeURIComponent(searchTerm)
+  const searchRegex = new RegExp(decodedSearchTerm,'i')
+
+  try{
+    const allMacros = await Macros.find({name:searchRegex});
+    allMacros ? res.status(200).json({all_ingredients:allMacros}):res.status(404).json({message:"Error, Macro not found!"})
+  }catch(err){
+    res.status(401).json({error:err.message})
+  }
+}
+
+module.exports = { getMacros,getAllMacros, addMacros, updateMacros, deleteMacros,getMacrosByName };

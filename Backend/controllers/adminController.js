@@ -4,16 +4,19 @@ const mongoose = require("mongoose")
 
 const changeRole = async (req,res) =>{
     const {id,admin} = req.body
-    if(!id ) res.status(401).json({error:"All fields must be filled."})
-    if(!mongoose.Types.ObjectId.isValid(id)) res.status(401).json({error:"Please provide a valid user ID."})
+    if(!(admin === true || admin === false)) return res.status(401).json({error:"admin parameter must be a boolean."}) 
+    if(!id || !mongoose.Types.ObjectId.isValid(id)) return res.status(401).json({error:"Please provide a valid user ID."})
     try {
-        const user = await Users.findOne({_id:id})
+        const user = await UserRoles.findOne({user_id:id})
         if(!user) return res.status(401).json({error: "User does not exist"})
         if(admin === true) {
-            await UserRoles.findOneAndUpdate({user_id:user._id},{role:"ADMIN"})
+            if(user.role === "ADMIN") return res.status(401).json({error:"User is already a Admin."})
+            const updatedUser = await UserRoles.findOneAndUpdate({user_id:user.user_id},{role:"ADMIN"})
             res.status(200).json({message:"Admin access added to the user."})
-        }else{
-            await UserRoles.findOneAndUpdate({user_id:user._id},{role:"User"})
+        }
+        else {
+            if(user.role === "USER") return res.status(401).json({error:"User does not have admin access to remove."})
+            await UserRoles.findOneAndUpdate({user_id:user.user_id},{role:"USER"})
             res.status(200).json({message:"Admin access removed from the user."})
         }
     }catch(err){
@@ -23,7 +26,23 @@ const changeRole = async (req,res) =>{
 
 const getAllUsers = async (req,res)=>{
     try{
-        const allUsers = await UserRoles.find().populate('user_id','-password').exec()
+        const users = await UserRoles.find({role:"USER"}).populate('user_id',"+name +email +_id").exec()
+        const admins = await UserRoles.find({role:"ADMIN"}).populate('user_id',"+name +email +_id").exec()
+        res.json({users,admins})
+    }
+    catch(err){
+        res.status(401).json({error:err.message})
+    }
+}
+
+
+const searchUserByName = async (req,res)=>{
+    const {searchTerm} = req.query
+    const decodedSearchTerm = decodeURIComponent(searchTerm)
+    const searchRegex = new RegExp(decodedSearchTerm,'i')
+
+    try{
+        const allUsers = await Users.find({name:searchRegex},{password:0})
         res.json({allUsers})
     }
     catch(err){
@@ -31,4 +50,4 @@ const getAllUsers = async (req,res)=>{
     }
 }
 
-module.exports = {changeRole,getAllUsers}
+module.exports = {changeRole,getAllUsers,searchUserByName}
