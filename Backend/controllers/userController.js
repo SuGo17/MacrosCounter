@@ -64,10 +64,10 @@ const getDetails = async (req, res) => {
 
 const updateDetails = async (req, res) => {
 
-  const {height,weight,age} = req.body
-  if(!height || !weight || !age) res.status(401).json({error:"All fields must be filled."});
-  if(isNaN(height) || isNaN(weight) || isNaN(age)) res.status(401).json({error:"All values must be in number format."});
-  const data = {user_id:req.user._id,height,weight,age} 
+  const {height,weight,age,calories} = req.body
+  if(!height || !weight || !age || !calories) res.status(401).json({error:"All fields must be filled."});
+  if(isNaN(height) || isNaN(weight) || isNaN(age) || isNaN(calories)) res.status(401).json({error:"All values must be in number format."});
+  const data = {user_id:req.user._id,height,weight,age,calories} 
   try{
     const userData = await UserDetails.findOneAndUpdate({user_id:data.user_id},data).select('_id')
     res.status(200).json({_id:userData._id,...data})

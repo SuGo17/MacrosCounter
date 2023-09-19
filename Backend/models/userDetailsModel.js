@@ -17,6 +17,9 @@ const userDetailsSchema = new Schema({
     },
     age:{
         type:Number,
+    },
+    calories:{
+        type:Number,
     }
 })
 
