@@ -4,20 +4,23 @@ const jwt = require("jsonwebtoken")
 const UserRoles = require("../models/userRoleModel")
 
 const createToken = (_id)=>{
-    return jwt.sign({_id},process.env.SECRET,{expiresIn:'1d'})
+    let token = jwt.sign({_id},process.env.TOKEN_SECRET,{expiresIn:'1d'})
+    let refreshToken = jwt.sign({_id},process.env.REFRESHTOKEN_SECRET)
+    return {token,refreshToken}
 }
-
 
 const login = async (req, res) => {
 
   const {email,password} = req.body;
   
   try{
-
     const user = await User.login(email,password)
-    const token = createToken(user._id)
+    const {token,refreshToken} = createToken(user._id)
+    res.cookie('token',token)
+    res.cookie('refreshToken',refreshToken)
+    await User.findOneAndUpdate({_id:user._id},{refreshToken})
 
-    res.status(200).json({email,token})
+    res.status(200).json({email,token,refreshToken})
 
   }catch(err){
     res.status(400).json({error:err.message})
@@ -29,16 +32,42 @@ const signup = async(req, res) => {
   const {email,password,name} = req.body
   try{
     const user = await User.signup(email,password,name)
-    const token = createToken(user._id)
+    const {token,refreshToken} = createToken(user._id)
+    res.cookie('token',token)
+    res.cookie('refreshToken',refreshToken)
     await UserDetails.create({user_id:user._id})
     await UserRoles.create({user_id:user._id})
-
+    await User.findOneAndUpdate({_id:user._id},{refreshToken})
     res.status(200).json({email,token});
   }catch(err){
     res.status(400).json({error:err.message});
   }
 
 };
+
+const tokenRefresh = async (req,res)=>{
+  const {refreshToken} = req.body;
+
+  try{
+    const {_id} = jwt.verify(refreshToken,process.env.REFRESHTOKEN_SECRET)
+    const user = await User.findOne({_id})
+    if(!(user.refreshToken === refreshToken)) res.status(403).json({error:'Invalid Request'})
+    res.status(200).json({token:jwt.sign({_id},process.env.TOKEN_SECRET,{expiresIn:'1d'})})
+  }
+  catch (err){
+    res.status(403).json({error:err.message})
+  }
+
+}
+
+const logout = async (req,res)=>{
+  try{
+    await User.findOneAndUpdate({_id:req.user._id},{refreshToken:null})
+  }catch (err){
+    res.status(400).json({error:err.message});
+  }
+}
+
 
 const deleteUser = async(req, res) => {
   try{
@@ -79,6 +108,8 @@ const updateDetails = async (req, res) => {
 module.exports = {
   login,
   signup,
+  tokenRefresh,
+  logout,
   deleteUser,
   getDetails,
   updateDetails,
