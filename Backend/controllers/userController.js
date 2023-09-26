@@ -63,6 +63,7 @@ const tokenRefresh = async (req,res)=>{
 const logout = async (req,res)=>{
   try{
     await User.findOneAndUpdate({_id:req.user._id},{refreshToken:null})
+    res.status(200).json({message:"Logout Succesful"})
   }catch (err){
     res.status(400).json({error:err.message});
   }
