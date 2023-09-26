@@ -1,0 +1,45 @@
+@import "../../common/styles.scss";
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: {
+    left: 7.4rem;
+    right: 7.4rem;
+    top: 2rem;
+    bottom: 2rem;
+  }
+}
+
+.nav-left a {
+  text-decoration: none;
+  color: $text-color;
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.nav-right ul,
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-right ul {
+  list-style: none;
+}
+.nav-right .navlinks {
+  margin: {
+    left: 1rem;
+    right: 1rem;
+  }
+}
+
+.nav-right .navlinks a {
+  text-decoration: none;
+  color: $text-color;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+ul.menu {
+  display: none;
+}
