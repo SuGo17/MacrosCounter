@@ -1,0 +1,36 @@
+@import "../../common/styles.scss";
+
+.join-section,
+.join-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.join-container {
+  max-width: 40%;
+  width: 100%;
+  margin-top: 7.4rem;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.link-btn {
+  width: 50%;
+  text-align: center;
+  padding: 1.4rem 3rem;
+  font-size: 1.8rem;
+  text-decoration: none;
+  color: $text-color;
+  font-weight: 600;
+  border-top: 5px solid transparent;
+  transition: all 0.2s ease;
+}
+.active-link {
+  position: relative;
+  background-color: $background-color;
+  border-top: 5px solid $primary-color;
+}

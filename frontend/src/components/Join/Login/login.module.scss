@@ -1,0 +1,51 @@
+@import "../../../common/styles.scss";
+
+.form-container {
+  width: 100%;
+  padding: 4.4rem;
+  background-color: #ffffff;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container form .input-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1.4rem;
+  //   overflow-x: hidden;
+}
+
+.form-container form .input-container label {
+  width: fit-content;
+  font-size: 1.8rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.form-container form .input-container input {
+  width: 100%;
+  font-size: 1.8rem;
+  padding: 3px;
+  padding-left: 0;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid $text-color;
+}
+
+.form-container form .input-container input:focus {
+  border-bottom: 2px solid $primary-color;
+}
+.pass-container {
+  position: relative;
+}
+.toggle-pass {
+  position: absolute;
+  top: 50%;
+  right: 0;
+}

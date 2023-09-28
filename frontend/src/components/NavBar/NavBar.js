@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./navbar.module.scss";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { IconContext } from "react-icons";
-// import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   const dateFormatter = (d) => {
@@ -20,33 +20,36 @@ function NavBar() {
   return (
     <nav className={styles["nav-bar"]}>
       <div className={styles["nav-left"]}>
-        <a href="/" className="logo">
+        <Link to="/" className="logo">
           Macros Counter
-        </a>
+        </Link>
       </div>
 
-      <div className={`${styles["nav-right"]} ${menu && styles["nav-active"]}`}>
+      <div
+        className={`${styles["nav-right"]} ${menu && styles["nav-active"]}`}
+        data-testid="menu-list"
+      >
         <ul className={styles["signin"]}>
           <li className={styles["navlinks"]}>
-            <a href="/join/login">LOGIN</a>
+            <Link to="/join/login">LOGIN</Link>
           </li>
           <li className={styles["navlinks"]}>
-            <a href="/join/signup">SIGNUP</a>
+            <Link to="/join/signup">SIGNUP</Link>
           </li>
         </ul>
 
         <ul className={styles["admin"]}>
           <li className={styles["navlinks"]}>
-            <a href="/admins">Admins</a>
+            <Link to="/admins">Admins</Link>
           </li>
           <li className={styles["navlinks"]}>
-            <a href="/users">USERS</a>
+            <Link to="/users">USERS</Link>
           </li>
         </ul>
 
         <ul className={styles["loggedIn"]}>
           <li className={styles["navlinks"]}>
-            <a href="/profile">PROFILE</a>
+            <Link to="/profile">PROFILE</Link>
           </li>
           <li className={styles["navlinks"]}>
             <a href="/">LOGOUT</a>
@@ -67,7 +70,11 @@ function NavBar() {
           </li>
         </ul>
       </div>
-      <div className={styles["menu"]} onClick={handleMenuClick}>
+      <div
+        className={styles["menu"]}
+        onClick={handleMenuClick}
+        data-testid="menu"
+      >
         <IconContext.Provider
           value={{
             style: { height: "3rem", width: "3rem", cursor: "pointer" },
