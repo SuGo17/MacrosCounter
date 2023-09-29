@@ -1,0 +1,44 @@
+@import "../../../common/styles.scss";
+
+.input-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+}
+.input-container label {
+  width: fit-content;
+  font-size: 1.8rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+.input-container input {
+  width: 100%;
+  font-size: 1.8rem;
+  padding: 3px;
+  padding-left: 0;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid $text-color;
+}
+.input-container input:focus {
+  border-bottom: 2px solid $primary-color;
+}
+.pass-container {
+  position: relative;
+}
+.toggle-pass {
+  position: absolute;
+  top: 50%;
+  right: 0;
+}
+
+.error {
+  font-size: 1.4rem;
+  color: $high-color;
+  font-weight: 500;
+  position: absolute;
+  bottom: 0;
+}

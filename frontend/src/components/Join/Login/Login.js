@@ -1,60 +1,61 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "./login.module.scss";
-import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
-import { IconContext } from "react-icons";
+import PasswordComponent from "../../FormComponents/PasswordComponent/PasswordComponent";
+import InputComponent from "../../FormComponents/InputComponent/InputComponent";
 
 function Login() {
-  const [showPass, setShowPass] = useState(false);
-  const defStyle = {
-    height: "2rem",
-    width: "2rem",
-    cursor: "pointer",
-    position: "absolute",
-    top: "50%",
-    right: "0",
+  const [value, setValue] = useState({
+    "login-email1": "",
+    "login-password1": "",
+  });
+  const [joinErr, setJoinErr] = useState({
+    "login-email1": false,
+    "login-password1": false,
+  });
+
+  const validate = () => {
+    if (!value["login-email1"] || !value["login-password1"]) return true;
+    if (joinErr["login-email1"] || joinErr["login-password1"]) return true;
+    return false;
   };
-  const passRef = useRef();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    let formData = {
+      email: value["login-email1"],
+      password: value["login-password1"],
+    };
+    try {
+      const options = {
+        method: "POST",
+        body: JSON.stringify(formData),
+      };
+      const data = await fetch(
+        "https://macros-counter-sugo17.onrender.com/api/user/login",
+        options
+      );
+      const response = await data.json();
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className={styles["form-container"]}>
-      <form>
-        <div className={styles["input-container"]}>
-          <label htmlFor="email">Email:</label>
-          <input type="email" className={styles["email-input"]} id="email" />
-        </div>
-        <div className={styles["input-container"]}>
-          <label htmlFor="password">Password:</label>
-          <div className="pass-container">
-            <input
-              type="password"
-              className={styles["input-element"]}
-              ref={passRef}
-              id="password"
-            />
-            <IconContext.Provider
-              value={{
-                style: showPass ? { ...defStyle, color: "#df2e38" } : defStyle,
-              }}
-            >
-              {showPass && (
-                <IoEyeSharp
-                  onClick={() => {
-                    setShowPass((prev) => !prev);
-                    passRef.current.type = "password";
-                  }}
-                />
-              )}
-              {!showPass && (
-                <IoEyeOffSharp
-                  onClick={() => {
-                    setShowPass((prev) => !prev);
-                    passRef.current.type = "text";
-                  }}
-                />
-              )}
-            </IconContext.Provider>
-          </div>
-        </div>
-        <button type="submit" className={styles["btn"]}>
+      <form onSubmit={submitHandler}>
+        <InputComponent
+          data={{ id: "login-email1", type: "email", label: "Email" }}
+          value={value}
+          setValue={setValue}
+          setJoinErr={setJoinErr}
+        />
+        <PasswordComponent
+          id="login-password1"
+          value={value}
+          setValue={setValue}
+          setJoinErr={setJoinErr}
+        />
+        <button type="submit" className={styles["btn"]} disabled={validate()}>
           LOGIN
         </button>
       </form>

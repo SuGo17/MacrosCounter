@@ -7,23 +7,35 @@ $low-color: #ffc107;
 $optimal-color: #28a745;
 $text-color: #5a5f59;
 
-.btn {
-  cursor: pointer;
-  background-color: $primary-color;
-  color: #ffffff !important;
+.btn:not([disabled]),
+.btn[disabled] {
   padding: {
     left: 3rem;
     right: 3rem;
     top: 1rem;
     bottom: 1rem;
   }
+  font-size: 1.8rem;
+  font-weight: 500;
   border-radius: 5px;
   border: none;
   transition: all 0.4s ease;
 }
 
-.btn:hover,
-.btn:focus {
+.btn:not([disabled]) {
+  background-color: $primary-color;
+  color: #ffffff !important;
+  cursor: pointer;
+}
+
+.btn[disabled] {
+  color: $text-color;
+  background-color: #cdcdcd;
+  cursor: not-allowed;
+}
+
+.btn:not([disabled]):hover,
+.btn:not([disabled]):focus {
   background-color: $primary-hover-color;
   outline: none;
 }
