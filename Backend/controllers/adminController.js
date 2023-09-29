@@ -18,7 +18,7 @@ const changeRole = async (req,res)=>{
                 if (!user) msg = 'User does not exist.'
                 else {
                     if(admin === true){
-                        UserRoles.findOneAndUpdate({user_id:user.user_id},{role:"ADMIN"});
+                        await UserRoles.findOneAndUpdate({user_id:user.user_id},{role:"ADMIN"});
                         msg = 'Admin access added to the user.';
                     }
                     else{
