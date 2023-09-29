@@ -26,8 +26,11 @@ function Login() {
       password: value["login-password1"],
     };
     try {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
       const options = {
         method: "POST",
+        headers,
         body: JSON.stringify(formData),
       };
       const data = await fetch(
