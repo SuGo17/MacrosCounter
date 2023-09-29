@@ -5,6 +5,7 @@ const macrosRoutes = require("./routes/macrosRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 require("dotenv").config();
 
@@ -13,11 +14,15 @@ const app = express();
 // app.get("/", (req, res) => {
 //   console.log("Req Received.");
 //   res.send("Hello from the server!");
-// });
-
+// });a
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use("/api/user", userRoutes);
 
 app.use("/api/meal", mealRoutes);
