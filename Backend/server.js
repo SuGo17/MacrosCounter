@@ -3,8 +3,8 @@ const userRoutes = require("./routes/userRoutes");
 const mealRoutes = require("./routes/mealRoutes");
 const macrosRoutes = require("./routes/macrosRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-const mongoose = require("mongoose")
-const bodyParser = require("body-parser")
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 require("dotenv").config();
 
@@ -16,7 +16,7 @@ const app = express();
 // });
 
 app.use(express.json());
-app.use(express.urlencoded({extended:false}))
+app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/user", userRoutes);
 
@@ -26,13 +26,14 @@ app.use("/api/macros", macrosRoutes);
 
 app.use("/api/admin", adminRoutes);
 
-mongoose.connect(process.env.URL).then(()=>{
-
-// listen for requests
-  app.listen(process.env.PORT, () => {
-    console.log("Listening on port 4000!");
+mongoose
+  .connect(process.env.URL)
+  .then(() => {
+    // listen for requests
+    app.listen(process.env.PORT, () => {
+      console.log("Listening on port 4000!");
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-}).catch((err)=>{
-  console.log(err)
-})
-
