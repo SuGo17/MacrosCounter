@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import styles from "./login.module.scss";
 import PasswordComponent from "../../FormComponents/PasswordComponent/PasswordComponent";
 import InputComponent from "../../FormComponents/InputComponent/InputComponent";
+import { loginUser, selectToken } from "../../../reducers/userReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 function Login() {
+  const dispatch = useDispatch();
   const [value, setValue] = useState({
     "login-email1": "",
     "login-password1": "",
@@ -13,6 +17,9 @@ function Login() {
     "login-password1": false,
   });
 
+  const userToken = useSelector(selectToken);
+  if (userToken) return <Navigate to="/" />;
+
   const validate = () => {
     if (!value["login-email1"] || !value["login-password1"]) return true;
     if (joinErr["login-email1"] || joinErr["login-password1"]) return true;
@@ -21,28 +28,18 @@ function Login() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log("hi");
     let formData = {
-      email: value["login-email1"],
+      email: value["login-email1"].toLowerCase(),
       password: value["login-password1"],
     };
-    try {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-      const options = {
-        method: "POST",
-        headers,
-        body: JSON.stringify(formData),
-      };
-      const data = await fetch(
-        "https://macros-counter-sugo17.onrender.com/api/user/login",
-        options
-      );
-      const response = await data.json();
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(loginUser(formData));
+    setValue({
+      "login-email1": "",
+      "login-password1": "",
+    });
   };
+
   return (
     <div className={styles["form-container"]}>
       <form onSubmit={submitHandler}>

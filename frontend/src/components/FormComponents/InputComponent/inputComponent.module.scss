@@ -41,4 +41,11 @@
   font-weight: 500;
   position: absolute;
   bottom: 0;
+
+  @include ipad {
+    font-size: 1.2rem;
+  }
+  @include mobile {
+    font-size: 1rem;
+  }
 }

@@ -4,6 +4,12 @@
   width: 100%;
   padding: 4.4rem;
   background-color: #ffffff;
+  @include ipad {
+    padding: 3rem;
+  }
+  @include mobile {
+    padding: 1rem;
+  }
 }
 
 .form-container form {

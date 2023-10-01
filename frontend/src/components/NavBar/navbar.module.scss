@@ -80,7 +80,8 @@
     order: 2;
   }
 }
-.nav-right .navlinks {
+.nav-right .navlinks,
+.nav-right .nav-btn {
   margin: {
     left: 1rem;
     right: 1rem;
@@ -156,4 +157,25 @@ ul.date li.navlinks input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 3px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.nav-btn a {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 3rem;
+  border-radius: 5px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  background-color: $primary-color;
+  transition: all 0.5s ease;
+
+  @include laptop {
+    font-size: 1.6rem;
+  }
+}
+.nav-btn a:hover {
+  background-color: $primary-hover-color;
+  color: #ffffff;
 }

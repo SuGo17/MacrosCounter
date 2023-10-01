@@ -8,9 +8,19 @@
 }
 
 .join-container {
-  max-width: 30%;
+  max-width: 40%;
   width: 100%;
   margin-top: 7.4rem;
+  padding: 3rem;
+  @include laptop {
+    max-width: 55%;
+  }
+  @include ipad {
+    max-width: 75%;
+  }
+  @include mobile {
+    max-width: 100%;
+  }
 }
 
 .links {

@@ -2,8 +2,12 @@ import React from "react";
 import styles from "./join.module.scss";
 import "./join.module.scss";
 import { NavLink, Outlet } from "react-router-dom";
+import Loader from "../Loader/Loader";
+import { useSelector } from "react-redux";
+import { selectLoading } from "../../reducers/userReducer";
 
 function Join() {
+  const loading = useSelector(selectLoading);
   let activeStyles = (isActive, arr) => {
     return !isActive
       ? arr.join(" ")
@@ -31,6 +35,7 @@ function Join() {
           </NavLink>
         </div>
         <Outlet />
+        {loading && <Loader />}
       </div>
     </section>
   );
