@@ -28,7 +28,6 @@ function Login() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("hi");
     let formData = {
       email: value["login-email1"].toLowerCase(),
       password: value["login-password1"],
@@ -41,25 +40,27 @@ function Login() {
   };
 
   return (
-    <div className={styles["form-container"]}>
-      <form onSubmit={submitHandler}>
-        <InputComponent
-          data={{ id: "login-email1", type: "email", label: "Email" }}
-          value={value}
-          setValue={setValue}
-          setJoinErr={setJoinErr}
-        />
-        <PasswordComponent
-          id="login-password1"
-          value={value}
-          setValue={setValue}
-          setJoinErr={setJoinErr}
-        />
-        <button type="submit" className={styles["btn"]} disabled={validate()}>
-          LOGIN
-        </button>
-      </form>
-    </div>
+    <>
+      <div className={styles["form-container"]}>
+        <form onSubmit={submitHandler}>
+          <InputComponent
+            data={{ id: "login-email1", type: "email", label: "Email" }}
+            value={value}
+            setValue={setValue}
+            setJoinErr={setJoinErr}
+          />
+          <PasswordComponent
+            id="login-password1"
+            value={value}
+            setValue={setValue}
+            setJoinErr={setJoinErr}
+          />
+          <button type="submit" className={styles["btn"]} disabled={validate()}>
+            LOGIN
+          </button>
+        </form>
+      </div>
+    </>
   );
 }
 

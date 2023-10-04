@@ -4,19 +4,23 @@ import { IoClose, IoMenu } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken, userActions } from "../../reducers/userReducer";
+import {
+  selectToken,
+  selectUserRole,
+  userActions,
+} from "../../reducers/userReducer";
 
 function NavBar() {
+  const dispatch = useDispatch();
+  const [menu, setMenu] = useState(false);
   const dateFormatter = (d) => {
     const newDate = new Date(d);
     return `${newDate.getFullYear()}-${(newDate.getMonth() + 1)
       .toString()
       .padStart(2, "0")}-${newDate.getDate().toString().padStart(2, "0")}`;
   };
-
-  const dispatch = useDispatch();
-  const [menu, setMenu] = useState(false);
   const [activeDate, setActiveDate] = useState(dateFormatter(new Date()));
+
   const handleMenuClick = () => {
     setMenu((prev) => !prev);
   };
@@ -25,6 +29,7 @@ function NavBar() {
     dispatch(userActions.logout());
   };
   const userToken = useSelector(selectToken);
+  const userRole = useSelector(selectUserRole);
 
   return (
     <nav className={styles["nav-bar"]}>
@@ -49,18 +54,13 @@ function NavBar() {
           </ul>
         )}
 
-        {false && (
+        {userRole === "ADMIN" && (
           <ul className={styles["admin"]}>
             <li className={styles["navlinks"]}>
               <Link to="/admins">Admins</Link>
             </li>
             <li className={styles["navlinks"]}>
               <Link to="/users">USERS</Link>
-            </li>
-            <li className={`${styles["nav-btn"]}`}>
-              <a href="/" onClick={logoutHandler}>
-                LOGOUT
-              </a>
             </li>
           </ul>
         )}
