@@ -49,11 +49,16 @@ const deleteUser = async (req, res) => {
 
 const getDetails = async (req, res) => {
   try {
-    const userData = await UserDetails.findOne({ user_id: req.user._id });
+    const user = await User.findOne({ _id: req.user.id }).select(
+      "email name -_id"
+    );
+    const userData = await UserDetails.findOne({
+      user_id: req.user._id,
+    }).select("-_id -__v -user_id");
     const role = await UserRoles.findOne({ user_id: req.user._id });
-    res
-      .status(200)
-      .json({ userDetails: { ...userData["_doc"], role: role.role } });
+    res.status(200).json({
+      userDetails: { ...user["_doc"], ...userData["_doc"], role: role.role },
+    });
   } catch (err) {
     res.status(401).json({ error: err.message });
   }
