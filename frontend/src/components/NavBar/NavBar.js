@@ -57,10 +57,7 @@ function NavBar() {
         {userRole === "ADMIN" && (
           <ul className={styles["admin"]}>
             <li className={styles["navlinks"]}>
-              <Link to="/admins">Admins</Link>
-            </li>
-            <li className={styles["navlinks"]}>
-              <Link to="/users">USERS</Link>
+              <Link to="/admins">Admin</Link>
             </li>
           </ul>
         )}
