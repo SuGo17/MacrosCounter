@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import getData from "../utils/fetch-utils";
+import fetchApi from "../utils/fetch-utils";
 import { toast } from "react-toastify";
 
 const toastOptions = {
@@ -87,6 +87,18 @@ export const userSlice = createSlice({
       .addCase(initialData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(updateUserDetails.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserDetails.fulfilled, (state, action) => {
+        state.userDetails = action.payload.updatedData;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(updateUserDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
@@ -95,7 +107,7 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (formData) => {
     try {
-      const loginData = await getData({
+      const loginData = await fetchApi({
         urlExt: "login",
         method: "POST",
         formData,
@@ -103,7 +115,7 @@ export const loginUser = createAsyncThunk(
       const loginRes = await loginData.json();
 
       if (!loginData.ok) throw new Error(loginRes.error);
-      const userDetails = await getData({
+      const userDetails = await fetchApi({
         urlExt: "details",
         method: "GET",
         token: loginRes.token,
@@ -121,14 +133,14 @@ export const loginUser = createAsyncThunk(
 
 export const signupUser = createAsyncThunk("user/signup", async (formData) => {
   try {
-    const signupData = await getData({
+    const signupData = await fetchApi({
       urlExt: "signup",
       method: "POST",
       formData,
     });
     const signupRes = await signupData.json();
     if (!signupData.ok) throw new Error(signupRes.error);
-    const userDetails = await getData({
+    const userDetails = await fetchApi({
       urlExt: "details",
       method: "GET",
       token: signupRes.token,
@@ -148,7 +160,7 @@ export const initialData = createAsyncThunk(
   async (_, { getState }) => {
     const currState = getState();
     try {
-      const userDetails = await getData({
+      const userDetails = await fetchApi({
         urlExt: "details",
         method: "GET",
         token: currState.user.token,
@@ -158,6 +170,28 @@ export const initialData = createAsyncThunk(
       return { userDetails: userDetailsRes.userDetails };
     } catch (err) {
       return err;
+    }
+  }
+);
+
+export const updateUserDetails = createAsyncThunk(
+  "user/update-userDetails",
+  async (formData, { getState }) => {
+    const currState = getState();
+    try {
+      const res = await fetchApi({
+        urlExt: "details",
+        method: "PATCH",
+        token: currState.user.token,
+        formData,
+      });
+      if (!res.ok) throw new Error(res.error);
+      const updatedData = res.json();
+      delete updatedData["_id"];
+      delete updatedData["user_id"];
+      return { ...currState["userDetails"], ...updatedData };
+    } catch (error) {
+      console.log(error);
     }
   }
 );

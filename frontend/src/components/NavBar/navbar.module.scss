@@ -4,12 +4,7 @@
   align-items: center;
   justify-content: space-between;
   overflow-x: hidden;
-  padding: {
-    left: 7.4rem;
-    right: 7.4rem;
-    top: 2rem;
-    bottom: 2rem;
-  }
+  padding: 2rem 7.4rem;
 
   @include laptop {
     padding: {

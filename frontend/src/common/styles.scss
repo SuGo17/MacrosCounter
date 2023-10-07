@@ -7,6 +7,13 @@ $low-color: #ffc107;
 $optimal-color: #28a745;
 $text-color: #5a5f59;
 
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 85vh;
+}
+
 .btn:not([disabled]),
 .btn[disabled] {
   padding: {

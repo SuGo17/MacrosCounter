@@ -65,7 +65,7 @@ function NavBar() {
         {userToken && (
           <ul className={styles["loggedIn"]}>
             <li className={styles["navlinks"]}>
-              <Link to="/profile">PROFILE</Link>
+              <Link to="/account/profile">ACCOUNT</Link>
             </li>
             <li className={styles["navlinks"]}>
               <a href="/" onClick={logoutHandler}>

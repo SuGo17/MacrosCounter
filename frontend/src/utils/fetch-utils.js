@@ -1,4 +1,4 @@
-const getData = async ({ urlExt, method, formData = "", token }) => {
+const fetchApi = async ({ urlExt, method, formData = "", token }) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   const BASE_URL = "https://macros-counter-sugo17.onrender.com/api/user/";
@@ -11,10 +11,10 @@ const getData = async ({ urlExt, method, formData = "", token }) => {
     headers.append("Authorization", `Bearer ${token}`);
     const data = await fetch(BASE_URL + urlExt, options);
     return data;
-  } else if (method === "POST") {
+  } else if (method === "POST" || method === "PATCH") {
     options.body = JSON.stringify(formData);
     const data = await fetch(BASE_URL + urlExt, options);
     return data;
   }
 };
-export default getData;
+export default fetchApi;
