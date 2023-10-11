@@ -1,8 +1,19 @@
 import React, { useState } from "react";
 import styles from "./profileComponent.module.scss";
+import { selectUserDetails } from "../../../reducers/userReducer";
+import { useDispatch, useSelector } from "react-redux";
+import InputComponent from "../../FormComponents/InputComponent/InputComponent";
 
 function ProfileComponent() {
   const [edit, setEdit] = useState(false);
+  const userDetails = useSelector(selectUserDetails);
+  const dispatch = useDispatch();
+  const [value, setValue] = useState({
+    "profile-age": userDetails.age || "",
+    "profile-weight": userDetails.weight || "",
+    "profile-height": userDetails.height || "",
+    "profile-calories": userDetails.calories || "",
+  });
   return (
     <>
       {!edit && (
@@ -21,30 +32,39 @@ function ProfileComponent() {
           <div className={styles["content"]}>
             <div className={styles["row"]}>
               <p>Name: </p>
-              <p>SURYAKOTIKIRAN M S</p>
+              <p>{userDetails.name.toUpperCase()}</p>
             </div>
             <div className={styles["row"]}>
               <p>Email: </p>
-              <p>kotisurya6@gmail.com</p>
+              <p>{userDetails.email}</p>
             </div>
             <div className={styles["row"]}>
               <p>Age: </p>
-              <p>23</p>
+              <p>{userDetails.age || ""} Years</p>
             </div>
             <div className={styles["row"]}>
               <p>Height: </p>
-              <p>6' 0''</p>
+              <p>{userDetails.height || ""} cm</p>
             </div>
             <div className={styles["row"]}>
               <p>Weight: </p>
-              <p>96 Kg</p>
+              <p>{userDetails.weight || ""} Kg</p>
             </div>
             <div className={styles["row"]}>
               <p>Calories: </p>
-              <p>1600 kcal</p>
+              <p>{userDetails.calories || ""} kcal</p>
             </div>
+            {userDetails.role === "ADMIN" && (
+              <div className={styles["row"]}>
+                <p>Role: </p>
+                <p>{userDetails.role || ""}</p>
+              </div>
+            )}
           </div>
         </div>
+      )}
+      {!edit && (
+        <div className={styles["edit"]}>{/* <InputComponent /> */}</div>
       )}
     </>
   );
