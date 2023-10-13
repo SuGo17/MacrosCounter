@@ -186,10 +186,10 @@ export const updateUserDetails = createAsyncThunk(
         formData,
       });
       if (!res.ok) throw new Error(res.error);
-      const updatedData = res.json();
+      const updatedData = await res.json();
       delete updatedData["_id"];
       delete updatedData["user_id"];
-      return { ...currState["userDetails"], ...updatedData };
+      return { ...currState.user["userDetails"], ...updatedData };
     } catch (error) {
       console.log(error);
     }

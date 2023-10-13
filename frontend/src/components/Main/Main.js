@@ -4,7 +4,7 @@ import RoutesComponent from "../RoutesComponent/RoutesComponent";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { userActions } from "../../reducers/userReducer";
-import InitLoad from "../../utils/Components/InitLoad";
+// import InitLoad from "../../utils/Components/InitLoad";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,10 +15,10 @@ function Main() {
 
   return (
     <main className={styles.main}>
-      <InitLoad>
+      <>
         <RoutesComponent />
         <ToastContainer />
-      </InitLoad>
+      </>
     </main>
   );
 }

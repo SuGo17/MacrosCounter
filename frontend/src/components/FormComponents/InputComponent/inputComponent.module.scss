@@ -7,11 +7,13 @@
   width: 100%;
   margin-bottom: 2rem;
   padding-bottom: 2rem;
+  color: $text-color;
 }
 .input-container label {
   width: fit-content;
+  margin-bottom: 1.5rem;
   font-size: 1.8rem;
-  font-weight: 400;
+  font-weight: 600;
   cursor: pointer;
 }
 .input-container input {
@@ -22,6 +24,11 @@
   outline: none;
   border: none;
   border-bottom: 2px solid $text-color;
+  color: $text-color;
+  letter-spacing: 0.5px;
+}
+.input-container input:disabled {
+  cursor: not-allowed;
 }
 .input-container input:focus {
   border-bottom: 2px solid $primary-color;

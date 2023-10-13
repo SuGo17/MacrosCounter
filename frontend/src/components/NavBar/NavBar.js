@@ -26,6 +26,7 @@ function NavBar() {
   };
 
   const logoutHandler = (e) => {
+    // console.log("logging out");
     dispatch(userActions.logout());
   };
   const userToken = useSelector(selectToken);
