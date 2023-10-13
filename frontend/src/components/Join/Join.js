@@ -21,6 +21,7 @@ function Join() {
             className={({ isActive }) =>
               activeStyles(isActive, [styles["login"], styles["link-btn"]])
             }
+            data-testid="login-btn"
             to="/join/login"
           >
             LOGIN
@@ -29,6 +30,7 @@ function Join() {
             className={({ isActive }) =>
               activeStyles(isActive, [styles["signup"], styles["link-btn"]])
             }
+            data-testid="signup-btn"
             to="/join/signup"
           >
             SIGNUP

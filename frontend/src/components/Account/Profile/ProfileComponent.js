@@ -1,19 +1,64 @@
 import React, { useState } from "react";
 import styles from "./profileComponent.module.scss";
-import { selectUserDetails } from "../../../reducers/userReducer";
+import {
+  selectLoading,
+  selectUserDetails,
+  updateUserDetails,
+} from "../../../reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
 import InputComponent from "../../FormComponents/InputComponent/InputComponent";
+import Loader from "../../Loader/Loader";
 
 function ProfileComponent() {
   const [edit, setEdit] = useState(false);
   const userDetails = useSelector(selectUserDetails);
+  const isLoading = useSelector(selectLoading);
   const dispatch = useDispatch();
+  // console.log(userDetails);
   const [value, setValue] = useState({
-    "profile-age": userDetails.age || "",
-    "profile-weight": userDetails.weight || "",
-    "profile-height": userDetails.height || "",
-    "profile-calories": userDetails.calories || "",
+    "profile-name": userDetails?.name || "",
+    "profile-email": userDetails?.email || "",
+    "profile-age": userDetails?.age || "",
+    "profile-weight": userDetails?.weight || "",
+    "profile-height": userDetails?.height || "",
+    "profile-calories": userDetails?.calories || "",
   });
+  // console.log(value);
+  const [profileErr, setProfileErr] = useState(null);
+  const inpProperty = [
+    { type: "text", label: "NAME", id: "profile-name", disabled: true },
+    { type: "text", label: "EMAIL", id: "profile-email", disabled: true },
+    { type: "text", label: "AGE", id: "profile-age" },
+    { type: "text", label: "HEIGHT", id: "profile-height" },
+    { type: "text", label: "WEIGHT", id: "profile-weight" },
+    { type: "text", label: "CALORIES", id: "profile-calories" },
+  ];
+
+  const submitHandler = (e) => {
+    const formData = {
+      age: value["profile-age"],
+      weight: value["profile-weight"],
+      height: value["profile-height"],
+      calories: value["profile-calories"],
+    };
+    e.preventDefault();
+    try {
+      dispatch(updateUserDetails(formData));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const validData = () => {
+    if (profileErr)
+      return (
+        profileErr["profile-age"] ||
+        profileErr["profile-weight"] ||
+        profileErr["profile-height"] ||
+        profileErr["profile-calories"]
+      );
+  };
+
   return (
     <>
       {!edit && (
@@ -63,9 +108,43 @@ function ProfileComponent() {
           </div>
         </div>
       )}
-      {!edit && (
-        <div className={styles["edit"]}>{/* <InputComponent /> */}</div>
+      {edit && (
+        <div className={styles["edit"]}>
+          <div className={styles["heading-container"]}>
+            <h2>PROFILE</h2>
+          </div>
+          <form onSubmit={submitHandler}>
+            {inpProperty.map((ele, ind) => {
+              return (
+                <InputComponent
+                  key={ind}
+                  data={ele}
+                  value={value}
+                  setValue={setValue}
+                  setJoinErr={setProfileErr}
+                />
+              );
+            })}
+            <div className={styles["btn-container"]}>
+              <button
+                onClick={() => setEdit(false)}
+                type="button"
+                className={styles["btn-ghost"]}
+              >
+                CANCEL
+              </button>
+              <button
+                type="submit"
+                className={styles["btn"]}
+                disabled={validData()}
+              >
+                SAVE
+              </button>
+            </div>
+          </form>
+        </div>
       )}
+      {isLoading && <Loader />}
     </>
   );
 }

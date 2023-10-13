@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./inputComponent.module.scss";
 
-function InputComponent({ data, value, setValue, setJoinErr }) {
-  const { type, label, id } = data;
-  const [inpValue, setInpValue] = useState("");
+function InputComponent({ data, value, setValue, setJoinErr = () => {} }) {
+  const { type, label, id, disabled } = data;
+  const [inpValue, setInpValue] = useState(value[id]);
   const [err, setErr] = useState(null);
 
   const validate = () => {
@@ -45,9 +45,9 @@ function InputComponent({ data, value, setValue, setJoinErr }) {
         id={id}
         onChange={(e) => setInpValue(e.target.value)}
         onBlur={validate}
+        disabled={disabled}
       />
       {err && <p className={styles["error"]}>* {`${err}`}</p>}
-      {}
     </div>
   );
 }
