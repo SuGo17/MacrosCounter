@@ -12,6 +12,7 @@ const fetchApi = async ({ urlExt, method, formData = "", token }) => {
     const data = await fetch(BASE_URL + urlExt, options);
     return data;
   } else if (method === "POST" || method === "PATCH") {
+    method === "PATCH" && headers.append("Authorization", `Bearer ${token}`);
     options.body = JSON.stringify(formData);
     const data = await fetch(BASE_URL + urlExt, options);
     return data;
