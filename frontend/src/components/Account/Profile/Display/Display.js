@@ -5,6 +5,21 @@ import styles from "../profileComponent.module.scss";
 
 function Display({ setEdit }) {
   const userDetails = useSelector(selectUserDetails);
+
+  const calcBMR = ({ height, weight, age }) => {
+    return Math.round(88.362 + 13.397 * weight + 4.799 * height - 5.677 * age);
+  };
+
+  const data = [
+    { label: "Name", value: userDetails.name.toUpperCase() },
+    { label: "Email", value: userDetails.email },
+    { label: "Age", value: userDetails.age, unit: "Years" },
+    { label: "Height", value: userDetails.height, unit: "Cm" },
+    { label: "Weight", value: userDetails.weight, unit: "Kg" },
+    { label: "Calories", value: userDetails.calories, unit: "kcal" },
+    { label: "BMR", value: calcBMR(userDetails), unit: "kcal" },
+    { label: "Role", value: userDetails.role },
+  ];
   return (
     <div className={styles.display}>
       <div className={styles["heading-container"]}>
@@ -19,36 +34,17 @@ function Display({ setEdit }) {
         </button>
       </div>
       <div className={styles["content"]}>
-        <div className={styles["row"]}>
-          <p>Name: </p>
-          <p>{userDetails.name.toUpperCase()}</p>
-        </div>
-        <div className={styles["row"]}>
-          <p>Email: </p>
-          <p>{userDetails.email}</p>
-        </div>
-        <div className={styles["row"]}>
-          <p>Age: </p>
-          <p>{userDetails.age || ""} Years</p>
-        </div>
-        <div className={styles["row"]}>
-          <p>Height: </p>
-          <p>{userDetails.height || ""} cm</p>
-        </div>
-        <div className={styles["row"]}>
-          <p>Weight: </p>
-          <p>{userDetails.weight || ""} Kg</p>
-        </div>
-        <div className={styles["row"]}>
-          <p>Calories: </p>
-          <p>{userDetails.calories || ""} kcal</p>
-        </div>
-        {userDetails.role === "ADMIN" && (
-          <div className={styles["row"]}>
-            <p>Role: </p>
-            <p>{userDetails.role || ""}</p>
-          </div>
-        )}
+        {data.map((ele, index) => {
+          if (ele.label === "Role" && ele.value !== "ADMIN") return "";
+          return (
+            <div className={styles["row"]} key={index}>
+              <p>{ele.label}: </p>
+              <p>
+                {ele.value} {ele.unit}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
