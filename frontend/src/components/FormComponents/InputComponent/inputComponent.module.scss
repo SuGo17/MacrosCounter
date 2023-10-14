@@ -23,7 +23,7 @@
   padding-left: 0;
   outline: none;
   border: none;
-  border-bottom: 2px solid $text-color;
+  border-bottom: 2px solid #c4c4c4;
   color: $text-color;
   letter-spacing: 0.5px;
 }
@@ -31,10 +31,20 @@
   cursor: not-allowed;
 }
 .input-container input:focus {
-  border-bottom: 2px solid $primary-color;
+  font-weight: 600;
 }
-.pass-container {
-  position: relative;
+.input-container::before {
+  content: "";
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
+  width: 0;
+  min-height: 3px;
+  background-color: $primary-color;
+  transition: all 0.5s;
+}
+.input-container:focus-within::before {
+  width: 100%;
 }
 .toggle-pass {
   position: absolute;
