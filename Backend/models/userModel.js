@@ -17,7 +17,11 @@ const userSchema = new Schema({
     name:{
         type:String,
         required:true
-    }})
+    },
+    refreshToken:{
+        type:String
+    }
+})
 
 userSchema.statics.signup = async function(email,password,name){
 
