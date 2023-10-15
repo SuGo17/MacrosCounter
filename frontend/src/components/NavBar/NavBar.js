@@ -5,9 +5,9 @@ import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  logoutUser,
   selectToken,
   selectUserRole,
-  userActions,
 } from "../../reducers/userReducer";
 
 function NavBar() {
@@ -26,8 +26,9 @@ function NavBar() {
   };
 
   const logoutHandler = (e) => {
+    e.preventDefault();
     // console.log("logging out");
-    dispatch(userActions.logout());
+    dispatch(logoutUser());
   };
   const userToken = useSelector(selectToken);
   const userRole = useSelector(selectUserRole);

@@ -11,7 +11,9 @@ import "react-toastify/dist/ReactToastify.css";
 function Main() {
   const dispatch = useDispatch();
   let userToken = Cookies.get("userToken");
+  let refreshToken = Cookies.get("refreshToken");
   userToken && dispatch(userActions.updateToken(userToken));
+  refreshToken && dispatch(userActions.updateRefreshToken(refreshToken));
 
   return (
     <main className={styles.main}>
