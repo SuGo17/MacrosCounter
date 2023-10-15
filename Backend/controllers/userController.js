@@ -49,11 +49,9 @@ const tokenRefresh = async (req, res) => {
     const user = await User.findOne({ _id });
     if (!(user.refreshToken === refreshToken))
       res.status(403).json({ error: "Invalid Request" });
-    res
-      .status(200)
-      .json({
-        token: jwt.sign({ _id }, process.env.TOKEN_SECRET, { expiresIn: "1d" }),
-      });
+    res.status(200).json({
+      token: jwt.sign({ _id }, process.env.TOKEN_SECRET, { expiresIn: "1d" }),
+    });
   } catch (err) {
     res.status(403).json({ error: err.message });
   }
