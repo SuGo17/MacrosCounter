@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const UserRoles = require("../models/userRoleModel");
 
 const createToken = (_id) => {
-  let token = jwt.sign({ _id }, process.env.TOKEN_SECRET, { expiresIn: "1d" });
+  let token = jwt.sign({ _id }, process.env.TOKEN_SECRET, { expiresIn: "15m" });
   let refreshToken = jwt.sign({ _id }, process.env.REFRESHTOKEN_SECRET);
   return { token, refreshToken };
 };
@@ -48,9 +48,9 @@ const tokenRefresh = async (req, res) => {
     const { _id } = jwt.verify(refreshToken, process.env.REFRESHTOKEN_SECRET);
     const user = await User.findOne({ _id });
     if (!(user.refreshToken === refreshToken))
-      res.status(403).json({ error: "Invalid Request" });
+      return res.status(403).json({ error: "Invalid Request" });
     res.status(200).json({
-      token: jwt.sign({ _id }, process.env.TOKEN_SECRET, { expiresIn: "1d" }),
+      token: jwt.sign({ _id }, process.env.TOKEN_SECRET, { expiresIn: "15m" }),
     });
   } catch (err) {
     res.status(403).json({ error: err.message });
