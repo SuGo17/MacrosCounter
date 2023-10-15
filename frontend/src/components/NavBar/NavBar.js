@@ -8,7 +8,9 @@ import {
   logoutUser,
   selectToken,
   selectUserRole,
+  selectLoading,
 } from "../../reducers/userReducer";
+import Loader from "../Loader/Loader";
 
 function NavBar() {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ function NavBar() {
   };
   const userToken = useSelector(selectToken);
   const userRole = useSelector(selectUserRole);
+  const loading = useSelector(selectLoading);
 
   return (
     <nav className={styles["nav-bar"]}>
@@ -106,6 +109,7 @@ function NavBar() {
           {!menu ? <IoMenu /> : <IoClose />}
         </IconContext.Provider>
       </div>
+      {loading && <Loader />}
     </nav>
   );
 }
