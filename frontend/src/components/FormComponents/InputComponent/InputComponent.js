@@ -35,6 +35,10 @@ function InputComponent({ data, value, setValue, setJoinErr = () => {} }) {
     });
   }, [err, id, setJoinErr]);
 
+  const handleInputChange = (e) => {
+    setInpValue(e.target.value);
+    setErr(null);
+  };
   return (
     <div className={styles["input-container"]}>
       <label htmlFor={id}>{label}:</label>
@@ -43,7 +47,7 @@ function InputComponent({ data, value, setValue, setJoinErr = () => {} }) {
         value={value[id]}
         className={styles[`${type}-input`]}
         id={id}
-        onChange={(e) => setInpValue(e.target.value)}
+        onChange={handleInputChange}
         onBlur={validate}
         disabled={disabled}
       />

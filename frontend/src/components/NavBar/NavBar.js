@@ -5,10 +5,12 @@ import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  logoutUser,
   selectToken,
   selectUserRole,
-  userActions,
+  selectLoading,
 } from "../../reducers/userReducer";
+import Loader from "../Loader/Loader";
 
 function NavBar() {
   const dispatch = useDispatch();
@@ -26,11 +28,13 @@ function NavBar() {
   };
 
   const logoutHandler = (e) => {
+    e.preventDefault();
     // console.log("logging out");
-    dispatch(userActions.logout());
+    dispatch(logoutUser());
   };
   const userToken = useSelector(selectToken);
   const userRole = useSelector(selectUserRole);
+  const loading = useSelector(selectLoading);
 
   return (
     <nav className={styles["nav-bar"]}>
@@ -105,6 +109,7 @@ function NavBar() {
           {!menu ? <IoMenu /> : <IoClose />}
         </IconContext.Provider>
       </div>
+      {loading && <Loader />}
     </nav>
   );
 }
