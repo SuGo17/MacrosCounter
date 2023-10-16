@@ -38,7 +38,10 @@ function PasswordComponent({ id, value, setValue, setJoinErr }) {
     right: "0",
     transform: "translateY(-50%)",
   };
-
+  const handleInputChange = (e) => {
+    setPassValue(e.target.value);
+    setErr(null);
+  };
   return (
     <div className={styles["input-container"]}>
       <label htmlFor={id}>Password:</label>
@@ -49,7 +52,7 @@ function PasswordComponent({ id, value, setValue, setJoinErr }) {
           ref={passRef}
           value={value[id]}
           id={id}
-          onChange={(e) => setPassValue(e.target.value)}
+          onChange={handleInputChange}
           onBlur={validate}
         />
         <IconContext.Provider
