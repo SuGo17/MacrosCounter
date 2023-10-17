@@ -58,7 +58,7 @@ export const userSlice = createSlice({
         state.token = action.payload.token;
         state.refreshToken = action.payload.refreshToken;
         state.userDetailsRes = action.payload.userDetails;
-        state.userRole = action.payload.userDetails.role;
+        state.userRole = action.payload.userDetails?.role;
         Cookies.set("userToken", action.payload.token, { expires: 1 });
         Cookies.set("refreshToken", action.payload.refreshToken, {
           expires: 1,
@@ -76,8 +76,8 @@ export const userSlice = createSlice({
       .addCase(signupUser.fulfilled, (state, action) => {
         state.token = action.payload.token;
         state.refreshToken = action.payload.refreshToken;
-        state.userDetailsRes = action.payload.userDetailsRes.userDetailsRes;
-        state.userRole = action.payload.userDetailsRes.userDetailsRes.role;
+        state.userDetailsRes = action.payload.userDetailsRes;
+        state.userRole = action.payload.userDetailsRes?.role;
         Cookies.set("userToken", action.payload.token, { expires: 1 });
         Cookies.set("refreshToken", action.payload.refreshToken, {
           expires: 1,
@@ -243,7 +243,7 @@ export const signupUser = createAsyncThunk("user/signup", async (formData) => {
     return {
       token: signupRes.token,
       refreshToken: signupRes.refreshToken,
-      userDetailsRes: userDetailsRes,
+      userDetailsRes: userDetailsRes.userDetails,
     };
   } catch (err) {
     err.message !== "jwt expired" && toast.error(err.message, toastOptions);

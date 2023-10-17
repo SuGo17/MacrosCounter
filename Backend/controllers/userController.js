@@ -40,7 +40,7 @@ const signup = async (req, res) => {
       { _id: user._id },
       { refreshToken: refreshTokenArr }
     );
-    res.status(200).json({ email, token });
+    res.status(200).json({ email, token, refreshToken });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
