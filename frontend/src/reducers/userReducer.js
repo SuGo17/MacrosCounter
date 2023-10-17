@@ -118,7 +118,6 @@ export const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        console.log(state);
         Cookies.remove("userToken");
         Cookies.remove("refreshToken");
         state.loading = false;
@@ -209,12 +208,13 @@ export const logoutUser = createAsyncThunk(
   "user/logout",
   async (_, { getState }) => {
     const token = getState().user.token;
-
+    const formData = { refreshToken: getState().user.refreshToken };
     try {
       const logoutRes = await fetchApi({
         urlExt: "logout",
-        method: "GET",
+        method: "POST",
         token,
+        formData,
       });
       if (!logoutRes.ok) throw new Error(logoutRes.error);
     } catch (error) {
