@@ -1,0 +1,80 @@
+@import "../../../common/styles.scss";
+
+.input-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  color: $text-color;
+  @include mobile {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+.input-container label {
+  width: fit-content;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  @include mobile {
+    margin-bottom: 0.5rem;
+  }
+}
+.input-container input {
+  width: 100%;
+  font-size: 1.8rem;
+  padding: 3px;
+  padding-left: 0;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #c4c4c4;
+  color: $text-color;
+  letter-spacing: 0.5px;
+}
+.input-container input:disabled {
+  cursor: not-allowed;
+}
+.input-container input:focus {
+  font-weight: 600;
+}
+.input-container::before {
+  content: "";
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
+  width: 0;
+  min-height: 3px;
+  background-color: $primary-color;
+  transition: all 0.5s;
+
+  @include mobile {
+    bottom: 1rem;
+  }
+}
+.input-container:focus-within::before {
+  width: 100%;
+}
+.toggle-pass {
+  position: absolute;
+  top: 50%;
+  right: 0;
+}
+
+.error {
+  font-size: 1.4rem;
+  color: $high-color;
+  font-weight: 500;
+  position: absolute;
+  bottom: 0;
+
+  @include ipad {
+    font-size: 1.2rem;
+  }
+  @include mobile {
+    font-size: 1rem;
+  }
+}

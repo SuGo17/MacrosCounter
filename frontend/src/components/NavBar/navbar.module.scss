@@ -1,0 +1,176 @@
+@import "../../common/styles.scss";
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: hidden;
+  padding: 2rem 7.4rem;
+
+  @include laptop {
+    padding: {
+      left: 5.2rem;
+      right: 5.2rem;
+    }
+  }
+
+  @include ipad {
+    padding: {
+      left: 3rem;
+      right: 3rem;
+    }
+  }
+}
+
+// .nav-right .admin,
+// .nav-right .signin {
+//   display: none;
+// }
+
+.nav-bar a:hover {
+  color: #000000;
+}
+
+.nav-left a {
+  text-decoration: none;
+  color: $text-color;
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  @include laptop {
+    font-size: 1.8rem;
+  }
+}
+
+.nav-right ul,
+.nav-right {
+  display: flex;
+  align-items: center;
+  @include ipad {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.nav-right {
+  transition: all 0.5s ease-in-out;
+  @include ipad {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+}
+.nav-active {
+  @include ipad {
+    left: 0;
+  }
+}
+.nav-right ul {
+  list-style: none;
+  @include ipad {
+    order: 2;
+  }
+}
+.nav-right .navlinks,
+.nav-right .nav-btn {
+  margin: {
+    left: 1rem;
+    right: 1rem;
+  }
+  @include ipad {
+    margin: {
+      top: 1rem;
+      bottom: 1rem;
+    }
+  }
+}
+
+.nav-right .navlinks a {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $text-color;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.5s ease;
+
+  @include laptop {
+    font-size: 1.6rem;
+  }
+}
+
+.nav-right .navlinks a:hover {
+  color: #000000;
+}
+.menu {
+  display: none;
+  @include ipad {
+    display: block;
+    z-index: 5;
+  }
+}
+
+.nav-right ul.date {
+  @include ipad {
+    order: 1;
+  }
+}
+
+ul.date li.navlinks input[type="date"] {
+  padding: {
+    left: 2.4rem;
+    right: 2.4rem;
+    top: 1.4rem;
+    bottom: 1.4rem;
+  }
+  border: none;
+  background: $primary-color;
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 5px;
+  text-transform: uppercase;
+  @include laptop {
+    font-size: 1.6rem;
+  }
+  @include ipad {
+    padding: 1rem 2rem;
+  }
+}
+ul.date li.navlinks input[type="date"]:focus,
+ul.date li.navlinks input[type="date"]:hover {
+  outline: none;
+  box-shadow: 5px solid $primary-hover-color;
+}
+ul.date li.navlinks input[type="date"]::-webkit-calendar-picker-indicator {
+  background-color: $background-color;
+  padding: 3px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.nav-btn a {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 3rem;
+  border-radius: 5px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  background-color: $primary-color;
+  transition: all 0.5s ease;
+
+  @include laptop {
+    font-size: 1.6rem;
+  }
+}
+.nav-btn a:hover {
+  background-color: $primary-hover-color;
+  color: #ffffff;
+}
