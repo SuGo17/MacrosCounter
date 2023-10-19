@@ -7,6 +7,7 @@ import Signup from "../Join/Signup/Signup";
 import ProtectRoute from "../../utils/Components/ProtectRoute";
 import AccountComponent from "../Account/AccountComponent";
 import ProfileComponent from "../Account/Profile/ProfileComponent";
+import AdminPanel from "../AdminPanel/AdminPanel";
 
 function RoutesComponent() {
   return (
@@ -37,6 +38,7 @@ function RoutesComponent() {
           <Route path="/join/login" element={<Login />} />
           <Route path="/join/signup" element={<Signup />} />
         </Route>
+        <Route path="/admin-panel" element={<AdminPanel />} />
       </Routes>
     </BrowserRouter>
   );
