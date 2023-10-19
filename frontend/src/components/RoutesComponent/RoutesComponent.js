@@ -14,23 +14,10 @@ function RoutesComponent() {
     <BrowserRouter>
       <NavBar />
       <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            <ProtectRoute>
-              <></>
-            </ProtectRoute>
-          }
-        />
-        <Route
-          path="/account"
-          element={
-            <ProtectRoute>
-              <AccountComponent />
-            </ProtectRoute>
-          }
-        >
+        {/* prettier-ignore */}
+        <Route exact path="/" element={<ProtectRoute><></></ProtectRoute>}/>
+        {/* prettier-ignore */}
+        <Route path="/account" element={<ProtectRoute><AccountComponent /></ProtectRoute>}>
           <Route path="/account/profile" element={<ProfileComponent />} />
           <Route path="/account/change-password" />
         </Route>
@@ -38,7 +25,8 @@ function RoutesComponent() {
           <Route path="/join/login" element={<Login />} />
           <Route path="/join/signup" element={<Signup />} />
         </Route>
-        <Route path="/admin-panel" element={<AdminPanel />} />
+        {/* prettier-ignore */}
+        <Route path="/admin-panel" element={<ProtectRoute><AdminPanel/></ProtectRoute>}/>
       </Routes>
     </BrowserRouter>
   );

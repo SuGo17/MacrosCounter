@@ -1,11 +1,16 @@
 import React from "react";
 import styles from "./adminpanel.module.scss";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import userIcon from "../../images/users.png";
 import macrosIcon from "../../images/macros.png";
 import feedbackIcon from "../../images/feedback.png";
+import { useSelector } from "react-redux";
+import { selectUserRole } from "../../reducers/userReducer";
 
 function AdminPanel() {
+  const role = useSelector(selectUserRole);
+  if (role !== "ADMIN") return <Navigate to="/" />;
+
   const data = [
     { to: "/users", src: userIcon, title: "Users" },
     { to: "/macros", src: macrosIcon, title: "Macros" },
