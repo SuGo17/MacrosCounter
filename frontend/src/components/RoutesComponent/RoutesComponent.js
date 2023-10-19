@@ -26,7 +26,7 @@ function RoutesComponent() {
           <Route path="/join/signup" element={<Signup />} />
         </Route>
         {/* prettier-ignore */}
-        <Route path="/admin-panel" element={<ProtectRoute><AdminPanel/></ProtectRoute>}/>
+        <Route path="/admin-panel" element={<ProtectRoute admin={true}><AdminPanel/></ProtectRoute>}/>
       </Routes>
     </BrowserRouter>
   );
