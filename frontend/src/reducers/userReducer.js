@@ -147,6 +147,7 @@ export const userSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.token = action.payload.token;
+        Cookies.set("userToken", action.payload.token, { expires: 1 });
       })
       .addCase(refreshIdToken.rejected, (state, action) => {
         state.loading = false;

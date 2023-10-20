@@ -9,6 +9,7 @@ import {
 } from "../../reducers/userReducer";
 import Loader from "../../components/Loader/Loader";
 import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function InitLoad({ children, admin }) {
   let userToken = useSelector(selectToken);
@@ -16,19 +17,19 @@ function InitLoad({ children, admin }) {
   const role = useSelector(selectUserRole);
   const isLoading = useSelector(selectLoading);
   let dispatch = useDispatch();
-  try {
-    userToken && !userDetails && dispatch(initialData(userToken));
-    if (admin && role !== "ADMIN") {
-      return <Navigate to="/" />;
+  useEffect(() => {
+    try {
+      if (userToken && !userDetails) dispatch(initialData(userToken));
+    } catch (error) {
+      dispatch(userActions.updateToken(null));
+      dispatch(userActions.updateErr(error.message));
     }
-  } catch (error) {
-    dispatch(userActions.updateToken(null));
-    dispatch(userActions.updateErr(error.message));
+  }, [dispatch, userDetails, userToken]);
+  if (isLoading) return <Loader />;
+  if (admin && role !== "ADMIN") {
+    return <Navigate to="/" />;
   }
   if (userDetails) return children;
-  else {
-    if (isLoading) return <Loader />;
-  }
 }
 
 export default InitLoad;
