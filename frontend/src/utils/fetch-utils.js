@@ -4,8 +4,8 @@ import { refreshIdToken, logoutUser } from "../reducers/userReducer";
 const fetchApi = async ({ urlExt, method, formData, token, dispatch }) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
-  const BASE_URL = "https://macros-counter-sugo17.onrender.com/api/user/";
-  // const BASE_URL = "http://localhost:4000/api/user/";
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+  // const BASE_URL = "http://localhost:4000/api/";
   const options = {
     method,
     headers,

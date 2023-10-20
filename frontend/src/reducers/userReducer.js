@@ -161,13 +161,13 @@ export const loginUser = createAsyncThunk(
   async (formData) => {
     try {
       const loginRes = await fetchApi({
-        urlExt: "login",
+        urlExt: "user/login",
         method: "POST",
         formData,
       });
       if (!loginRes.ok) throw new Error(loginRes.error);
       const userDetailsRes = await fetchApi({
-        urlExt: "details",
+        urlExt: "user/details",
         method: "GET",
         token: loginRes.token,
       });
@@ -191,7 +191,7 @@ export const refreshIdToken = createAsyncThunk(
     const refreshToken = getState().user.refreshToken;
     try {
       const refreshRes = await fetchApi({
-        urlExt: "token-refresh",
+        urlExt: "user/token-refresh",
         method: "POST",
         formData: { refreshToken },
       });
@@ -212,7 +212,7 @@ export const logoutUser = createAsyncThunk(
     const formData = { refreshToken: getState().user.refreshToken };
     try {
       const logoutRes = await fetchApi({
-        urlExt: "logout",
+        urlExt: "user/logout",
         method: "POST",
         token,
         formData,
@@ -229,13 +229,13 @@ export const logoutUser = createAsyncThunk(
 export const signupUser = createAsyncThunk("user/signup", async (formData) => {
   try {
     const signupRes = await fetchApi({
-      urlExt: "signup",
+      urlExt: "user/signup",
       method: "POST",
       formData,
     });
     if (!signupRes.ok) throw new Error(signupRes.error);
     const userDetailsRes = await fetchApi({
-      urlExt: "details",
+      urlExt: "user/details",
       method: "GET",
       token: signupRes.token,
     });
@@ -258,7 +258,7 @@ export const initialData = createAsyncThunk(
     const currState = getState();
     try {
       const userDetailsRes = await fetchApi({
-        urlExt: "details",
+        urlExt: "user/details",
         method: "GET",
         token: currState.user.token,
       });
@@ -277,7 +277,7 @@ export const updateUserDetails = createAsyncThunk(
     const currState = getState();
     try {
       const res = await fetchApi({
-        urlExt: "details",
+        urlExt: "user/details",
         method: "PATCH",
         token: currState.user.token,
         formData,
