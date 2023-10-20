@@ -5,6 +5,17 @@
   align-items: center;
   justify-content: center;
   padding: 2rem 7.4rem;
+
+  @include laptop {
+    padding: 2rem 5.2rem;
+  }
+
+  @include ipad {
+    padding: 2rem 3rem;
+  }
+  @include mobile {
+    justify-content: flex-start;
+  }
 }
 
 .container {
@@ -13,6 +24,16 @@
   min-height: 70vh;
   border-radius: 1.5rem;
   background-color: $background-color;
+
+  @include laptop {
+    width: 100%;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    min-height: fit-content;
+    border-radius: 5px;
+  }
 }
 
 .left-menu {
@@ -26,6 +47,13 @@
   border-top-left-radius: 15px;
   border-right: 3px solid #e1e1e1;
 
+  @include mobile {
+    max-width: 100%;
+    min-height: fit-content;
+    border: none;
+    border-radius: 0;
+  }
+
   .profile-img {
     display: flex;
     align-items: center;
@@ -35,11 +63,25 @@
     border-top-left-radius: 15px;
     border-bottom: 1px solid #e1e1e1;
 
+    @include laptop {
+      padding: 2rem;
+    }
+
+    @include mobile {
+      display: none;
+      border-radius: 0;
+    }
+
     .img {
       width: 150px;
       height: 150px;
       border-radius: 50%;
       background-color: #e1e2e2;
+
+      @include ipad {
+        width: 75px;
+        height: 75px;
+      }
     }
   }
 
@@ -47,19 +89,34 @@
     list-style: none;
     width: 100%;
 
+    @include mobile {
+      display: flex;
+      overflow: scroll;
+    }
+
     .link {
       text-align: center;
       border-bottom: 1px solid #e1e1e1;
-      padding: 1rem 3rem;
-      border-left: 7.5px solid transparent;
+
+      @include mobile {
+        border-top: 7.5px solid transparent;
+        border-left: none;
+      }
 
       a {
+        display: block;
+        padding: 1rem 3rem;
+        width: 100%;
         font-size: 1.8rem;
         font-weight: 600;
         text-decoration: none;
         color: $text-color;
         text-transform: uppercase;
         transition: all 0.4s linear;
+
+        @include mobile {
+          text-wrap: nowrap;
+        }
       }
       a:hover {
         color: #000000;
@@ -67,6 +124,11 @@
     }
     .link:has(.active-link) {
       border-left: 7.5px solid $primary-color;
+
+      @include mobile {
+        border-left: none;
+        border-top: 7.5px solid $primary-color;
+      }
     }
   }
 }
@@ -75,4 +137,8 @@
   width: 100%;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
+
+  @include mobile {
+    border-radius: 0;
+  }
 }

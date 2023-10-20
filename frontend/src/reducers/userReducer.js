@@ -58,7 +58,7 @@ export const userSlice = createSlice({
         state.token = action.payload.token;
         state.refreshToken = action.payload.refreshToken;
         state.userDetailsRes = action.payload.userDetails;
-        state.userRole = action.payload.userDetails.role;
+        state.userRole = action.payload.userDetails?.role;
         Cookies.set("userToken", action.payload.token, { expires: 1 });
         Cookies.set("refreshToken", action.payload.refreshToken, {
           expires: 1,
@@ -76,8 +76,8 @@ export const userSlice = createSlice({
       .addCase(signupUser.fulfilled, (state, action) => {
         state.token = action.payload.token;
         state.refreshToken = action.payload.refreshToken;
-        state.userDetailsRes = action.payload.userDetailsRes.userDetailsRes;
-        state.userRole = action.payload.userDetailsRes.userDetailsRes.role;
+        state.userDetailsRes = action.payload.userDetailsRes;
+        state.userRole = action.payload.userDetailsRes?.role;
         Cookies.set("userToken", action.payload.token, { expires: 1 });
         Cookies.set("refreshToken", action.payload.refreshToken, {
           expires: 1,
@@ -118,7 +118,6 @@ export const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        console.log(state);
         Cookies.remove("userToken");
         Cookies.remove("refreshToken");
         state.loading = false;
@@ -148,6 +147,7 @@ export const userSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.token = action.payload.token;
+        Cookies.set("userToken", action.payload.token, { expires: 1 });
       })
       .addCase(refreshIdToken.rejected, (state, action) => {
         state.loading = false;
@@ -209,12 +209,13 @@ export const logoutUser = createAsyncThunk(
   "user/logout",
   async (_, { getState }) => {
     const token = getState().user.token;
-
+    const formData = { refreshToken: getState().user.refreshToken };
     try {
       const logoutRes = await fetchApi({
         urlExt: "logout",
-        method: "GET",
+        method: "POST",
         token,
+        formData,
       });
       if (!logoutRes.ok) throw new Error(logoutRes.error);
     } catch (error) {
@@ -243,7 +244,7 @@ export const signupUser = createAsyncThunk("user/signup", async (formData) => {
     return {
       token: signupRes.token,
       refreshToken: signupRes.refreshToken,
-      userDetailsRes: userDetailsRes,
+      userDetailsRes: userDetailsRes.userDetails,
     };
   } catch (err) {
     err.message !== "jwt expired" && toast.error(err.message, toastOptions);

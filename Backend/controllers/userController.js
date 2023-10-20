@@ -15,10 +15,11 @@ const login = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const { token, refreshToken } = createToken(user._id);
-    res.cookie("token", token);
-    res.cookie("refreshToken", refreshToken);
-    await User.findOneAndUpdate({ _id: user._id }, { refreshToken });
-
+    let refreshTokenArr = [...user.refreshToken, refreshToken];
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { refreshToken: refreshTokenArr }
+    );
     res.status(200).json({ email, token, refreshToken });
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -34,8 +35,12 @@ const signup = async (req, res) => {
     res.cookie("refreshToken", refreshToken);
     await UserDetails.create({ user_id: user._id });
     await UserRoles.create({ user_id: user._id });
-    await User.findOneAndUpdate({ _id: user._id }, { refreshToken });
-    res.status(200).json({ email, token });
+    let refreshTokenArr = [...user.refreshToken, refreshToken];
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { refreshToken: refreshTokenArr }
+    );
+    res.status(200).json({ email, token, refreshToken });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -47,8 +52,10 @@ const tokenRefresh = async (req, res) => {
   try {
     const { _id } = jwt.verify(refreshToken, process.env.REFRESHTOKEN_SECRET);
     const user = await User.findOne({ _id });
-    if (!(user.refreshToken === refreshToken))
-      return res.status(403).json({ error: "Invalid Request" });
+    if (!user.refreshToken.includes(refreshToken))
+      return res
+        .status(401)
+        .json({ error: "Invalid Request! User not logged in." });
     res.status(200).json({
       token: jwt.sign({ _id }, process.env.TOKEN_SECRET, { expiresIn: "15m" }),
     });
@@ -59,7 +66,12 @@ const tokenRefresh = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    await User.findOneAndUpdate({ _id: req.user._id }, { refreshToken: null });
+    const { refreshToken } = req.body;
+    const user = await User.findOne({ _id: req.user._id });
+    await User.findOneAndUpdate(
+      { _id: req.user._id },
+      { refreshToken: user.refreshToken.filter((ele) => ele !== refreshToken) }
+    );
     res.status(200).json({ message: "Logout Succesful" });
   } catch (err) {
     res.status(400).json({ error: err.message });

@@ -29,12 +29,16 @@ function NavBar() {
 
   const logoutHandler = (e) => {
     e.preventDefault();
-    // console.log("logging out");
     dispatch(logoutUser());
+    setMenu(false);
   };
   const userToken = useSelector(selectToken);
   const userRole = useSelector(selectUserRole);
   const loading = useSelector(selectLoading);
+
+  const clickHandler = () => {
+    setMenu(false);
+  };
 
   return (
     <nav className={styles["nav-bar"]}>
@@ -51,10 +55,14 @@ function NavBar() {
         {!userToken && (
           <ul className={styles["signin"]}>
             <li className={styles["navlinks"]}>
-              <Link to="/join/login">LOGIN</Link>
+              <Link to="/join/login" onClick={clickHandler}>
+                LOGIN
+              </Link>
             </li>
             <li className={styles["nav-btn"]}>
-              <Link to="/join/signup">SIGNUP</Link>
+              <Link to="/join/signup" onClick={clickHandler}>
+                SIGNUP
+              </Link>
             </li>
           </ul>
         )}
@@ -62,7 +70,9 @@ function NavBar() {
         {userRole === "ADMIN" && (
           <ul className={styles["admin"]}>
             <li className={styles["navlinks"]}>
-              <Link to="/admins">Admin</Link>
+              <Link to="/admin-panel" onClick={clickHandler}>
+                Admin
+              </Link>
             </li>
           </ul>
         )}
@@ -70,7 +80,9 @@ function NavBar() {
         {userToken && (
           <ul className={styles["loggedIn"]}>
             <li className={styles["navlinks"]}>
-              <Link to="/account/profile">ACCOUNT</Link>
+              <Link to="/account/profile" onClick={clickHandler}>
+                ACCOUNT
+              </Link>
             </li>
             <li className={styles["navlinks"]}>
               <a href="/" onClick={logoutHandler}>
