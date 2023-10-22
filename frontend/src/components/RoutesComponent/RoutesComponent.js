@@ -8,6 +8,7 @@ import ProtectRoute from "../../utils/Components/ProtectRoute";
 import AccountComponent from "../Account/AccountComponent";
 import ProfileComponent from "../Account/Profile/ProfileComponent";
 import AdminPanel from "../AdminPanel/AdminPanel";
+import Users from "../AdminPanel/Users/Users";
 
 function RoutesComponent() {
   return (
@@ -27,6 +28,8 @@ function RoutesComponent() {
         </Route>
         {/* prettier-ignore */}
         <Route path="/admin-panel" element={<ProtectRoute admin={true}><AdminPanel/></ProtectRoute>}/>
+        {/* prettier-ignore */}
+        <Route path="/users" element={<ProtectRoute admin={true}><Users/></ProtectRoute>}/>
       </Routes>
     </BrowserRouter>
   );
