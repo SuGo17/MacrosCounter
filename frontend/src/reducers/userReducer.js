@@ -3,6 +3,14 @@ import Cookies from "js-cookie";
 import fetchApi from "../utils/fetch-utils";
 import { toast } from "react-toastify";
 
+const getExpiryDate = () => {
+  const date = new Date();
+
+  return new Date(
+    `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`
+  );
+};
+
 const toastOptions = {
   position: "bottom-right",
   autoClose: 2000,
@@ -59,9 +67,11 @@ export const userSlice = createSlice({
         state.refreshToken = action.payload.refreshToken;
         state.userDetailsRes = action.payload.userDetails;
         state.userRole = action.payload.userDetails?.role;
-        Cookies.set("userToken", action.payload.token, { expires: 1 });
+        Cookies.set("userToken", action.payload.token, {
+          expires: getExpiryDate(),
+        });
         Cookies.set("refreshToken", action.payload.refreshToken, {
-          expires: 1,
+          expires: getExpiryDate(),
         });
         state.loading = false;
         state.error = null;
@@ -78,9 +88,11 @@ export const userSlice = createSlice({
         state.refreshToken = action.payload.refreshToken;
         state.userDetailsRes = action.payload.userDetailsRes;
         state.userRole = action.payload.userDetailsRes?.role;
-        Cookies.set("userToken", action.payload.token, { expires: 1 });
+        Cookies.set("userToken", action.payload.token, {
+          expires: getExpiryDate(),
+        });
         Cookies.set("refreshToken", action.payload.refreshToken, {
-          expires: 1,
+          expires: getExpiryDate(),
         });
         state.loading = false;
         state.error = null;
@@ -147,7 +159,9 @@ export const userSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.token = action.payload.token;
-        Cookies.set("userToken", action.payload.token, { expires: 1 });
+        Cookies.set("userToken", action.payload.token, {
+          expires: getExpiryDate(),
+        });
       })
       .addCase(refreshIdToken.rejected, (state, action) => {
         state.loading = false;
