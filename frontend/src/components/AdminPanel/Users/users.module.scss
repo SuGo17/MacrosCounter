@@ -1,0 +1,10 @@
+@import "../../../common/styles.scss";
+
+.title {
+  font-size: 3rem;
+  font-weight: 600;
+  color: $text-color;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}

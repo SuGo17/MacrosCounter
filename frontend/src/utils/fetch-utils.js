@@ -1,7 +1,7 @@
 import store from "../store/store";
 import { refreshIdToken, logoutUser } from "../reducers/userReducer";
 
-const fetchApi = async ({ urlExt, method, formData, token, dispatch }) => {
+const fetchApi = async ({ urlExt, method, formData, token }) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   const BASE_URL = process.env.REACT_APP_BASE_URL;
