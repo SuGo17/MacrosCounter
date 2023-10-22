@@ -94,7 +94,11 @@ const logout = async (req, res) => {
     const user = await User.findOne({ _id: req.user._id });
     await User.findOneAndUpdate(
       { _id: req.user._id },
-      { refreshToken: user.refreshToken.filter((ele) => ele !== refreshToken) }
+      {
+        refreshToken: user.refreshToken.filter(
+          (ele) => ele.refreshToken !== refreshToken
+        ),
+      }
     );
     res.status(200).json({ message: "Logout Succesful" });
   } catch (err) {
