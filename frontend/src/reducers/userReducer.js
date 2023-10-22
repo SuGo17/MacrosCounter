@@ -58,7 +58,7 @@ export const userSlice = createSlice({
         state.token = action.payload.token;
         state.refreshToken = action.payload.refreshToken;
         state.userDetailsRes = action.payload.userDetails;
-        state.userRole = action.payload.userDetails.role;
+        state.userRole = action.payload.userDetails?.role;
         Cookies.set("userToken", action.payload.token, { expires: 1 });
         Cookies.set("refreshToken", action.payload.refreshToken, {
           expires: 1,
@@ -76,8 +76,8 @@ export const userSlice = createSlice({
       .addCase(signupUser.fulfilled, (state, action) => {
         state.token = action.payload.token;
         state.refreshToken = action.payload.refreshToken;
-        state.userDetailsRes = action.payload.userDetailsRes.userDetailsRes;
-        state.userRole = action.payload.userDetailsRes.userDetailsRes.role;
+        state.userDetailsRes = action.payload.userDetailsRes;
+        state.userRole = action.payload.userDetailsRes?.role;
         Cookies.set("userToken", action.payload.token, { expires: 1 });
         Cookies.set("refreshToken", action.payload.refreshToken, {
           expires: 1,
@@ -147,6 +147,7 @@ export const userSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.token = action.payload.token;
+        Cookies.set("userToken", action.payload.token, { expires: 1 });
       })
       .addCase(refreshIdToken.rejected, (state, action) => {
         state.loading = false;
@@ -160,13 +161,13 @@ export const loginUser = createAsyncThunk(
   async (formData) => {
     try {
       const loginRes = await fetchApi({
-        urlExt: "login",
+        urlExt: "user/login",
         method: "POST",
         formData,
       });
       if (!loginRes.ok) throw new Error(loginRes.error);
       const userDetailsRes = await fetchApi({
-        urlExt: "details",
+        urlExt: "user/details",
         method: "GET",
         token: loginRes.token,
       });
@@ -190,7 +191,7 @@ export const refreshIdToken = createAsyncThunk(
     const refreshToken = getState().user.refreshToken;
     try {
       const refreshRes = await fetchApi({
-        urlExt: "token-refresh",
+        urlExt: "user/token-refresh",
         method: "POST",
         formData: { refreshToken },
       });
@@ -211,7 +212,7 @@ export const logoutUser = createAsyncThunk(
     const formData = { refreshToken: getState().user.refreshToken };
     try {
       const logoutRes = await fetchApi({
-        urlExt: "logout",
+        urlExt: "user/logout",
         method: "POST",
         token,
         formData,
@@ -228,13 +229,13 @@ export const logoutUser = createAsyncThunk(
 export const signupUser = createAsyncThunk("user/signup", async (formData) => {
   try {
     const signupRes = await fetchApi({
-      urlExt: "signup",
+      urlExt: "user/signup",
       method: "POST",
       formData,
     });
     if (!signupRes.ok) throw new Error(signupRes.error);
     const userDetailsRes = await fetchApi({
-      urlExt: "details",
+      urlExt: "user/details",
       method: "GET",
       token: signupRes.token,
     });
@@ -243,7 +244,7 @@ export const signupUser = createAsyncThunk("user/signup", async (formData) => {
     return {
       token: signupRes.token,
       refreshToken: signupRes.refreshToken,
-      userDetailsRes: userDetailsRes,
+      userDetailsRes: userDetailsRes.userDetails,
     };
   } catch (err) {
     err.message !== "jwt expired" && toast.error(err.message, toastOptions);
@@ -257,7 +258,7 @@ export const initialData = createAsyncThunk(
     const currState = getState();
     try {
       const userDetailsRes = await fetchApi({
-        urlExt: "details",
+        urlExt: "user/details",
         method: "GET",
         token: currState.user.token,
       });
@@ -276,7 +277,7 @@ export const updateUserDetails = createAsyncThunk(
     const currState = getState();
     try {
       const res = await fetchApi({
-        urlExt: "details",
+        urlExt: "user/details",
         method: "PATCH",
         token: currState.user.token,
         formData,

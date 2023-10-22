@@ -7,29 +7,18 @@ import Signup from "../Join/Signup/Signup";
 import ProtectRoute from "../../utils/Components/ProtectRoute";
 import AccountComponent from "../Account/AccountComponent";
 import ProfileComponent from "../Account/Profile/ProfileComponent";
+import AdminPanel from "../AdminPanel/AdminPanel";
+import Users from "../AdminPanel/Users/Users";
 
 function RoutesComponent() {
   return (
     <BrowserRouter>
       <NavBar />
       <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            <ProtectRoute>
-              <></>
-            </ProtectRoute>
-          }
-        />
-        <Route
-          path="/account"
-          element={
-            <ProtectRoute>
-              <AccountComponent />
-            </ProtectRoute>
-          }
-        >
+        {/* prettier-ignore */}
+        <Route exact path="/" element={<ProtectRoute><></></ProtectRoute>}/>
+        {/* prettier-ignore */}
+        <Route path="/account" element={<ProtectRoute><AccountComponent /></ProtectRoute>}>
           <Route path="/account/profile" element={<ProfileComponent />} />
           <Route path="/account/change-password" />
         </Route>
@@ -37,6 +26,10 @@ function RoutesComponent() {
           <Route path="/join/login" element={<Login />} />
           <Route path="/join/signup" element={<Signup />} />
         </Route>
+        {/* prettier-ignore */}
+        <Route path="/admin-panel" element={<ProtectRoute admin={true}><AdminPanel/></ProtectRoute>}/>
+        {/* prettier-ignore */}
+        <Route path="/users" element={<ProtectRoute admin={true}><Users/></ProtectRoute>}/>
       </Routes>
     </BrowserRouter>
   );

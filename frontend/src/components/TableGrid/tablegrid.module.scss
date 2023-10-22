@@ -1,0 +1,38 @@
+@import "../../common/styles.scss";
+
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include mobile {
+    justify-content: flex-start;
+    overflow: scroll;
+  }
+
+  table {
+    border-spacing: 0;
+    td,
+    th {
+      font-size: 1.8rem;
+      text-align: left;
+      padding: 2rem 5rem;
+      color: $text-color;
+      text-wrap: nowrap;
+    }
+    th {
+      text-transform: uppercase;
+      @include mobile {
+        padding: 2rem;
+        padding-left: 0;
+      }
+    }
+    td {
+      padding: 1rem 5rem;
+      @include mobile {
+        padding: 1rem 2rem 1rem 0;
+      }
+    }
+  }
+}

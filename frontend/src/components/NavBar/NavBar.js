@@ -70,7 +70,7 @@ function NavBar() {
         {userRole === "ADMIN" && (
           <ul className={styles["admin"]}>
             <li className={styles["navlinks"]}>
-              <Link to="/admins" onClick={clickHandler}>
+              <Link to="/admin-panel" onClick={clickHandler}>
                 Admin
               </Link>
             </li>
