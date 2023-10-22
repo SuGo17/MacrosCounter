@@ -15,7 +15,20 @@ const login = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const { token, refreshToken } = createToken(user._id);
-    let refreshTokenArr = [...user.refreshToken, refreshToken];
+    date = new Date();
+    let refreshTokenArr = [
+      ...user.refreshToken,
+      {
+        refreshToken,
+        expiry: new Date(
+          `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`
+        ),
+      },
+    ];
+    refreshTokenArr = refreshTokenArr.filter((ele) => {
+      const eleDate = new Date(ele.expiry);
+      return eleDate.getTime() > date.getTime();
+    });
     await User.findOneAndUpdate(
       { _id: user._id },
       { refreshToken: refreshTokenArr }
@@ -35,7 +48,15 @@ const signup = async (req, res) => {
     res.cookie("refreshToken", refreshToken);
     await UserDetails.create({ user_id: user._id });
     await UserRoles.create({ user_id: user._id });
-    let refreshTokenArr = [...user.refreshToken, refreshToken];
+    let refreshTokenArr = [
+      ...user.refreshToken,
+      {
+        refreshToken,
+        expiry: new Date(
+          `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`
+        ),
+      },
+    ];
     await User.findOneAndUpdate(
       { _id: user._id },
       { refreshToken: refreshTokenArr }
@@ -48,11 +69,14 @@ const signup = async (req, res) => {
 
 const tokenRefresh = async (req, res) => {
   const { refreshToken } = req.body;
-
+  date = new Date();
   try {
     const { _id } = jwt.verify(refreshToken, process.env.REFRESHTOKEN_SECRET);
     const user = await User.findOne({ _id });
-    if (!user.refreshToken.includes(refreshToken))
+    const refreshTokenArr = user.refreshToken.map((ele) => {
+      if (ele.expiry.getTime() > date.getTime()) return ele.refreshToken;
+    });
+    if (!refreshTokenArr.includes(refreshToken))
       return res
         .status(401)
         .json({ error: "Invalid Request! User not logged in." });
