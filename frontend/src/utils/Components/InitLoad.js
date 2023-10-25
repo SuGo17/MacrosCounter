@@ -4,7 +4,6 @@ import {
   selectLoading,
   selectToken,
   selectUserDetails,
-  selectUserRole,
   userActions,
 } from "../../reducers/userReducer";
 import Loader from "../../components/Loader/Loader";
@@ -14,7 +13,6 @@ import { useEffect } from "react";
 function InitLoad({ children, admin }) {
   let userToken = useSelector(selectToken);
   let userDetails = useSelector(selectUserDetails);
-  const role = useSelector(selectUserRole);
   const isLoading = useSelector(selectLoading);
   let dispatch = useDispatch();
   useEffect(() => {
@@ -26,7 +24,7 @@ function InitLoad({ children, admin }) {
     }
   }, [dispatch, userDetails, userToken]);
   if (isLoading) return <Loader />;
-  if (admin && role !== "ADMIN") {
+  if (admin && userDetails && userDetails.role !== "ADMIN") {
     return <Navigate to="/" />;
   }
   if (userDetails) return children;

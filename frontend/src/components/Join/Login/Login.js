@@ -4,10 +4,11 @@ import PasswordComponent from "../../FormComponents/PasswordComponent/PasswordCo
 import InputComponent from "../../FormComponents/InputComponent/InputComponent";
 import { loginUser, selectToken } from "../../../reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 function Login() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const [value, setValue] = useState({
     "login-email1": "",
     "login-password1": "",
@@ -18,8 +19,8 @@ function Login() {
   });
 
   const userToken = useSelector(selectToken);
-  if (userToken) return <Navigate to="/" />;
-
+  console.log(location.state);
+  if (userToken) return <Navigate to={location.state?.from || "/"} />;
   const validate = () => {
     if (!value["login-email1"] || !value["login-password1"]) return true;
     if (joinErr["login-email1"] || joinErr["login-password1"]) return true;
