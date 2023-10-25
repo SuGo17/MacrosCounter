@@ -19,7 +19,6 @@ function Login() {
   });
 
   const userToken = useSelector(selectToken);
-  console.log(location.state);
   if (userToken) return <Navigate to={location.state?.from || "/"} />;
   const validate = () => {
     if (!value["login-email1"] || !value["login-password1"]) return true;
@@ -38,6 +37,7 @@ function Login() {
       "login-email1": "",
       "login-password1": "",
     });
+    return <Navigate to="/" />;
   };
 
   return (

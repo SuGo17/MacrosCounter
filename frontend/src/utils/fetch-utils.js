@@ -23,10 +23,11 @@ const fetchApi = async ({ urlExt, method, formData, token }) => {
       headers.append("Authorization", `Bearer ${store.getState().user.token}`);
       data = await fetch(BASE_URL + urlExt, options);
     }
-    if (!data.ok && res.error === "Invalid Request! User not logged in.")
-      throw new Error(res.error);
+    if (!data.ok && res.error === "Invalid Request! User not logged in.") {
+      store.dispatch(logoutUser());
+    }
   } catch (error) {
-    store.dispatch(logoutUser());
+    console.log(error.error);
   }
   return res;
 };
