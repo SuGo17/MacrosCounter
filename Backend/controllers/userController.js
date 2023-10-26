@@ -73,10 +73,11 @@ const tokenRefresh = async (req, res) => {
   try {
     const { _id } = jwt.verify(refreshToken, process.env.REFRESHTOKEN_SECRET);
     const user = await User.findOne({ _id });
-    const refreshTokenArr = user.refreshToken.filter((ele) => {
+    let refreshTokenArr = user.refreshToken.filter((ele) => {
       const eleDate = new Date(ele.expiry);
       return eleDate.getTime() > date.getTime();
     });
+    refreshTokenArr = refreshTokenArr.map((ele) => ele.refreshToken);
     if (!refreshTokenArr.includes(refreshToken))
       return res
         .status(401)
