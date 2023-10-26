@@ -4,6 +4,7 @@ import TableGrid from "../../TableGrid/TableGrid";
 import fetchApi from "../../../utils/fetch-utils";
 import Cookies from "js-cookie";
 import Loader from "../../Loader/Loader";
+import EditModal from "./EditModal";
 
 function Users() {
   const [rowData, setRowData] = useState([]);
@@ -12,7 +13,7 @@ function Users() {
     { field: "name", headerName: "Name" },
     { field: "email", headerName: "Email" },
     { field: "role", headerName: "Role" },
-    { field: "", headerName: "", cellRenderer: (data) => `${data.name}` },
+    { field: "", headerName: "", cellRenderer: EditModal },
   ];
   const cleanData = (data) => {
     const allUsers = [...data.admins, ...data.users];
