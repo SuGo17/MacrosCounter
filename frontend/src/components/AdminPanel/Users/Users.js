@@ -4,23 +4,31 @@ import TableGrid from "../../TableGrid/TableGrid";
 import fetchApi from "../../../utils/fetch-utils";
 import Cookies from "js-cookie";
 import Loader from "../../Loader/Loader";
+import EditModal from "./EditModal";
 
 function Users() {
   const [rowData, setRowData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userUpdate, setUserUpdate] = useState(false);
   const columnDefs = [
     { field: "name", headerName: "Name" },
     { field: "email", headerName: "Email" },
     { field: "role", headerName: "Role" },
-    { field: "", headerName: "", cellRenderer: (data) => `${data.name}` },
+    {
+      field: "",
+      headerName: "",
+      cellRenderer: EditModal,
+      cellRendererParams: { setUserUpdate: setUserUpdate },
+    },
   ];
   const cleanData = (data) => {
-    const allUsers = [...data.admins, ...data.users];
-    return allUsers.map((ele) => {
+    let allUsers = [...data.admins, ...data.users];
+    allUsers = allUsers.map((ele) => {
       delete ele._id;
       delete ele.__v;
       return { role: ele.role, ...ele.user_id };
     });
+    return allUsers.sort((a, b) => a.name.localeCompare(b.name));
   };
 
   const initData = useCallback(async () => {
@@ -42,7 +50,7 @@ function Users() {
 
   useEffect(() => {
     initData();
-  }, [initData]);
+  }, [initData, userUpdate]);
   return (
     <section className={styles.section}>
       <p className={styles["title"]}>Users</p>
