@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { selectToken, selectUserDetails } from "../../../reducers/userReducer";
 import fetchApi from "../../../utils/fetch-utils";
+import Loader from "../../Loader/Loader";
 
 function EditModal({ data, setUserUpdate }) {
   const { email } = useSelector(selectUserDetails);
@@ -34,6 +35,7 @@ function EditModal({ data, setUserUpdate }) {
     "userEdit-email1": false,
   });
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [popupMsg] = useState(
     email === data.email
       ? "You cannot edit your own access!."
@@ -45,6 +47,7 @@ function EditModal({ data, setUserUpdate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = { usersArr: [{ id: data._id, admin: role === "ADMIN" }] };
     try {
       const res = await fetchApi({
@@ -54,6 +57,7 @@ function EditModal({ data, setUserUpdate }) {
         token,
       });
       if (!res.ok) toast.error(res.error, toastOptions);
+      setLoading(false);
       toast.success("User access updated successfully", toastOptions);
       setOpenModal(false);
       setUserUpdate((prev) => !prev);
@@ -100,6 +104,7 @@ function EditModal({ data, setUserUpdate }) {
         <button className={styles.btn} disabled={data.email === email || data.role === role}>SAVE</button>
         </form>
       </Modal>
+      {loading && <Loader />}
     </div>
   );
 }

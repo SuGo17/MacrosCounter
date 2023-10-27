@@ -6,3 +6,12 @@
 .Toastify__toast div {
   font-size: 1.4rem;
 }
+
+@media only screen and (max-width: 480px) {
+  .Toastify__toast-container {
+    width: max-content;
+    left: auto;
+    right: 5px;
+    top: 3px;
+  }
+}

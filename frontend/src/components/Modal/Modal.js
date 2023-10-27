@@ -13,6 +13,7 @@ function Modal({ children, title, openModal = false, setOpenModal }) {
             onClick={() => setOpenModal(false)}
           ></div>
           <div className={styles.modal}>
+            <div className={styles["mobile-icon"]}></div>
             <div className={styles["modal-header"]}>
               <p>{title}</p>
               <IconContext.Provider
