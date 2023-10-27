@@ -7,6 +7,7 @@ import { userActions } from "../../reducers/userReducer";
 // import InitLoad from "../../utils/Components/InitLoad";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./toast.css";
 
 function Main() {
   const dispatch = useDispatch();

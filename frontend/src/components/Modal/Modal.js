@@ -7,7 +7,11 @@ function Modal({ children, title, openModal = false, setOpenModal }) {
   return (
     <>
       {openModal && (
-        <div className={styles.backdrop} onClick={() => setOpenModal(false)}>
+        <>
+          <div
+            className={styles.backdrop}
+            onClick={() => setOpenModal(false)}
+          ></div>
           <div className={styles.modal}>
             <div className={styles["modal-header"]}>
               <p>{title}</p>
@@ -21,7 +25,7 @@ function Modal({ children, title, openModal = false, setOpenModal }) {
             </div>
             <div className={styles.modalContent}>{children}</div>
           </div>
-        </div>
+        </>
       )}
     </>
   );

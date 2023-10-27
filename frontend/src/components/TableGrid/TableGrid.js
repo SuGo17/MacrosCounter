@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./tablegrid.module.scss";
 
 function TableGrid({ rowData, columnDefs }) {
-  const params = columnDefs.cellRendererParams || [];
   return (
     <div className={styles["container"]}>
       <table>
@@ -19,7 +18,10 @@ function TableGrid({ rowData, columnDefs }) {
               {columnDefs.map((column, index) => (
                 <td key={`cell-${index}`}>
                   {column.cellRenderer
-                    ? column.cellRenderer(data, ...params)
+                    ? column.cellRenderer({
+                        data,
+                        ...column.cellRendererParams,
+                      })
                     : data[column.field]}
                 </td>
               ))}

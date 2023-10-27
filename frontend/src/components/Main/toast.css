@@ -1,0 +1,8 @@
+.Toastify__toast-container {
+  background: transparent;
+  width: 400px;
+}
+
+.Toastify__toast div {
+  font-size: 1.4rem;
+}

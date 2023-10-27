@@ -1,0 +1,57 @@
+@import "../../../common/styles.scss";
+
+.container {
+  form {
+    div {
+      margin-bottom: 0;
+    }
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+
+      label {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-right: 2rem;
+      }
+
+      input {
+        position: relative;
+        height: 25px;
+        width: 50px;
+        cursor: pointer;
+        transition: all 0.5s;
+      }
+      input::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: -2px;
+        width: 50px;
+        height: 25px;
+        background: #fff;
+        border: 2px solid $text-color;
+        border-radius: 20px;
+      }
+      input::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        transform: translateY(-50%);
+        background-color: $text-color;
+        transition: all 0.5s;
+      }
+      input:not(:checked)::after {
+        left: 5px;
+      }
+      input:checked::after {
+        left: 28px;
+        background-color: $primary-hover-color;
+      }
+    }
+  }
+}
