@@ -4,6 +4,10 @@
   form {
     div {
       margin-bottom: 0;
+
+      @include mobile {
+        margin-bottom: 2rem;
+      }
     }
     .checkbox-container {
       display: flex;
