@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./tablegrid.module.scss";
 
-function TableGrid({ rowData, columnDefs }) {
+function TableGrid({ rowData, columnDefs, classes }) {
   return (
-    <div className={styles["container"]}>
+    <div className={`${styles["container"]} ${classes}`}>
       <table>
         <thead>
           <tr>
@@ -22,7 +22,9 @@ function TableGrid({ rowData, columnDefs }) {
                         data,
                         ...column.cellRendererParams,
                       })
-                    : data[column.field]}
+                    : data[column.field] +
+                      " " +
+                      (column.unit ? column.unit : "")}
                 </td>
               ))}
             </tr>

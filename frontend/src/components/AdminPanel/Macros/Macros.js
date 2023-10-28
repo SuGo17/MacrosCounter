@@ -4,18 +4,24 @@ import fetchApi from "../../../utils/fetch-utils";
 import Cookies from "js-cookie";
 import Loader from "../../Loader/Loader";
 import TableGrid from "../../TableGrid/TableGrid";
+import { MdAddBox } from "react-icons/md";
+import { IconContext } from "react-icons";
+import EditMacro from "./EditMacro";
+import AddMacro from "./AddMacro";
 
 function Macros() {
   const [rowData, setRowData] = useState([]);
+  const [openAddModal, setOpenAddModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const columnDefs = [
     { field: "name", headerName: "Name" },
-    { field: "qty", headerName: "Quantity" },
-    { field: "protein", headerName: "Protein" },
-    { field: "carbohydrates", headerName: "carbs" },
-    { field: "fat", headerName: "fat" },
-    { field: "fiber", headerName: "fiber" },
-    { field: "calories", headerName: "Calories" },
+    { field: "qty", headerName: "Quantity", unit: "g" },
+    { field: "protein", headerName: "Protein", unit: "g" },
+    { field: "carbohydrates", headerName: "carbs", unit: "g" },
+    { field: "fat", headerName: "fat", unit: "g" },
+    { field: "fiber", headerName: "fiber", unit: "g" },
+    { field: "calories", headerName: "Calories", unit: "kcal" },
+    { field: "", headerName: "", cellRenderer: EditMacro },
   ];
 
   const macrosCalories = useMemo(() => {
@@ -28,7 +34,7 @@ function Macros() {
       Object.keys(macrosCalories).forEach((ele) => {
         kcal += macrosCalories[ele] * macro[ele];
       });
-      return kcal;
+      return Math.round(kcal);
     },
     [macrosCalories]
   );
@@ -36,6 +42,7 @@ function Macros() {
   const processData = useCallback(
     (dataArr) => {
       const processedDataArr = dataArr.map((ele) => {
+        ele.name = ele.name[0].toUpperCase() + ele.name.slice(1).toLowerCase();
         ele.calories = calcKcal(ele);
         return ele;
       });
@@ -65,9 +72,27 @@ function Macros() {
   }, [initData]);
   return (
     <section className={styles.section}>
-      <p className={styles["title"]}>Macros</p>
-      <TableGrid rowData={rowData} columnDefs={columnDefs} />
+      <div className={styles.header}>
+        <p className={styles["title"]}>Macros</p>
+        <button className={styles.btn} onClick={() => setOpenAddModal(true)}>
+          <IconContext.Provider
+            value={{
+              style: { height: "2rem", width: "2rem", color: "#fff" },
+            }}
+          >
+            <MdAddBox />
+          </IconContext.Provider>
+          <p>Add Macro</p>
+        </button>
+      </div>
+      <div className={styles.header}></div>
+      <TableGrid
+        rowData={rowData}
+        columnDefs={columnDefs}
+        classes={styles["container-overflow"]}
+      />
       {loading && <Loader />}
+      <AddMacro openModal={openAddModal} setOpenModal={setOpenAddModal} />
     </section>
   );
 }

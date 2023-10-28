@@ -1,0 +1,12 @@
+@import "../../../common/styles.scss";
+
+.overflow-scroll {
+  overflow-y: scroll;
+}
+.overflow-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-scroll::-webkit-scrollbar-thumb {
+  background: $text-color;
+}

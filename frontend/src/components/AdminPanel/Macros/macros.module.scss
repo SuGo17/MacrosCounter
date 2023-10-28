@@ -1,31 +1,40 @@
 @import "../../../common/styles.scss";
 
-.title {
-  font-size: 3rem;
-  font-weight: 600;
-  color: $text-color;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 2rem;
+
+  .title {
+    font-size: 3rem;
+    font-weight: 600;
+    color: $text-color;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-right: 1rem;
+    padding: 1rem 1.5rem !important;
+
+    p {
+      font-size: 1.8rem;
+    }
+  }
 }
 
 section {
-  table {
-    min-width: 100%;
+  .container-overflow {
+    justify-content: flex-start;
+    overflow-x: scroll;
 
-    tr:not(:first-child),
-    td:not(:first-child) {
-      text-align: center !important;
-
-      @include mobile {
-        padding: 1rem 2rem !important;
-      }
-    }
-
-    th:not(:first-child) {
-      @include mobile {
-        padding: 2rem !important;
-      }
+    ::-webkit-scrollbar {
+      width: 1rem;
     }
   }
 }
