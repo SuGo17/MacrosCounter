@@ -1,0 +1,31 @@
+@import "../../../common/styles.scss";
+
+.title {
+  font-size: 3rem;
+  font-weight: 600;
+  color: $text-color;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+section {
+  table {
+    min-width: 100%;
+
+    tr:not(:first-child),
+    td:not(:first-child) {
+      text-align: center !important;
+
+      @include mobile {
+        padding: 1rem 2rem !important;
+      }
+    }
+
+    th:not(:first-child) {
+      @include mobile {
+        padding: 2rem !important;
+      }
+    }
+  }
+}
