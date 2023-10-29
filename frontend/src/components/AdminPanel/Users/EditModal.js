@@ -57,6 +57,7 @@ function EditModal({ data, setUserUpdate }) {
         token,
       });
       if (!res.ok) toast.error(res.error, toastOptions);
+      setLoading(false);
       toast.success("User access updated successfully", toastOptions);
       setOpenModal(false);
       setUserUpdate((prev) => !prev);
