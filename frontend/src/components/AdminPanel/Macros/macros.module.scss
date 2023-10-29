@@ -24,6 +24,12 @@
 
     p {
       font-size: 1.8rem;
+      span {
+        font-size: 1.8rem;
+        @include mobile {
+          display: none;
+        }
+      }
     }
   }
 }
@@ -32,9 +38,5 @@ section {
   .container-overflow {
     justify-content: flex-start;
     overflow-x: scroll;
-
-    ::-webkit-scrollbar {
-      width: 1rem;
-    }
   }
 }

@@ -43,7 +43,12 @@ function Macros() {
   const processData = useCallback(
     (dataArr) => {
       const processedDataArr = dataArr.map((ele) => {
-        ele.name = ele.name[0].toUpperCase() + ele.name.slice(1).toLowerCase();
+        ele.name = ele.name
+          .split(" ")
+          .map((word) => {
+            return word[0].toUpperCase() + word.slice(1).toLowerCase();
+          })
+          .join(" ");
         ele.calories = calcKcal(ele);
         return ele;
       });
@@ -84,7 +89,9 @@ function Macros() {
           >
             <MdAddBox />
           </IconContext.Provider>
-          <p>Add Macro</p>
+          <p>
+            Add <span>Macro</span>
+          </p>
         </button>
       </div>
       <div className={styles.header}></div>
@@ -98,6 +105,7 @@ function Macros() {
         openModal={openAddModal}
         setOpenModal={setOpenAddModal}
         setMacroUpdate={setMacroUpdate}
+        setLoading={setLoading}
       />
     </section>
   );

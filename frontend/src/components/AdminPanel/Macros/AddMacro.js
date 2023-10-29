@@ -2,8 +2,24 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./addmacro.module.scss";
 import Modal from "../../Modal/Modal";
 import InputComponent from "../../FormComponents/InputComponent/InputComponent";
+import fetchApi from "../../../utils/fetch-utils";
+import { useSelector } from "react-redux";
+import { selectToken } from "../../../reducers/userReducer";
+import { toast } from "react-toastify";
 
-function AddMacro({ openModal, setOpenModal, setMacroUpdate }) {
+function AddMacro({ openModal, setOpenModal, setMacroUpdate, setLoading }) {
+  const toastOptions = useMemo(() => {
+    return {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    };
+  }, []);
   const formComponents = useMemo(
     // prettier-ignore
     () => [
@@ -22,7 +38,7 @@ function AddMacro({ openModal, setOpenModal, setMacroUpdate }) {
   formComponents.forEach((ele) => (initValue[ele.id] = ""));
   const [value, setValue] = useState(initValue);
   const [err, setErr] = useState(initValue);
-
+  const token = useSelector(selectToken);
   const disabledBtn = useCallback(() => {
     const emptyVal = Object.keys(value).reduce((a, b) => {
       return a || value[b] === "";
@@ -36,9 +52,32 @@ function AddMacro({ openModal, setOpenModal, setMacroUpdate }) {
     );
   }, [err, value]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(value);
+    setLoading(true);
+    const formData = {
+      name: value["addMacro-name1"],
+      protein: value["addMacro-protein1"],
+      carbohydrates: value["addMacro-carbs1"],
+      fat: value["addMacro-fat1"],
+      fiber: value["addMacro-fiber1"],
+      qty: value["addMacro-qty1"],
+    };
+    try {
+      const res = await fetchApi({
+        urlExt: "macros",
+        method: "POST",
+        formData,
+        token,
+      });
+      if (!res.ok) toast.error(res.error, toastOptions);
+      setOpenModal(false);
+      setMacroUpdate((prev) => !prev);
+    } catch (error) {
+      toast.error("Something went wrong!.", toastOptions);
+      console.log(error.message);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
