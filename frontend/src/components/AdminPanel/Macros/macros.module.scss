@@ -1,0 +1,42 @@
+@import "../../../common/styles.scss";
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+
+  .title {
+    font-size: 3rem;
+    font-weight: 600;
+    color: $text-color;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-right: 1rem;
+    padding: 1rem 1.5rem !important;
+
+    p {
+      font-size: 1.8rem;
+      span {
+        font-size: 1.8rem;
+        @include mobile {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+section {
+  .container-overflow {
+    justify-content: flex-start;
+    overflow-x: scroll;
+  }
+}
