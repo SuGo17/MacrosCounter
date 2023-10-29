@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./inputComponent.module.scss";
 
 function InputComponent({ data, value, setValue, setJoinErr = () => {} }) {
-  const { type, label, id, disabled } = data;
+  const { type, label, id, disabled, valueType } = data;
   const [inpValue, setInpValue] = useState(value[id]);
   const [err, setErr] = useState(null);
 
@@ -16,7 +16,7 @@ function InputComponent({ data, value, setValue, setJoinErr = () => {} }) {
         : setErr(null);
       return;
     }
-    !inpValue ? setErr(`${label} field should not be empty.`) : setErr(null);
+    !inpValue && setErr(`${label} field should not be empty.`);
   };
 
   useEffect(() => {
@@ -37,7 +37,9 @@ function InputComponent({ data, value, setValue, setJoinErr = () => {} }) {
 
   const handleInputChange = (e) => {
     setInpValue(e.target.value);
-    setErr(null);
+    valueType?.toLowerCase() === "number" && isNaN(e.target.value)
+      ? setErr(`${label} field should be a valid number.`)
+      : setErr(null);
   };
   return (
     <div className={styles["input-container"]}>

@@ -2,6 +2,8 @@
 
 .overflow-scroll {
   overflow-y: scroll;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 .overflow-scroll::-webkit-scrollbar {
   width: 8px;

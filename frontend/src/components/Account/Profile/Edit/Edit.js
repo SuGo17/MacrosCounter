@@ -43,13 +43,15 @@ function Edit({ setEdit }) {
       console.log(error.message);
     }
   };
+
+  //prettier-ignore
   const inpProperty = [
     { type: "text", label: "NAME", id: "profile-name", disabled: true },
     { type: "text", label: "EMAIL", id: "profile-email", disabled: true },
-    { type: "text", label: "AGE", id: "profile-age" },
-    { type: "text", label: "HEIGHT", id: "profile-height" },
-    { type: "text", label: "WEIGHT", id: "profile-weight" },
-    { type: "text", label: "CALORIES", id: "profile-calories" },
+    { type: "text", label: "AGE", id: "profile-age",valueType:"number" },
+    { type: "text", label: "HEIGHT", id: "profile-height",valueType:"number" },
+    { type: "text", label: "WEIGHT", id: "profile-weight",valueType:"number" },
+    { type: "text", label: "CALORIES", id: "profile-calories",valueType:"number" },
   ];
   return (
     <div className={styles["edit"]}>

@@ -13,6 +13,7 @@ function Macros() {
   const [rowData, setRowData] = useState([]);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [macroUpdate, setMacroUpdate] = useState(false);
   const columnDefs = [
     { field: "name", headerName: "Name" },
     { field: "qty", headerName: "Quantity", unit: "g" },
@@ -69,7 +70,8 @@ function Macros() {
 
   useEffect(() => {
     initData();
-  }, [initData]);
+  }, [initData, macroUpdate]);
+
   return (
     <section className={styles.section}>
       <div className={styles.header}>
@@ -92,7 +94,11 @@ function Macros() {
         classes={styles["container-overflow"]}
       />
       {loading && <Loader />}
-      <AddMacro openModal={openAddModal} setOpenModal={setOpenAddModal} />
+      <AddMacro
+        openModal={openAddModal}
+        setOpenModal={setOpenAddModal}
+        setMacroUpdate={setMacroUpdate}
+      />
     </section>
   );
 }
