@@ -22,7 +22,15 @@ function Macros() {
     { field: "fat", headerName: "fat", unit: "g" },
     { field: "fiber", headerName: "fiber", unit: "g" },
     { field: "calories", headerName: "Calories", unit: "kcal" },
-    { field: "", headerName: "", cellRenderer: EditMacro },
+    {
+      field: "",
+      headerName: "",
+      cellRenderer: EditMacro,
+      cellRendererParams: {
+        setLoading: setLoading,
+        setMacroUpdate: setMacroUpdate,
+      },
+    },
   ];
 
   const macrosCalories = useMemo(() => {

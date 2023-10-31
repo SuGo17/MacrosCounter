@@ -34,9 +34,15 @@
   }
 }
 
-section {
-  .container-overflow {
-    justify-content: flex-start;
-    overflow-x: scroll;
-  }
+.container-overflow {
+  justify-content: flex-start;
+  overflow-x: scroll;
+}
+.container-overflow::-webkit-scrollbar {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.container-overflow::-webkit-scrollbar-thumb {
+  background: $text-color;
 }

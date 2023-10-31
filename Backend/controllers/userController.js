@@ -16,8 +16,13 @@ const login = async (req, res) => {
     const user = await User.login(email, password);
     const { token, refreshToken } = createToken(user._id);
     date = new Date();
-    let refreshTokenArr = [
-      ...user.refreshToken,
+    date.setDate(date.getDate() + 1);
+    let refreshTokenArr = user.refreshToken.filter((ele) => {
+      const eleDate = new Date(ele.expiry);
+      return eleDate.getTime() > date.getTime();
+    });
+    refreshTokenArr = [
+      ...refreshTokenArr,
       {
         refreshToken,
         expiry: new Date(
@@ -25,10 +30,6 @@ const login = async (req, res) => {
         ),
       },
     ];
-    refreshTokenArr = refreshTokenArr.filter((ele) => {
-      const eleDate = new Date(ele.expiry);
-      return eleDate.getTime() > date.getTime();
-    });
     await User.findOneAndUpdate(
       { _id: user._id },
       { refreshToken: refreshTokenArr }
@@ -41,6 +42,8 @@ const login = async (req, res) => {
 
 const signup = async (req, res) => {
   const { email, password, name } = req.body;
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
   try {
     const user = await User.signup(email, password, name);
     const { token, refreshToken } = createToken(user._id);
