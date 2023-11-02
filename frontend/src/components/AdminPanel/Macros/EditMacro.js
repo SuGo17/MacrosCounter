@@ -1,13 +1,7 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { IconContext } from "react-icons";
-import { IoEllipsisVerticalSharp } from "react-icons/io5";
-import { Tooltip } from "react-tooltip";
+import { BiSolidEdit } from "react-icons/bi";
+import { MdDelete } from "react-icons/md";
 import styles from "./editmacro.module.scss";
 import "react-tooltip/dist/react-tooltip.css";
 import InputComponent from "../../FormComponents/InputComponent/InputComponent";
@@ -16,7 +10,8 @@ import fetchApi from "../../../utils/fetch-utils";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { selectToken } from "../../../reducers/userReducer";
-function EditMacro({ data, setMacroUpdate, setLoading }) {
+function EditMacro({ data, params }) {
+  const { setMacroUpdate, setLoading, macroUpdate } = params;
   const toastOptions = useMemo(() => {
     return {
       position: "top-right",
@@ -44,17 +39,11 @@ function EditMacro({ data, setMacroUpdate, setLoading }) {
   const initValue = useMemo(() => {
     return {};
   }, []);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [isEdit, setIsEdit] = useState(true);
   const [value, setValue] = useState(initValue);
   const [err, setErr] = useState(initValue);
-  const tooltipRef = useRef(null);
   const token = useSelector(selectToken);
-
-  const handleClickOutside = (event) => {
-    if (tooltipRef.current && !tooltipRef.current.contains(event.target))
-      setMenuOpen(false);
-  };
 
   const disabledBtn = useCallback(() => {
     const emptyVal = Object.keys(value).reduce((a, b) => {
@@ -74,7 +63,7 @@ function EditMacro({ data, setMacroUpdate, setLoading }) {
     );
   }, [err, value, formComponents]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, method) => {
     e.preventDefault();
     setLoading(true);
     const formData = {
@@ -85,13 +74,14 @@ function EditMacro({ data, setMacroUpdate, setLoading }) {
       fiber: value["addMacro-fiber1"],
       qty: value["addMacro-qty1"],
     };
+    const options = {
+      urlExt: "macros/" + data._id,
+      method,
+      token,
+    };
+    method === "PATCH" && (options.formData = formData);
     try {
-      const res = await fetchApi({
-        urlExt: "macros/" + data._id,
-        method: "PATCH",
-        formData,
-        token,
-      });
+      const res = await fetchApi(options);
       if (!res.ok) toast.error(res.error, toastOptions);
       setOpenModal(false);
       setMacroUpdate((prev) => !prev);
@@ -102,30 +92,35 @@ function EditMacro({ data, setMacroUpdate, setLoading }) {
     setLoading(false);
   };
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [formComponents, initValue]);
+  const handleSubmitEdit = (e) => {
+    handleSubmit(e, "PATCH");
+  };
+  const handleSubmitDelete = (e) => {
+    handleSubmit(e, "DELETE");
+  };
+
+  const handleDeleteClick = () => {
+    setOpenModal(true);
+    setIsEdit(false);
+  };
+  const handleEditClick = () => {
+    setOpenModal(true);
+    setIsEdit(true);
+  };
 
   useEffect(() => {
     formComponents.forEach((ele) => (initValue[ele.id] = ele.value));
     !openModal && setValue(initValue);
-  }, [openModal, formComponents, initValue]);
+  }, [openModal, formComponents, initValue, macroUpdate]);
 
   return (
     <>
       {/* prettier-ignore */}
-      <div ref={tooltipRef}>
-        <IconContext.Provider value={{style: {height: "1.8rem", width: "1.8rem", cursor: "pointer"}}}>
-          <IoEllipsisVerticalSharp data-tooltip-place='bottom' id={`clickable-${data.id}`} onClick={()=>setMenuOpen(true)} />
+      <div>
+        <IconContext.Provider value={{style: {height: "2.4rem", width: "2.4rem", cursor: "pointer",marginRight:"0.5rem"}}}>
+          <BiSolidEdit onClick={handleEditClick}/>
+          <MdDelete onClick={handleDeleteClick}/>
         </IconContext.Provider>
-      {/* prettier-ignore */}
-      <Tooltip clickable offset='10' anchorSelect={`#clickable-${data.id}`} noArrow openOnClick={true} isOpen={menuOpen} className={styles["tooltip-options"]}>
-        <p onClick={()=>setOpenModal(true)}>Edit</p>
-        <p>Delete</p>
-      </Tooltip>
       </div>
       {openModal && (
         <Modal
@@ -134,22 +129,36 @@ function EditMacro({ data, setMacroUpdate, setLoading }) {
           setOpenModal={setOpenModal}
           classes={styles["overflow-scroll"]}
         >
-          <form onSubmit={handleSubmit}>
-            {formComponents.map((ele, ind) => {
-              return (
-                <InputComponent
-                  key={ind}
-                  data={ele}
-                  value={value}
-                  setValue={setValue}
-                  setJoinErr={setErr}
-                />
-              );
-            })}
-            <button className={styles.btn} disabled={disabledBtn()}>
-              SAVE
-            </button>
-          </form>
+          {isEdit && (
+            <form onSubmit={handleSubmitEdit}>
+              {formComponents.map((ele, ind) => {
+                return (
+                  <InputComponent
+                    key={ind}
+                    data={ele}
+                    value={value}
+                    setValue={setValue}
+                    setJoinErr={setErr}
+                  />
+                );
+              })}
+              <button className={styles.btn} disabled={disabledBtn()}>
+                SAVE
+              </button>
+            </form>
+          )}
+          {!isEdit && (
+            <form onSubmit={handleSubmitDelete} className={styles.deleteForm}>
+              <label>
+                {" "}
+                Are you sure you want to delete <strong>
+                  "{data.name}"
+                </strong>{" "}
+                entry.
+              </label>
+              <button className={styles.btn}>Confirm</button>
+            </form>
+          )}
         </Modal>
       )}
     </>

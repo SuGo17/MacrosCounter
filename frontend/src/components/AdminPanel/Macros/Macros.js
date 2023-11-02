@@ -29,6 +29,16 @@ function Macros() {
       cellRendererParams: {
         setLoading: setLoading,
         setMacroUpdate: setMacroUpdate,
+        macroUpdate: macroUpdate,
+      },
+    },
+    {
+      field: "",
+      headerName: "",
+      cellRenderer: EditMacro,
+      cellRendererParams: {
+        setLoading: setLoading,
+        setMacroUpdate: setMacroUpdate,
       },
     },
   ];

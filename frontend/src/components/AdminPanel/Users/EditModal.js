@@ -10,21 +10,9 @@ import { selectToken, selectUserDetails } from "../../../reducers/userReducer";
 import fetchApi from "../../../utils/fetch-utils";
 import Loader from "../../Loader/Loader";
 
-function EditModal({ data, setUserUpdate }) {
+function EditModal({ data, params }) {
+  const { setUserUpdate } = params;
   const { email } = useSelector(selectUserDetails);
-  const token = useSelector(selectToken);
-  const toastOptions = useMemo(() => {
-    return {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    };
-  }, []);
   const [value, setValue] = useState({
     "userEdit-name1": data.name,
     "userEdit-email1": data.email,
@@ -41,6 +29,20 @@ function EditModal({ data, setUserUpdate }) {
       ? "You cannot edit your own access!."
       : "You are able to edit only User Role."
   );
+  const token = useSelector(selectToken);
+  const toastOptions = useMemo(() => {
+    return {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    };
+  }, []);
+
   const handleRoleToggle = (e) => {
     e.target.checked ? setRole("ADMIN") : setRole("USER");
   };

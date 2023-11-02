@@ -17,14 +17,14 @@ function TableGrid({ rowData, columnDefs, classes }) {
             <tr key={`row-${ind}`} data-id={data._id}>
               {columnDefs.map((column, index) => (
                 <td key={`cell-${index}`}>
-                  {column.cellRenderer
-                    ? column.cellRenderer({
-                        data,
-                        ...column.cellRendererParams,
-                      })
-                    : data[column.field] +
-                      " " +
-                      (column.unit ? column.unit : "")}
+                  {column.cellRenderer ? (
+                    <column.cellRenderer
+                      data={data}
+                      params={column.cellRendererParams}
+                    />
+                  ) : (
+                    data[column.field] + " " + (column.unit ? column.unit : "")
+                  )}
                 </td>
               ))}
             </tr>
