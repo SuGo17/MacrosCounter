@@ -1,26 +1,6 @@
 @import "../../../common/styles.scss";
 
-.tooltip-options {
-  z-index: 2;
-  background-color: #fff !important;
-  color: $text-color !important;
-  opacity: 1 !important;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 !important;
-  border: 1px solid #c4c4c4;
-  border-bottom: none;
-  p {
-    font-size: 1.8rem;
-    border-bottom: 1px solid #c4c4c4;
-    width: 100%;
-    padding: 1rem 1.5rem;
-    cursor: pointer;
-  }
-}
-
-.overflow-scroll {
+.overflow-scroll:not(:has(.deleteForm)) {
   overflow-y: scroll;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -31,4 +11,23 @@
 
 .overflow-scroll::-webkit-scrollbar-thumb {
   background: $text-color;
+}
+
+.deleteForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  text-align: left;
+
+  label {
+    font-size: 1.8rem;
+    text-wrap: wrap;
+    strong {
+      font-size: 1.8rem;
+    }
+  }
+
+  button {
+    max-width: fit-content;
+  }
 }

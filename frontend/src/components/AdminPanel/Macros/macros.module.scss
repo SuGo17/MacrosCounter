@@ -37,6 +37,14 @@
 .container-overflow {
   justify-content: flex-start;
   overflow-x: scroll;
+  padding-bottom: 3rem;
+
+  table {
+    th:not(:first-child),
+    td:not(:first-child) {
+      text-align: center;
+    }
+  }
 }
 .container-overflow::-webkit-scrollbar {
   width: 0.8rem;
@@ -44,5 +52,5 @@
 }
 
 .container-overflow::-webkit-scrollbar-thumb {
-  background: $text-color;
+  background: #c4c4c4;
 }

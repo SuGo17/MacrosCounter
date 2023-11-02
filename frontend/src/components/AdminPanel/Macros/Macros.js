@@ -29,6 +29,7 @@ function Macros() {
       cellRendererParams: {
         setLoading: setLoading,
         setMacroUpdate: setMacroUpdate,
+        macroUpdate: macroUpdate,
       },
     },
   ];
