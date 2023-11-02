@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { selectToken } from "../../../reducers/userReducer";
 function EditMacro({ data, params }) {
-  const { setMacroUpdate, setLoading, macroUpdate } = params;
+  const { setMacroUpdate, setLoading } = params;
   const toastOptions = useMemo(() => {
     return {
       position: "top-right",
@@ -111,7 +111,7 @@ function EditMacro({ data, params }) {
   useEffect(() => {
     formComponents.forEach((ele) => (initValue[ele.id] = ele.value));
     !openModal && setValue(initValue);
-  }, [openModal, formComponents, initValue, macroUpdate]);
+  }, [openModal, formComponents, initValue]);
 
   return (
     <>
