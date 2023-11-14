@@ -1,7 +1,15 @@
 import store from "../store/store";
 import { refreshIdToken, logoutUser } from "../reducers/userReducer";
+import { jwtDecode } from "jwt-decode";
 
 const fetchApi = async ({ urlExt, method, formData, token }) => {
+  if (token) {
+    const tokenDetails = jwtDecode(token);
+    if (tokenDetails.exp * 1000 < new Date().getTime()) {
+      store.dispatch(refreshIdToken());
+      token = store.getState().user.token;
+    }
+  }
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -18,11 +26,6 @@ const fetchApi = async ({ urlExt, method, formData, token }) => {
     res = await data.json();
     res.ok = data.ok;
     res.status = data.status;
-    if (!data.ok && res.error === "jwt expired") {
-      store.dispatch(refreshIdToken());
-      headers.append("Authorization", `Bearer ${store.getState().user.token}`);
-      data = await fetch(BASE_URL + urlExt, options);
-    }
     if (!data.ok && res.error === "Invalid Request! User not logged in.") {
       store.dispatch(logoutUser());
     }
