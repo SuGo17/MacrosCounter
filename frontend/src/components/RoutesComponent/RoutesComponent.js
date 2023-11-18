@@ -10,6 +10,7 @@ import ProfileComponent from "../Account/Profile/ProfileComponent";
 import AdminPanel from "../AdminPanel/AdminPanel";
 import Users from "../AdminPanel/Users/Users";
 import Macros from "../AdminPanel/Macros/Macros";
+import HomePage from "../HomePage/HomePage";
 
 function RoutesComponent() {
   return (
@@ -17,7 +18,7 @@ function RoutesComponent() {
       <NavBar />
       <Routes>
         {/* prettier-ignore */}
-        <Route exact path="/" element={<ProtectRoute><></></ProtectRoute>}/>
+        <Route exact path="/" element={<ProtectRoute><HomePage/></ProtectRoute>}/>
         {/* prettier-ignore */}
         <Route path="/account" element={<ProtectRoute><AccountComponent /></ProtectRoute>}>
           <Route path="/account/profile" element={<ProfileComponent />} />

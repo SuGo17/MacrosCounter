@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./navbar.module.scss";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { IconContext } from "react-icons";
@@ -11,6 +11,7 @@ import {
   selectLoading,
 } from "../../reducers/userReducer";
 import Loader from "../Loader/Loader";
+import { getMeals, mealActions } from "../../reducers/mealReducer";
 
 function NavBar() {
   const dispatch = useDispatch();
@@ -39,6 +40,11 @@ function NavBar() {
   const clickHandler = () => {
     setMenu(false);
   };
+
+  useEffect(() => {
+    dispatch(mealActions.updateDate(activeDate));
+    dispatch(getMeals());
+  }, [activeDate, dispatch]);
 
   return (
     <nav className={styles["nav-bar"]}>
