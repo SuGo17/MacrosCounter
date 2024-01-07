@@ -1,0 +1,48 @@
+@import "../../../common/styles.scss";
+
+.card {
+  width: 100%;
+  padding: 1.4rem 2rem;
+  border-bottom: 1px solid #dddddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    font-size: 1.8rem;
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+  }
+  &:first-child {
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+  }
+  &:last-child {
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+    border: none;
+  }
+
+  .options {
+    position: fixed;
+    padding: 0.25rem 0;
+    background: $background-color;
+    border-radius: 0.75rem;
+    z-index: 5;
+    border: 1px solid $secondary-color;
+
+    p {
+      cursor: pointer;
+      padding: 0.25rem 1.4rem;
+    }
+
+    p:not(:last-child) {
+      border-bottom: 1px solid #dddddd;
+    }
+  }
+}
