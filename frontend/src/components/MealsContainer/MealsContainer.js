@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./mealsContainer.module.scss";
 import MealCard from "./MealCard/MealCard";
 import { FaPlusCircle } from "react-icons/fa";
 import { IconContext } from "react-icons";
+import { calcKcal } from "../../utils/macrosUtils";
 
 function MealsContainer({ data, title }) {
-  // prettier-ignore
+  const [totalKcal, setTotalKcal] = useState(0);
+
+  useEffect(() => {
+    setTotalKcal(data.reduce((s, e) => (s += calcKcal(e)), 0));
+  }, [data]);
 
   return (
     <div className={styles.container}>
       <div className={styles["top"]}>
         <h3>{title}</h3>
         <div className={styles["top-right"]}>
-          <p>0 of 225 kcal</p>
+          <p>{totalKcal} of 225 kcal</p>
           <button className={`${styles["btn"]} ${styles["add-btn"]}`}>
             Add
             <IconContext.Provider

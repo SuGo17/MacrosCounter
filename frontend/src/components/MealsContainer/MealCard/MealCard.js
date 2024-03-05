@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./mealCard.module.scss";
 import { SlOptionsVertical } from "react-icons/sl";
 import { IconContext } from "react-icons";
+import { calcKcal } from "../../../utils/macrosUtils";
 
 function MealCard({ data }) {
   const [posData, setPosData] = useState({});
@@ -9,6 +10,7 @@ function MealCard({ data }) {
   const optionsRef = useRef();
 
   useEffect(() => {
+    console.log(data);
     const handleClickOutside = (e) => {
       if (!optionsRef?.current?.contains(e.target)) {
         setShowOptions(false);
@@ -24,15 +26,15 @@ function MealCard({ data }) {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [data]);
 
   return (
     <div className={styles.card}>
       <div className={styles["left"]}>
-        <p className={styles["title"]}>{data.title}</p>
+        <p className={styles["title"]}>{data.name}</p>
         <p className={styles["qty"]}>{data.qty} g</p>
       </div>
-      <p className={styles["kcal"]}>{data.kcal} kcal</p>
+      <p className={styles["kcal"]}>{calcKcal(data)} kcal</p>
       <IconContext.Provider
         value={{
           style: {

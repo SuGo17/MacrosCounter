@@ -39,7 +39,8 @@ export const mealSlice = createSlice({
       state.dinner = segregateMeals(state.meals, "d");
     },
     updateMeals: (state, action) => {
-      state.meals = action.payload;
+      state.meals = state.meals.filter((ele) => ele._id !== action.payload._id);
+      state.meals = [...state.meals, action.payload];
       state.breakfast = segregateMeals(action.payload, "bf");
       state.morningSnack = segregateMeals(action.payload, "ms");
       state.lunch = segregateMeals(action.payload, "l");
@@ -96,6 +97,7 @@ export const selectBreakfast = (state) => state.meal.breakfast;
 export const selectMorningSnack = (state) => state.meal.morningSnack;
 export const selectLunch = (state) => state.meal.lunch;
 export const selectEveningSnack = (state) => state.meal.eveningSnack;
+export const selectDinner = (state) => state.meal.dinner;
 export const selectError = (state) => state.meal.error;
 export const selectLoading = (state) => state.meal.loading;
 
