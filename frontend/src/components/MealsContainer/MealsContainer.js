@@ -1,25 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./mealsContainer.module.scss";
 import MealCard from "./MealCard/MealCard";
 import { FaPlusCircle } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { calcKcal } from "../../utils/macrosUtils";
+import { useSelector } from "react-redux";
+import { selectUserDetails } from "../../reducers/userReducer";
 
 function MealsContainer({ data, title }) {
   const [totalKcal, setTotalKcal] = useState(0);
+  const [targetKcal, setTargetKcal] = useState(0);
+  const { calories } = useSelector(selectUserDetails);
+  const kCalPerMeal = useMemo(() => {
+    return {
+      Breakfast: 25,
+      "Morning Snack": 12.5,
+      Lunch: 25,
+      "Evening Snack": 12.5,
+      Dinner: 25,
+    };
+  }, []);
 
   useEffect(() => {
     setTotalKcal(data.reduce((s, e) => (s += calcKcal(e)), 0));
   }, [data]);
+
+  useEffect(() => {
+    title && setTargetKcal(calories * (kCalPerMeal[title] / 100));
+  }, [calories, kCalPerMeal, title]);
 
   return (
     <div className={styles.container}>
       <div className={styles["top"]}>
         <h3>{title}</h3>
         <div className={styles["top-right"]}>
-          <p>{totalKcal} of 225 kcal</p>
+          <p>
+            {totalKcal} of {targetKcal} kcal
+          </p>
           <button className={`${styles["btn"]} ${styles["add-btn"]}`}>
-            Add
+            <p>Add</p>
             <IconContext.Provider
               value={{
                 style: { height: "1.8rem", width: "1.8rem", cursor: "pointer" },
