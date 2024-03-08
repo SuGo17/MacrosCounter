@@ -24,11 +24,11 @@ export const mealSlice = createSlice({
     },
     addMeals: (state, action) => {
       state.meals = [...state.meals, action.payload];
-      state.breakfast = segregateMeals(action.payload, "bf");
-      state.morningSnack = segregateMeals(action.payload, "ms");
-      state.lunch = segregateMeals(action.payload, "l");
-      state.eveningSnack = segregateMeals(action.payload, "es");
-      state.dinner = segregateMeals(action.payload, "d");
+      state.breakfast = segregateMeals(state.meals, "bf");
+      state.morningSnack = segregateMeals(state.meals, "ms");
+      state.lunch = segregateMeals(state.meals, "l");
+      state.eveningSnack = segregateMeals(state.meals, "es");
+      state.dinner = segregateMeals(state.meals, "d");
     },
     removeMeals: (state, action) => {
       state.meals = state.meals.filter((ele) => ele._id !== action.payload._id);
@@ -41,11 +41,11 @@ export const mealSlice = createSlice({
     updateMeals: (state, action) => {
       state.meals = state.meals.filter((ele) => ele._id !== action.payload._id);
       state.meals = [...state.meals, action.payload];
-      state.breakfast = segregateMeals(action.payload, "bf");
-      state.morningSnack = segregateMeals(action.payload, "ms");
-      state.lunch = segregateMeals(action.payload, "l");
-      state.eveningSnack = segregateMeals(action.payload, "es");
-      state.dinner = segregateMeals(action.payload, "d");
+      state.breakfast = segregateMeals(state.meals, "bf");
+      state.morningSnack = segregateMeals(state.meals, "ms");
+      state.lunch = segregateMeals(state.meals, "l");
+      state.eveningSnack = segregateMeals(state.meals, "es");
+      state.dinner = segregateMeals(state.meals, "d");
     },
   },
   extraReducers: (builder) => {
@@ -57,13 +57,33 @@ export const mealSlice = createSlice({
       .addCase(getMeals.fulfilled, (state, action) => {
         state.loading = false;
         state.meals = action.payload;
-        state.breakfast = segregateMeals(action.payload, "bf");
-        state.morningSnack = segregateMeals(action.payload, "ms");
-        state.lunch = segregateMeals(action.payload, "l");
-        state.eveningSnack = segregateMeals(action.payload, "es");
-        state.dinner = segregateMeals(action.payload, "d");
+        state.breakfast = segregateMeals(state.meals, "bf");
+        state.morningSnack = segregateMeals(state.meals, "ms");
+        state.lunch = segregateMeals(state.meals, "l");
+        state.eveningSnack = segregateMeals(state.meals, "es");
+        state.dinner = segregateMeals(state.meals, "d");
       })
       .addCase(getMeals.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteMeal.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteMeal.fulfilled, (state, action) => {
+        state.loading = false;
+        state.meals = state.meals.filter(
+          (ele) => ele._id !== action.payload._id
+        );
+        state.breakfast = segregateMeals(state.meals, "bf");
+        state.morningSnack = segregateMeals(state.meals, "ms");
+        state.lunch = segregateMeals(state.meals, "l");
+        state.eveningSnack = segregateMeals(state.meals, "es");
+        state.dinner = segregateMeals(state.meals, "d");
+      })
+      .addCase(deleteMeal.rejected, (state, action) => {
+        console.log(action);
         state.loading = false;
         state.error = action.error.message;
       });
@@ -86,6 +106,25 @@ export const getMeals = createAsyncThunk(
     } catch (error) {
       // error.message !== "jwt expired" && toast.error(error.message, toastOptions);
       console.log(error);
+      throw error;
+    }
+  }
+);
+
+export const deleteMeal = createAsyncThunk(
+  "meals/delete",
+  async (mealId, { getState }) => {
+    const token = getState().user.token;
+
+    try {
+      const mealsRes = await fetchApi({
+        urlExt: `meal/${mealId}`,
+        method: "DELETE",
+        token,
+      });
+      if (!mealsRes.ok) throw new Error(mealsRes.error);
+      return mealsRes;
+    } catch (error) {
       throw error;
     }
   }

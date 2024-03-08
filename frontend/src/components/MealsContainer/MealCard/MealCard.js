@@ -3,14 +3,20 @@ import styles from "./mealCard.module.scss";
 import { SlOptionsVertical } from "react-icons/sl";
 import { IconContext } from "react-icons";
 import { calcKcal } from "../../../utils/macrosUtils";
+import { useDispatch } from "react-redux";
+import { deleteMeal } from "../../../reducers/mealReducer";
 
 function MealCard({ data }) {
   const [posData, setPosData] = useState({});
   const [showOptions, setShowOptions] = useState(false);
   const optionsRef = useRef();
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deleteMeal(data._id));
+  };
 
   useEffect(() => {
-    console.log(data);
     const handleClickOutside = (e) => {
       if (!optionsRef?.current?.contains(e.target)) {
         setShowOptions(false);
@@ -23,6 +29,7 @@ function MealCard({ data }) {
     document.addEventListener("scroll", handleScroll);
 
     return () => {
+      setShowOptions(false);
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("scroll", handleScroll);
     };
@@ -49,7 +56,6 @@ function MealCard({ data }) {
           className="options"
           onClick={(e) => {
             setShowOptions(true);
-            console.log(e.target.getClientRects()[0]);
             setPosData({
               left: e.target.getClientRects()[0].left - 43.65,
               top: e.target.getClientRects()[0].top + 30,
@@ -64,7 +70,7 @@ function MealCard({ data }) {
           ref={optionsRef}
         >
           <p>Edit</p>
-          <p>Delete</p>
+          <p onClick={handleDelete}>Delete</p>
         </div>
       )}
     </div>
