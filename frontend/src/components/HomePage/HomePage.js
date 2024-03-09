@@ -9,6 +9,9 @@ import {
   selectLunch,
   selectMorningSnack,
 } from "../../reducers/mealReducer";
+import { selectLoading as selectMealLoading } from "../../reducers/mealReducer";
+import { selectLoading as selectUserLoading } from "../../reducers/userReducer";
+import Loader from "../Loader/Loader";
 
 function HomePage() {
   const breakfast = useSelector(selectBreakfast);
@@ -16,6 +19,8 @@ function HomePage() {
   const lunch = useSelector(selectLunch);
   const eveningSnack = useSelector(selectEveningSnack);
   const dinner = useSelector(selectDinner);
+  const mealLoading = useSelector(selectMealLoading);
+  const userLoading = useSelector(selectUserLoading);
   return (
     <section className={styles.section}>
       <MealsContainer data={breakfast} title="Breakfast" />
@@ -23,6 +28,7 @@ function HomePage() {
       <MealsContainer data={lunch} title="Lunch" />
       <MealsContainer data={eveningSnack} title="Evening Snack" />
       <MealsContainer data={dinner} title="Dinner" />
+      {(mealLoading || userLoading) && <Loader />}
     </section>
   );
 }
