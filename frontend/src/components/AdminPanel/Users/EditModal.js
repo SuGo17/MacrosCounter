@@ -111,7 +111,7 @@ function EditModal({ data, params }) {
             value={value}
             setValue={setValue}
             setJoinErr={setErr}/>
-        <CheckboxComponent data={{id:"userEdit-role1",label:"ADMIN",disabled:data.email === email}} value={value} handleChange={handleRoleToggle} />
+        <CheckboxComponent data={{id:"userEdit-role1",label:"ADMIN",disabled:data.email === email,checked:value["userEdit-role1"] === "ADMIN"}} value={value} handleChange={handleRoleToggle} />
         <button className={styles.btn} disabled={data.email === email || data.role === value["userEdit-role1"]}>SAVE</button>
         </form>
       </Modal>

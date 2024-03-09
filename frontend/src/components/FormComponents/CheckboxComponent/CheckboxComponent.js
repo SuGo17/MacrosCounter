@@ -7,9 +7,8 @@ function CheckboxComponent({ data, value, handleChange }) {
       <label htmlFor={data.id}>{data.label}</label>
       <input
         type="checkbox"
-        name="admin"
         id={data.id}
-        checked={value[data.id] === "ADMIN"}
+        checked={data.checked}
         disabled={data.disabled}
         onChange={handleChange}
       />
