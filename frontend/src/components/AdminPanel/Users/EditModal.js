@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { selectToken, selectUserDetails } from "../../../reducers/userReducer";
 import fetchApi from "../../../utils/fetch-utils";
 import Loader from "../../Loader/Loader";
+import CheckboxComponent from "../../FormComponents/CheckboxComponent/CheckboxComponent";
 
 function EditModal({ data, params }) {
   const { setUserUpdate } = params;
@@ -16,8 +17,8 @@ function EditModal({ data, params }) {
   const [value, setValue] = useState({
     "userEdit-name1": data.name,
     "userEdit-email1": data.email,
+    "userEdit-role1": data.role,
   });
-  const [role, setRole] = useState(data.role);
   const [err, setErr] = useState({
     "userEdit-name1": false,
     "userEdit-email1": false,
@@ -44,13 +45,21 @@ function EditModal({ data, params }) {
   }, []);
 
   const handleRoleToggle = (e) => {
-    e.target.checked ? setRole("ADMIN") : setRole("USER");
+    e.target.checked
+      ? setValue((prev) => {
+          return { ...prev, "userEdit-role1": "ADMIN" };
+        })
+      : setValue((prev) => {
+          return { ...prev, "userEdit-role1": "USER" };
+        });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const formData = { usersArr: [{ id: data._id, admin: role === "ADMIN" }] };
+    const formData = {
+      usersArr: [{ id: data._id, admin: value["userEdit-role1"] === "ADMIN" }],
+    };
     try {
       const res = await fetchApi({
         urlExt: "admin/change-role",
@@ -72,7 +81,9 @@ function EditModal({ data, params }) {
   useEffect(() => {
     openModal && toast.info(popupMsg, toastOptions);
     return () => {
-      setRole(data.role);
+      setValue((prev) => {
+        return { ...prev, "userEdit-role1": data.role };
+      });
     };
   }, [data, openModal, toastOptions, popupMsg]);
 
@@ -100,11 +111,8 @@ function EditModal({ data, params }) {
             value={value}
             setValue={setValue}
             setJoinErr={setErr}/>
-        <div className={styles['checkbox-container']}>
-          <label htmlFor="userEdit-admin1">ADMIN</label>
-          <input type="checkbox" name="admin" id="userEdit-admin1" checked = {role==='ADMIN'} disabled={data.email === email} onChange={ handleRoleToggle}/>
-        </div>
-        <button className={styles.btn} disabled={data.email === email || data.role === role}>SAVE</button>
+        <CheckboxComponent data={{id:"userEdit-role1",label:"ADMIN",disabled:data.email === email}} value={value} handleChange={handleRoleToggle} />
+        <button className={styles.btn} disabled={data.email === email || data.role === value["userEdit-role1"]}>SAVE</button>
         </form>
       </Modal>
       {loading && <Loader />}
