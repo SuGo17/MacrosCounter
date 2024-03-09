@@ -5,7 +5,6 @@ import { IconContext } from "react-icons";
 import { calcKcal } from "../../../utils/macrosUtils";
 import { useDispatch } from "react-redux";
 import { deleteMeal } from "../../../reducers/mealReducer";
-
 function MealCard({ data }) {
   const [posData, setPosData] = useState({});
   const [showOptions, setShowOptions] = useState(false);
