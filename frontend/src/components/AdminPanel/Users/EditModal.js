@@ -19,7 +19,6 @@ function EditModal({ data, params }) {
     "userEdit-email1": data.email,
     "userEdit-role1": data.role,
   });
-  // const [role, setRole] = useState(data.role);
   const [err, setErr] = useState({
     "userEdit-name1": false,
     "userEdit-email1": false,
