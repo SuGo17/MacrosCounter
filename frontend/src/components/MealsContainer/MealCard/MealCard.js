@@ -5,7 +5,7 @@ import { IconContext } from "react-icons";
 import { calcKcal } from "../../../utils/macrosUtils";
 import { useDispatch } from "react-redux";
 import { deleteMeal } from "../../../reducers/mealReducer";
-function MealCard({ data }) {
+function MealCard({ data, setActiveEditData, setIsEditModal, setOpenModal }) {
   const [posData, setPosData] = useState({});
   const [showOptions, setShowOptions] = useState(false);
   const optionsRef = useRef();
@@ -13,6 +13,12 @@ function MealCard({ data }) {
 
   const handleDelete = () => {
     dispatch(deleteMeal(data._id));
+  };
+
+  const handleEditClick = () => {
+    setIsEditModal(true);
+    setOpenModal(true);
+    setActiveEditData(data);
   };
 
   useEffect(() => {
@@ -68,7 +74,7 @@ function MealCard({ data }) {
           style={{ left: posData.left, top: posData.top }}
           ref={optionsRef}
         >
-          <p>Edit</p>
+          <p onClick={handleEditClick}>Edit</p>
           <p onClick={handleDelete}>Delete</p>
         </div>
       )}

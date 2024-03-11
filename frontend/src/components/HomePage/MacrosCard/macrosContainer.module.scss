@@ -1,0 +1,14 @@
+@import "../../../common/styles.scss";
+
+.card-container {
+  cursor: pointer;
+  width: 100%;
+  padding: 1rem;
+  padding-left: 0;
+  p {
+    font-size: 1.8rem;
+  }
+  &:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+  }
+}
