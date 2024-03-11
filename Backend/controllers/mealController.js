@@ -1,4 +1,5 @@
 const Meals = require("../models/mealModule");
+const Macros = require("../models/macrosModel");
 
 const getParam = (req) => {
   return req.params;
@@ -14,19 +15,15 @@ const getMeal = async (req, res) => {
     }).populate("macro_id");
     const updatedMeals = meals.map((ele) => {
       const { _id, tag, qty, date, created_by, macro_id } = ele;
-      const macros = {};
-      // prettier-ignore
-      macros.carbohydrates = ((macro_id.carbohydrates * qty) / macro_id.qty).toFixed(1);
-      macros.fat = ((macro_id.fat * qty) / macro_id.qty).toFixed(1);
-      macros.fiber = ((macro_id.fiber * qty) / macro_id.qty).toFixed(1);
-      macros.protein = ((macro_id.protein * qty) / macro_id.qty).toFixed(1);
+      const { carbohydrates, protein, fiber, fat, qty: macro_qty } = macro_id;
+      const macros = { carbohydrates, protein, fat, fiber, qty: macro_qty };
       return {
         _id,
         tag,
         qty,
         date,
         created_by,
-        ...macros,
+        macros,
         macro_id: macro_id["_id"],
         name: macro_id.name,
       };
@@ -53,7 +50,39 @@ const addMeal = async (req, res) => {
       created_by: req.user._id,
       date,
     });
-    res.status(200).json(meal);
+    const {
+      _id,
+      tag: meal_tag,
+      qty: meal_qty,
+      date: meal_date,
+      created_by,
+      macro_id: meal_macro_id,
+    } = await meal.populate("macro_id");
+    const {
+      carbohydrates,
+      protein,
+      fiber,
+      fat,
+      qty: macro_qty,
+      _id: macro_id_num,
+    } = meal_macro_id;
+    const macro = {
+      carbohydrates,
+      protein,
+      fat,
+      fiber,
+      qty: macro_qty,
+      _id: macro_id_num,
+    };
+    res.status(200).json({
+      _id,
+      tag,
+      qty,
+      date,
+      created_by,
+      macro,
+      name: meal_macro_id.name,
+    });
   } catch (err) {
     res.status(401).json({ error: err.message });
   }
@@ -63,8 +92,36 @@ const updateMeal = async (req, res) => {
   const { id } = getParam(req);
 
   try {
-    const meal = await Meals.findByIdAndUpdate(id, { ...req.body });
-    res.status(200).json(meal);
+    const meal = await Meals.findByIdAndUpdate(id, { ...req.body }).populate(
+      "macro_id"
+    );
+    const { _id, tag, qty, date, created_by, macro_id } = meal;
+    const {
+      carbohydrates,
+      protein,
+      fiber,
+      fat,
+      qty: macro_qty,
+      _id: macro_id_num,
+    } = macro_id;
+    const macro = {
+      carbohydrates,
+      protein,
+      fat,
+      fiber,
+      qty: macro_qty,
+      id: macro_id_num,
+    };
+    res.status(200).json({
+      _id,
+      tag,
+      qty,
+      date,
+      created_by,
+      macro,
+      name: macro_id.name,
+      ...req.body,
+    });
   } catch (err) {
     res.status(401).json({ error: err.message });
   }
