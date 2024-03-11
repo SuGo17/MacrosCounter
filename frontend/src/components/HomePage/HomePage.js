@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./homepage.module.scss";
 import MealsContainer from "../MealsContainer/MealsContainer";
 import { useSelector } from "react-redux";
@@ -12,8 +12,13 @@ import {
 import { selectLoading as selectMealLoading } from "../../reducers/mealReducer";
 import { selectLoading as selectUserLoading } from "../../reducers/userReducer";
 import Loader from "../Loader/Loader";
+import AddEditModal from "./AddEditModal/AddEditModal";
 
 function HomePage() {
+  const [title, setTitle] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [isEditModal, setIsEditModal] = useState(false);
+  const [activeEditData, setActiveEditData] = useState({});
   const breakfast = useSelector(selectBreakfast);
   const morningSnack = useSelector(selectMorningSnack);
   const lunch = useSelector(selectLunch);
@@ -21,13 +26,58 @@ function HomePage() {
   const dinner = useSelector(selectDinner);
   const mealLoading = useSelector(selectMealLoading);
   const userLoading = useSelector(selectUserLoading);
+
   return (
     <section className={styles.section}>
-      <MealsContainer data={breakfast} title="Breakfast" />
-      <MealsContainer data={morningSnack} title="Morning Snack" />
-      <MealsContainer data={lunch} title="Lunch" />
-      <MealsContainer data={eveningSnack} title="Evening Snack" />
-      <MealsContainer data={dinner} title="Dinner" />
+      <MealsContainer
+        data={breakfast}
+        title="Breakfast"
+        setTitle={setTitle}
+        setOpenModal={setOpenModal}
+        setIsEditModal={setIsEditModal}
+        setActiveEditData={setActiveEditData}
+      />
+      <MealsContainer
+        data={morningSnack}
+        title="Morning Snack"
+        setTitle={setTitle}
+        setOpenModal={setOpenModal}
+        setIsEditModal={setIsEditModal}
+        setActiveEditData={setActiveEditData}
+      />
+      <MealsContainer
+        data={lunch}
+        title="Lunch"
+        setTitle={setTitle}
+        setOpenModal={setOpenModal}
+        setIsEditModal={setIsEditModal}
+        setActiveEditData={setActiveEditData}
+      />
+      <MealsContainer
+        data={eveningSnack}
+        title="Evening Snack"
+        setTitle={setTitle}
+        setOpenModal={setOpenModal}
+        setIsEditModal={setIsEditModal}
+        setActiveEditData={setActiveEditData}
+      />
+      <MealsContainer
+        data={dinner}
+        title="Dinner"
+        setTitle={setTitle}
+        setOpenModal={setOpenModal}
+        setIsEditModal={setIsEditModal}
+        setActiveEditData={setActiveEditData}
+      />
+
+      <AddEditModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        title={title}
+        isEditModal={isEditModal}
+        setIsEditModal={setIsEditModal}
+        data={activeEditData}
+      />
       {(mealLoading || userLoading) && <Loader />}
     </section>
   );

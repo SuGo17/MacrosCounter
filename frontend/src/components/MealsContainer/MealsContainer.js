@@ -7,10 +7,18 @@ import { calcKcal } from "../../utils/macrosUtils";
 import { useSelector } from "react-redux";
 import { selectUserDetails } from "../../reducers/userReducer";
 
-function MealsContainer({ data, title }) {
+function MealsContainer({
+  data,
+  title,
+  setOpenModal,
+  setTitle,
+  setIsEditModal,
+  setActiveEditData,
+}) {
   const [totalKcal, setTotalKcal] = useState(0);
   const [targetKcal, setTargetKcal] = useState(0);
   const { calories } = useSelector(selectUserDetails);
+
   const kCalPerMeal = useMemo(() => {
     return {
       Breakfast: 25,
@@ -29,6 +37,13 @@ function MealsContainer({ data, title }) {
     title && setTargetKcal(calories * (kCalPerMeal[title] / 100));
   }, [calories, kCalPerMeal, title]);
 
+  const handleClick = () => {
+    setTitle(title);
+    setOpenModal(true);
+    setIsEditModal(false);
+    setActiveEditData({});
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles["top"]}>
@@ -37,7 +52,10 @@ function MealsContainer({ data, title }) {
           <p>
             {totalKcal} of {targetKcal} kcal
           </p>
-          <button className={`${styles["btn"]} ${styles["add-btn"]}`}>
+          <button
+            className={`${styles["btn"]} ${styles["add-btn"]}`}
+            onClick={handleClick}
+          >
             <p>Add</p>
             <IconContext.Provider
               value={{
@@ -51,7 +69,15 @@ function MealsContainer({ data, title }) {
       </div>
       <div className={styles["bottom"]}>
         {data.map((ele, ind) => {
-          return <MealCard key={ind} data={ele} />;
+          return (
+            <MealCard
+              key={ind}
+              data={ele}
+              setIsEditModal={setIsEditModal}
+              setActiveEditData={setActiveEditData}
+              setOpenModal={setOpenModal}
+            />
+          );
         })}
       </div>
     </div>
