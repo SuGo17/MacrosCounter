@@ -46,7 +46,7 @@ function MealCard({ data, setActiveEditData, setIsEditModal, setOpenModal }) {
         <p className={styles["title"]}>{data.name}</p>
         <p className={styles["qty"]}>{data.qty} g</p>
       </div>
-      <p className={styles["kcal"]}>{calcKcal(data)} kcal</p>
+      <p className={styles["kcal"]}>{calcKcal(data, data.qty)} kcal</p>
       <IconContext.Provider
         value={{
           style: {

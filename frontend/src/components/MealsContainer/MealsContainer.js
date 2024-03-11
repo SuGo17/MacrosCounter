@@ -30,7 +30,7 @@ function MealsContainer({
   }, []);
 
   useEffect(() => {
-    setTotalKcal(data.reduce((s, e) => (s += calcKcal(e)), 0));
+    setTotalKcal(data.reduce((s, e) => (s += calcKcal(e, e.qty)), 0));
   }, [data]);
 
   useEffect(() => {
