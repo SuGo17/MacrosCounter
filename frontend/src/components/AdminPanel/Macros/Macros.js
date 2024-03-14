@@ -8,7 +8,7 @@ import { MdAddBox } from "react-icons/md";
 import { IconContext } from "react-icons";
 import EditMacro from "./EditMacro";
 import AddMacro from "./AddMacro";
-import { calcKcal } from "../../../utils/macrosUtils";
+import { mealCalcKcal } from "../../../utils/macrosUtils";
 
 function Macros() {
   const [rowData, setRowData] = useState([]);
@@ -42,7 +42,7 @@ function Macros() {
           return word[0].toUpperCase() + word.slice(1).toLowerCase();
         })
         .join(" ");
-      ele.calories = calcKcal(ele);
+      ele.calories = mealCalcKcal(ele);
       return ele;
     });
     return processedDataArr;

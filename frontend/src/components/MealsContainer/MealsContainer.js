@@ -3,7 +3,7 @@ import styles from "./mealsContainer.module.scss";
 import MealCard from "./MealCard/MealCard";
 import { FaPlusCircle } from "react-icons/fa";
 import { IconContext } from "react-icons";
-import { calcKcal } from "../../utils/macrosUtils";
+import { mealCalcKcal } from "../../utils/macrosUtils";
 import { useSelector } from "react-redux";
 import { selectUserDetails } from "../../reducers/userReducer";
 
@@ -30,7 +30,7 @@ function MealsContainer({
   }, []);
 
   useEffect(() => {
-    setTotalKcal(data.reduce((s, e) => (s += calcKcal(e, e.qty)), 0));
+    setTotalKcal(data.reduce((s, e) => (s += mealCalcKcal(e, e.qty)), 0));
   }, [data]);
 
   useEffect(() => {

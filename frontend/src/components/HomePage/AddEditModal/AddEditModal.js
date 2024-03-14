@@ -7,6 +7,10 @@ import MacrosCard from "../MacrosCard/MacrosCard";
 import { TailSpin } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import { toastOptions } from "../../../reducers/userReducer";
+import { IconContext } from "react-icons";
+import { IoArrowBackSharp, IoCloseSharp } from "react-icons/io5";
+import mealImage from "../../../images/meal-img.jpg";
+import { macroCalcKcal, mealCalcKcal } from "../../../utils/macrosUtils";
 
 function AddEditModal({
   openModal,
@@ -30,10 +34,9 @@ function AddEditModal({
   const getMacrosSearch = useGetMacros();
 
   useEffect(() => {
-    console.log(data);
     isEditModal && openModal && data && setActiveAddEditData(data);
     return () => {
-      !openModal && setValue({ "addModal-search1": "" });
+      setValue({ "addModal-search1": "" });
       !openModal && setShowDetailsModal(false);
       !openModal && setActiveAddEditData({});
     };
@@ -76,7 +79,9 @@ function AddEditModal({
         showHeader={showHeader}
         openModal={openModal}
         setOpenModal={setOpenModal}
-        classes={`${styles["min-height-50"]}`}
+        classes={`${styles["min-height-50"]} ${
+          (showDetailsModal || isEditModal) && styles["padding-0"]
+        }`}
       >
         {!isEditModal && !showDetailsModal && (
           <div className={styles["add-modal"]}>
@@ -117,12 +122,58 @@ function AddEditModal({
           </div>
         )}
         {(isEditModal || showDetailsModal) && (
-          <div
-            className="edit-modal"
-            onClick={() => setShowDetailsModal(false)}
-          >
-            <p>Name: {activeAddEditData?.name}</p>
-            <p>Quantity: {activeAddEditData?.qty} g</p>
+          <div className={styles["edit-modal"]}>
+            <div
+              className={`${styles["top"]} ${
+                isEditModal ? styles["justify-flex-end"] : ""
+              }`}
+            >
+              {!isEditModal && (
+                <div className={styles["left"]}>
+                  <IconContext.Provider
+                    value={{
+                      style: {
+                        height: "3rem",
+                        width: "3rem",
+                        cursor: "pointer",
+                        color: "#fff",
+                      },
+                    }}
+                  >
+                    <IoArrowBackSharp
+                      onClick={() => setShowDetailsModal(false)}
+                    />
+                  </IconContext.Provider>
+                </div>
+              )}
+              <div className={styles["right"]}>
+                <IconContext.Provider
+                  value={{
+                    style: {
+                      height: "3rem",
+                      width: "3rem",
+                      cursor: "pointer",
+                      color: "#fff",
+                    },
+                  }}
+                >
+                  <IoCloseSharp onClick={() => setOpenModal(false)} />
+                </IconContext.Provider>
+              </div>
+            </div>
+            <div className={styles["content"]}>
+              <div className={styles["img"]}>
+                <img src={mealImage} alt="Meal" />
+                <p className={styles["name"]}>{activeAddEditData?.name}</p>
+                <p className={styles["qty"]}>{`Quantity: ${
+                  activeAddEditData?.qty
+                } g - ${
+                  isEditModal
+                    ? mealCalcKcal(activeAddEditData, 100)
+                    : macroCalcKcal(activeAddEditData, 100)
+                } kcal`}</p>
+              </div>
+            </div>
           </div>
         )}
       </Modal>
