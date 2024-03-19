@@ -27,6 +27,7 @@ function AddEditModal({
   const [error, setError] = useState("");
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [activeAddEditData, setActiveAddEditData] = useState({});
+  const [mealQty, setMealQty] = useState(data.qty || 0);
   const [showHeader, setShowHeader] = useState(
     !isEditModal || !showDetailsModal
   );
@@ -35,7 +36,9 @@ function AddEditModal({
 
   useEffect(() => {
     isEditModal && openModal && data && setActiveAddEditData(data);
+    data && data.qty && setMealQty(data.qty);
     return () => {
+      setMealQty(0);
       setValue({ "addModal-search1": "" });
       !openModal && setShowDetailsModal(false);
       !openModal && setActiveAddEditData({});
@@ -70,6 +73,19 @@ function AddEditModal({
   const handleMacroCardClick = (addEditata) => {
     setShowDetailsModal(true);
     setActiveAddEditData(addEditata);
+  };
+
+  const handleMealQtyDecrement = () => {
+    mealQty > 0 && setMealQty((prev) => +prev - 1);
+  };
+
+  const handleinputChange = (e) => {
+    let inp = e.target.value;
+    if (inp === "") return setMealQty(0);
+    const pattern = /^-?\d*\.?\d+$/;
+    if (pattern.test(e.target.value)) {
+      setMealQty(+inp);
+    }
   };
 
   return (
@@ -165,13 +181,33 @@ function AddEditModal({
               <div className={styles["img"]}>
                 <img src={mealImage} alt="Meal" />
                 <p className={styles["name"]}>{activeAddEditData?.name}</p>
-                <p className={styles["qty"]}>{`Quantity: ${
-                  activeAddEditData?.qty
-                } g - ${
+                <p className={styles["qty"]}>{`Quantity: ${mealQty || 0} g - ${
                   isEditModal
-                    ? mealCalcKcal(activeAddEditData, 100)
-                    : macroCalcKcal(activeAddEditData, 100)
+                    ? mealCalcKcal(activeAddEditData, mealQty)
+                    : macroCalcKcal(activeAddEditData, mealQty)
                 } kcal`}</p>
+              </div>
+              <div className={styles["container"]}>
+                <div className={styles["macro-input"]}>
+                  <button
+                    className={`${styles.btn} ${styles["qty-update-button"]}`}
+                    onClick={handleMealQtyDecrement}
+                  >
+                    -
+                  </button>
+                  <input
+                    type="text"
+                    value={mealQty}
+                    onChange={handleinputChange}
+                  />
+                  <button
+                    className={`${styles.btn} ${styles["qty-update-button"]}`}
+                    onClick={() => setMealQty((prev) => +prev + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+                <p className={styles["unit"]}>Grams</p>
               </div>
             </div>
           </div>
