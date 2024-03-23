@@ -5,6 +5,7 @@ import { IconContext } from "react-icons";
 import { mealCalcKcal } from "../../../utils/macrosUtils";
 import { useDispatch } from "react-redux";
 import { deleteMeal } from "../../../reducers/mealReducer";
+
 function MealCard({ data, setActiveEditData, setIsEditModal, setOpenModal }) {
   const [posData, setPosData] = useState({});
   const [showOptions, setShowOptions] = useState(false);

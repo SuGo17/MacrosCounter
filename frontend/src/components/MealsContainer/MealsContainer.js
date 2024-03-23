@@ -14,10 +14,19 @@ function MealsContainer({
   setTitle,
   setIsEditModal,
   setActiveEditData,
+  setTag,
 }) {
   const [totalKcal, setTotalKcal] = useState(0);
   const [targetKcal, setTargetKcal] = useState(0);
   const { calories } = useSelector(selectUserDetails);
+
+  const refTag = {
+    Breakfast: "bf",
+    "Morning Snack": "ms",
+    Lunch: "l",
+    "Evening Snack": "es",
+    Dinner: "d",
+  };
 
   const kCalPerMeal = useMemo(() => {
     return {
@@ -42,6 +51,7 @@ function MealsContainer({
     setOpenModal(true);
     setIsEditModal(false);
     setActiveEditData({});
+    setTag(refTag[title]);
   };
 
   return (

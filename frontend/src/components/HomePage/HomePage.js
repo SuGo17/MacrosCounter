@@ -19,6 +19,7 @@ function HomePage() {
   const [openModal, setOpenModal] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
   const [activeEditData, setActiveEditData] = useState({});
+  const [tag, setTag] = useState("");
   const breakfast = useSelector(selectBreakfast);
   const morningSnack = useSelector(selectMorningSnack);
   const lunch = useSelector(selectLunch);
@@ -36,6 +37,7 @@ function HomePage() {
         setOpenModal={setOpenModal}
         setIsEditModal={setIsEditModal}
         setActiveEditData={setActiveEditData}
+        setTag={setTag}
       />
       <MealsContainer
         data={morningSnack}
@@ -44,6 +46,7 @@ function HomePage() {
         setOpenModal={setOpenModal}
         setIsEditModal={setIsEditModal}
         setActiveEditData={setActiveEditData}
+        setTag={setTag}
       />
       <MealsContainer
         data={lunch}
@@ -52,6 +55,7 @@ function HomePage() {
         setOpenModal={setOpenModal}
         setIsEditModal={setIsEditModal}
         setActiveEditData={setActiveEditData}
+        setTag={setTag}
       />
       <MealsContainer
         data={eveningSnack}
@@ -60,6 +64,7 @@ function HomePage() {
         setOpenModal={setOpenModal}
         setIsEditModal={setIsEditModal}
         setActiveEditData={setActiveEditData}
+        setTag={setTag}
       />
       <MealsContainer
         data={dinner}
@@ -68,6 +73,7 @@ function HomePage() {
         setOpenModal={setOpenModal}
         setIsEditModal={setIsEditModal}
         setActiveEditData={setActiveEditData}
+        setTag={setTag}
       />
 
       <AddEditModal
@@ -77,6 +83,7 @@ function HomePage() {
         isEditModal={isEditModal}
         setIsEditModal={setIsEditModal}
         data={activeEditData}
+        tag={tag}
       />
       {(mealLoading || userLoading) && <Loader />}
     </section>
