@@ -83,7 +83,43 @@ export const mealSlice = createSlice({
         state.dinner = segregateMeals(state.meals, "d");
       })
       .addCase(deleteMeal.rejected, (state, action) => {
-        console.log(action);
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(addMeal.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addMeal.fulfilled, (state, action) => {
+        state.loading = false;
+        state.meals = [...state.meals, action.payload];
+        state.breakfast = segregateMeals(state.meals, "bf");
+        state.morningSnack = segregateMeals(state.meals, "ms");
+        state.lunch = segregateMeals(state.meals, "l");
+        state.eveningSnack = segregateMeals(state.meals, "es");
+        state.dinner = segregateMeals(state.meals, "d");
+      })
+      .addCase(addMeal.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(editMeal.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(editMeal.fulfilled, (state, action) => {
+        state.loading = false;
+        state.meals = state.meals.filter(
+          (ele) => ele._id !== action.payload._id
+        );
+        state.meals = [...state.meals, action.payload];
+        state.breakfast = segregateMeals(state.meals, "bf");
+        state.morningSnack = segregateMeals(state.meals, "ms");
+        state.lunch = segregateMeals(state.meals, "l");
+        state.eveningSnack = segregateMeals(state.meals, "es");
+        state.dinner = segregateMeals(state.meals, "d");
+      })
+      .addCase(editMeal.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
@@ -124,6 +160,49 @@ export const deleteMeal = createAsyncThunk(
       });
       if (!mealsRes.ok) throw new Error(mealsRes.error);
       return mealsRes;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const addMeal = createAsyncThunk(
+  "meals/add",
+  async (data, { getState }) => {
+    const token = getState().user.token;
+    try {
+      const mealRes = await fetchApi({
+        urlExt: `meal`,
+        formData: data,
+        token,
+        method: "POST",
+      });
+
+      if (!mealRes.ok) throw new Error(mealRes.error);
+
+      return mealRes;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+export const editMeal = createAsyncThunk(
+  "meals/edit",
+  async (data, { getState }) => {
+    const token = getState().user.token;
+    const { _id, ...editData } = data;
+    console.log(editData, _id);
+    try {
+      const mealRes = await fetchApi({
+        urlExt: `meal/${_id}`,
+        formData: editData,
+        token,
+        method: "PATCH",
+      });
+
+      if (!mealRes.ok) throw new Error(mealRes.error);
+
+      return mealRes;
     } catch (error) {
       throw error;
     }

@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./mealCard.module.scss";
 import { SlOptionsVertical } from "react-icons/sl";
 import { IconContext } from "react-icons";
-import { calcKcal } from "../../../utils/macrosUtils";
+import { mealCalcKcal } from "../../../utils/macrosUtils";
 import { useDispatch } from "react-redux";
 import { deleteMeal } from "../../../reducers/mealReducer";
+
 function MealCard({ data, setActiveEditData, setIsEditModal, setOpenModal }) {
   const [posData, setPosData] = useState({});
   const [showOptions, setShowOptions] = useState(false);
@@ -46,7 +47,7 @@ function MealCard({ data, setActiveEditData, setIsEditModal, setOpenModal }) {
         <p className={styles["title"]}>{data.name}</p>
         <p className={styles["qty"]}>{data.qty} g</p>
       </div>
-      <p className={styles["kcal"]}>{calcKcal(data, data.qty)} kcal</p>
+      <p className={styles["kcal"]}>{mealCalcKcal(data, data.qty)} kcal</p>
       <IconContext.Provider
         value={{
           style: {

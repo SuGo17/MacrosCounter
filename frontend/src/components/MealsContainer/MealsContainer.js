@@ -3,7 +3,7 @@ import styles from "./mealsContainer.module.scss";
 import MealCard from "./MealCard/MealCard";
 import { FaPlusCircle } from "react-icons/fa";
 import { IconContext } from "react-icons";
-import { calcKcal } from "../../utils/macrosUtils";
+import { mealCalcKcal } from "../../utils/macrosUtils";
 import { useSelector } from "react-redux";
 import { selectUserDetails } from "../../reducers/userReducer";
 
@@ -14,10 +14,19 @@ function MealsContainer({
   setTitle,
   setIsEditModal,
   setActiveEditData,
+  setTag,
 }) {
   const [totalKcal, setTotalKcal] = useState(0);
   const [targetKcal, setTargetKcal] = useState(0);
   const { calories } = useSelector(selectUserDetails);
+
+  const refTag = {
+    Breakfast: "bf",
+    "Morning Snack": "ms",
+    Lunch: "l",
+    "Evening Snack": "es",
+    Dinner: "d",
+  };
 
   const kCalPerMeal = useMemo(() => {
     return {
@@ -30,7 +39,7 @@ function MealsContainer({
   }, []);
 
   useEffect(() => {
-    setTotalKcal(data.reduce((s, e) => (s += calcKcal(e, e.qty)), 0));
+    setTotalKcal(data.reduce((s, e) => (s += mealCalcKcal(e, e.qty)), 0));
   }, [data]);
 
   useEffect(() => {
@@ -42,6 +51,7 @@ function MealsContainer({
     setOpenModal(true);
     setIsEditModal(false);
     setActiveEditData({});
+    setTag(refTag[title]);
   };
 
   return (

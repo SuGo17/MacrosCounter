@@ -16,14 +16,14 @@ const getMeal = async (req, res) => {
     const updatedMeals = meals.map((ele) => {
       const { _id, tag, qty, date, created_by, macro_id } = ele;
       const { carbohydrates, protein, fiber, fat, qty: macro_qty } = macro_id;
-      const macros = { carbohydrates, protein, fat, fiber, qty: macro_qty };
+      const macro = { carbohydrates, protein, fat, fiber, qty: macro_qty };
       return {
         _id,
         tag,
         qty,
         date,
         created_by,
-        macros,
+        macro,
         macro_id: macro_id["_id"],
         name: macro_id.name,
       };

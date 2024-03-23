@@ -7,6 +7,21 @@ import MacrosCard from "../MacrosCard/MacrosCard";
 import { TailSpin } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import { toastOptions } from "../../../reducers/userReducer";
+import { IconContext } from "react-icons";
+import { IoArrowBackSharp, IoCloseSharp } from "react-icons/io5";
+import mealImage from "../../../images/meal-img.jpg";
+import { mealCalcKcal } from "../../../utils/macrosUtils";
+import proteinIcon from "../../../images/protein.png";
+import carbsIcon from "../../../images/carbohydrates.png";
+import fatIcon from "../../../images/fat.png";
+import fiberIcon from "../../../images/fiber.png";
+import { addMeal, editMeal, selectDate } from "../../../reducers/mealReducer";
+import { useDispatch, useSelector } from "react-redux";
+
+const calcMacroQty = (macro, qty, refQty) => {
+  let val = (macro * qty) / refQty;
+  return val.toFixed(1) || 0;
+};
 
 function AddEditModal({
   openModal,
@@ -14,6 +29,7 @@ function AddEditModal({
   title,
   isEditModal = false,
   data,
+  tag,
 }) {
   const [value, setValue] = useState({
     "addModal-search1": "",
@@ -23,17 +39,21 @@ function AddEditModal({
   const [error, setError] = useState("");
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [activeAddEditData, setActiveAddEditData] = useState({});
+  const [mealQty, setMealQty] = useState(data.qty || 0);
   const [showHeader, setShowHeader] = useState(
     !isEditModal || !showDetailsModal
   );
 
+  const dispatch = useDispatch();
+  const activeDate = useSelector(selectDate);
   const getMacrosSearch = useGetMacros();
 
   useEffect(() => {
-    console.log(data);
     isEditModal && openModal && data && setActiveAddEditData(data);
+    data && data.qty && setMealQty(data.qty);
     return () => {
-      !openModal && setValue({ "addModal-search1": "" });
+      setMealQty(0);
+      setValue({ "addModal-search1": "" });
       !openModal && setShowDetailsModal(false);
       !openModal && setActiveAddEditData({});
     };
@@ -69,6 +89,45 @@ function AddEditModal({
     setActiveAddEditData(addEditata);
   };
 
+  const handleMealQtyDecrement = () => {
+    mealQty > 0 && setMealQty((prev) => +prev - 1);
+  };
+
+  const handleinputChange = (e) => {
+    let inp = e.target.value;
+    if (inp === "") return setMealQty(0);
+    const pattern = /^-?\d*\.?\d+$/;
+    if (pattern.test(e.target.value)) {
+      setMealQty(+inp);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!isEditModal) {
+      activeAddEditData &&
+        dispatch(
+          addMeal({
+            date: activeDate,
+            tag,
+            macro_id: activeAddEditData.macro["_id"],
+            qty: mealQty,
+          })
+        );
+      setOpenModal(false);
+    } else {
+      console.log("edit", activeAddEditData);
+      activeAddEditData &&
+        dispatch(
+          editMeal({
+            _id: activeAddEditData._id,
+            qty: mealQty,
+          })
+        );
+      setOpenModal(false);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Modal
@@ -76,7 +135,9 @@ function AddEditModal({
         showHeader={showHeader}
         openModal={openModal}
         setOpenModal={setOpenModal}
-        classes={`${styles["min-height-50"]}`}
+        classes={`${styles["min-height-50"]} ${
+          (showDetailsModal || isEditModal) && styles["padding-0"]
+        }`}
       >
         {!isEditModal && !showDetailsModal && (
           <div className={styles["add-modal"]}>
@@ -117,12 +178,152 @@ function AddEditModal({
           </div>
         )}
         {(isEditModal || showDetailsModal) && (
-          <div
-            className="edit-modal"
-            onClick={() => setShowDetailsModal(false)}
-          >
-            <p>Name: {activeAddEditData?.name}</p>
-            <p>Quantity: {activeAddEditData?.qty} g</p>
+          <div className={styles["edit-modal"]}>
+            <div
+              className={`${styles["top"]} ${
+                isEditModal ? styles["justify-flex-end"] : ""
+              }`}
+            >
+              {!isEditModal && (
+                <div className={styles["left"]}>
+                  <IconContext.Provider
+                    value={{
+                      style: {
+                        height: "3rem",
+                        width: "3rem",
+                        cursor: "pointer",
+                        color: "#fff",
+                      },
+                    }}
+                  >
+                    <IoArrowBackSharp
+                      onClick={() => setShowDetailsModal(false)}
+                    />
+                  </IconContext.Provider>
+                </div>
+              )}
+              <div className={styles["right"]}>
+                <IconContext.Provider
+                  value={{
+                    style: {
+                      height: "3rem",
+                      width: "3rem",
+                      cursor: "pointer",
+                      color: "#fff",
+                    },
+                  }}
+                >
+                  <IoCloseSharp onClick={() => setOpenModal(false)} />
+                </IconContext.Provider>
+              </div>
+            </div>
+            <div className={styles["content"]}>
+              <div className={styles["img"]}>
+                <img src={mealImage} alt="Meal" />
+                <p className={styles["name"]}>{activeAddEditData?.name}</p>
+                <p className={styles["qty"]}>{`Quantity: ${
+                  mealQty || 0
+                } g - ${mealCalcKcal(activeAddEditData, mealQty)} kcal`}</p>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div className={styles["container"]}>
+                  <p className={styles["qty-label"]}>Pick the quantity:</p>
+                  <div className={styles["macro-input"]}>
+                    <div>
+                      <button
+                        className={`${styles.btn} ${styles["qty-update-button"]}`}
+                        onClick={handleMealQtyDecrement}
+                        type="button"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="text"
+                        value={mealQty}
+                        onChange={handleinputChange}
+                      />
+                      <button
+                        className={`${styles.btn} ${styles["qty-update-button"]}`}
+                        onClick={() => setMealQty((prev) => +prev + 1)}
+                        type="button"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <p className={styles["unit"]}>Grams</p>
+                  </div>
+
+                  <div className={styles["macro-container"]}>
+                    <p className={styles["title"]}>Macronutrients Breakdown:</p>
+
+                    <div className={styles["macros-breakdown"]}>
+                      <div className={styles["card"]}>
+                        <p className={styles["macro-title"]}>Protein</p>
+                        <div className={styles["img"]}>
+                          <img src={proteinIcon} alt="Fiber" />
+                        </div>
+                        <p className={styles["macro-qty"]}>
+                          {calcMacroQty(
+                            activeAddEditData?.macro?.protein,
+                            mealQty,
+                            activeAddEditData?.macro?.qty
+                          )}{" "}
+                          g
+                        </p>
+                      </div>
+                      <div className={styles["card"]}>
+                        <p className={styles["macro-title"]}>Carbs</p>
+                        <div className={styles["img"]}>
+                          <img src={carbsIcon} alt="Fiber" />
+                        </div>
+                        <p className={styles["macro-qty"]}>
+                          {calcMacroQty(
+                            activeAddEditData?.macro?.carbohydrates,
+                            mealQty,
+                            activeAddEditData?.macro?.qty
+                          )}{" "}
+                          g
+                        </p>
+                      </div>
+                      <div className={styles["card"]}>
+                        <p className={styles["macro-title"]}>Fats</p>
+                        <div className={styles["img"]}>
+                          <img src={fatIcon} alt="Fiber" />
+                        </div>
+                        <p className={styles["macro-qty"]}>
+                          {calcMacroQty(
+                            activeAddEditData?.macro?.fat,
+                            mealQty,
+                            activeAddEditData?.macro?.qty
+                          )}{" "}
+                          g
+                        </p>
+                      </div>
+                      <div className={styles["card"]}>
+                        <p className={styles["macro-title"]}>Fiber</p>
+                        <div className={styles["img"]}>
+                          <img src={fiberIcon} alt="Fiber" />
+                        </div>
+                        <p className={styles["macro-qty"]}>
+                          {calcMacroQty(
+                            activeAddEditData?.macro?.fiber,
+                            mealQty,
+                            activeAddEditData?.macro?.qty
+                          )}{" "}
+                          g
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  className={`${styles["btn"]} ${styles["add-edit-btn"]}`}
+                  disabled={mealQty === 0 || data?.qty === mealQty}
+                >
+                  Save
+                </button>
+              </form>
+            </div>
           </div>
         )}
       </Modal>
