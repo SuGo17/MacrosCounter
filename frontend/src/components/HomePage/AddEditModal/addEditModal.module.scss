@@ -1,0 +1,222 @@
+@import "../../../common/styles.scss";
+
+.min-height-50 {
+  min-width: 30%;
+  gap: 1rem;
+
+  @include ipad {
+    min-width: 60%;
+  }
+  @include laptop {
+    min-width: 60%;
+  }
+}
+
+.heading {
+  color: $text-color;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+}
+
+.macros-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 13.5rem;
+  min-height: 13.5rem;
+  overflow-y: scroll;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+
+  @include mobile {
+    max-height: 27rem;
+    min-height: 27rem;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $text-color;
+  }
+}
+
+.center-align {
+  align-items: center;
+  justify-content: center;
+}
+
+.padding-0 {
+  padding: 0;
+}
+
+.edit-modal {
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    z-index: 10;
+  }
+  .content {
+    & > .img {
+      max-height: 25rem;
+      min-height: 25rem;
+      overflow: hidden;
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: #000000c6;
+        z-index: 5;
+      }
+      img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 50rem;
+      }
+      p.name {
+        left: 2rem;
+        bottom: 5rem;
+        font-size: 2.4rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        position: absolute;
+        z-index: 6;
+        background-color: transparent;
+        color: #fff;
+      }
+      p.qty {
+        bottom: 2rem;
+        left: 2rem;
+        font-size: 1.8rem;
+        font-weight: 500;
+        letter-spacing: 1px;
+        position: absolute;
+        z-index: 6;
+        background-color: transparent;
+        color: #fff;
+      }
+    }
+    .container {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+
+      .qty-label {
+        font-size: 1.8rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+
+      .macro-input {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        div {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        input {
+          padding: 0.5rem 1.5rem;
+          width: 7.5rem;
+          font-size: 1.8rem;
+          font-weight: 500;
+          border-radius: 0.5rem;
+          border: 2px solid $text-color;
+          text-align: center;
+
+          &:focus {
+            outline: 3px solid $primary-hover-color;
+            border: 2px solid $primary-hover-color;
+          }
+        }
+
+        .qty-update-button {
+          background-color: #999;
+          font-size: 1.8rem;
+          font-weight: 500;
+          color: #333 !important;
+          padding: 0.75rem 2rem;
+
+          &:hover {
+            background-color: $primary-hover-color;
+            color: #fff !important;
+          }
+        }
+        .unit {
+          font-size: 1.8rem;
+          text-transform: lowercase;
+        }
+      }
+      .macro-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .title {
+          font-size: 1.8rem;
+          font-weight: 500;
+        }
+
+        .macros-breakdown {
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+
+          .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+
+            .macro-title {
+              font-size: 1.5rem;
+            }
+
+            .img {
+              padding: 1rem;
+              background-color: #ccc;
+              border-radius: 5px;
+              img {
+                width: 25px;
+                height: 25px;
+              }
+            }
+
+            .macro-qty {
+              font-size: 1.4rem;
+            }
+          }
+        }
+      }
+    }
+    .add-edit-btn {
+      width: 100%;
+      border-radius: 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+  }
+}
+.justify-flex-end {
+  justify-content: flex-end !important;
+}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./macros.module.scss";
 import fetchApi from "../../../utils/fetch-utils";
 import Cookies from "js-cookie";
@@ -8,6 +8,7 @@ import { MdAddBox } from "react-icons/md";
 import { IconContext } from "react-icons";
 import EditMacro from "./EditMacro";
 import AddMacro from "./AddMacro";
+import { mealCalcKcal } from "../../../utils/macrosUtils";
 
 function Macros() {
   const [rowData, setRowData] = useState([]);
@@ -33,37 +34,19 @@ function Macros() {
     },
   ];
 
-  const macrosCalories = useMemo(() => {
-    return { protein: 4, carbohydrates: 4, fat: 9, fiber: 2 };
+  const processData = useCallback((dataArr) => {
+    const processedDataArr = dataArr.map((ele) => {
+      ele.name = ele.name
+        .split(" ")
+        .map((word) => {
+          return word[0].toUpperCase() + word.slice(1).toLowerCase();
+        })
+        .join(" ");
+      ele.calories = mealCalcKcal(ele);
+      return ele;
+    });
+    return processedDataArr;
   }, []);
-
-  const calcKcal = useCallback(
-    (macro) => {
-      let kcal = 0;
-      Object.keys(macrosCalories).forEach((ele) => {
-        kcal += macrosCalories[ele] * macro[ele];
-      });
-      return Math.round(kcal);
-    },
-    [macrosCalories]
-  );
-
-  const processData = useCallback(
-    (dataArr) => {
-      const processedDataArr = dataArr.map((ele) => {
-        ele.name = ele.name
-          .split(" ")
-          .map((word) => {
-            return word[0].toUpperCase() + word.slice(1).toLowerCase();
-          })
-          .join(" ");
-        ele.calories = calcKcal(ele);
-        return ele;
-      });
-      return processedDataArr;
-    },
-    [calcKcal]
-  );
 
   const initData = useCallback(async () => {
     setLoading(true);

@@ -11,7 +11,7 @@ const getExpiryDate = () => {
   );
 };
 
-const toastOptions = {
+export const toastOptions = {
   position: "top-right",
   autoClose: 2000,
   hideProgressBar: false,

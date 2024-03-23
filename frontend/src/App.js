@@ -6,6 +6,7 @@ import Main from "./components/Main/Main";
 function App() {
   return (
     <Provider store={store}>
+      <div className="topBar"></div>
       <div className="App">
         <Main />
       </div>
