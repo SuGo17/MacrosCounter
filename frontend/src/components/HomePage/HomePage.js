@@ -13,6 +13,7 @@ import { selectLoading as selectMealLoading } from "../../reducers/mealReducer";
 import { selectLoading as selectUserLoading } from "../../reducers/userReducer";
 import Loader from "../Loader/Loader";
 import AddEditModal from "./AddEditModal/AddEditModal";
+import AnalyzeComponent from "./AnalyzeComponent/AnalyzeComponent";
 
 function HomePage() {
   const [title, setTitle] = useState("");
@@ -30,6 +31,7 @@ function HomePage() {
 
   return (
     <section className={styles.section}>
+      <AnalyzeComponent />
       <MealsContainer
         data={breakfast}
         title="Breakfast"
