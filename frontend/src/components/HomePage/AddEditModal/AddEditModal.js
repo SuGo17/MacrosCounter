@@ -116,7 +116,6 @@ function AddEditModal({
         );
       setOpenModal(false);
     } else {
-      console.log("edit", activeAddEditData);
       activeAddEditData &&
         dispatch(
           editMeal({
