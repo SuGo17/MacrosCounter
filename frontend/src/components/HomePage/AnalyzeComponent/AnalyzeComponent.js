@@ -20,6 +20,12 @@ const calcSelectedMacro = (meals, macroName, calories) => {
   ).toFixed(1);
 };
 
+const colorSelector = (val) => {
+  if (val < 40) return "low";
+  else if (val < 80) return "medium";
+  else return "high";
+};
+
 function AnalyzeComponent() {
   const meals = useSelector(selectMeals);
   const { calories: totalKcal } = useSelector(selectUserDetails);
@@ -39,7 +45,11 @@ function AnalyzeComponent() {
           <p className={styles["title"]}>Protein</p>
           <div className={styles["range"]}>
             <div
-              className={styles["range-val"]}
+              className={`${styles["range-val"]} ${
+                styles[
+                  colorSelector(calcSelectedMacro(meals, "protein", totalKcal))
+                ]
+              }`}
               style={{
                 width: calcSelectedMacro(meals, "protein", totalKcal) + "%",
               }}
@@ -50,7 +60,13 @@ function AnalyzeComponent() {
           <p className={styles["title"]}>Carbohydrates</p>
           <div className={styles["range"]}>
             <div
-              className={styles["range-val"]}
+              className={`${styles["range-val"]} ${
+                styles[
+                  colorSelector(
+                    calcSelectedMacro(meals, "carbohydrates", totalKcal)
+                  )
+                ]
+              }`}
               style={{
                 width:
                   calcSelectedMacro(meals, "carbohydrates", totalKcal) + "%",
@@ -62,7 +78,11 @@ function AnalyzeComponent() {
           <p className={styles["title"]}>Fat</p>
           <div className={styles["range"]}>
             <div
-              className={styles["range-val"]}
+              className={`${styles["range-val"]} ${
+                styles[
+                  colorSelector(calcSelectedMacro(meals, "fat", totalKcal))
+                ]
+              }`}
               style={{
                 width: calcSelectedMacro(meals, "fat", totalKcal) + "%",
               }}
@@ -73,7 +93,11 @@ function AnalyzeComponent() {
           <p className={styles["title"]}>Fiber</p>
           <div className={styles["range"]}>
             <div
-              className={styles["range-val"]}
+              className={`${styles["range-val"]} ${
+                styles[
+                  colorSelector(calcSelectedMacro(meals, "fiber", totalKcal))
+                ]
+              }`}
               style={{
                 width: calcSelectedMacro(meals, "fiber", totalKcal) + "%",
               }}
