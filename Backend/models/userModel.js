@@ -56,4 +56,19 @@ userSchema.statics.login = async function (email, password) {
   return user;
 };
 
+userSchema.statics.resetPassword = async function (email, password) {
+  if (!password) throw Error("Password cannot be empty!");
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+  const user = await this.findOneAndUpdate(
+    { email },
+    {
+      $set: {
+        password: hash,
+      },
+    }
+  );
+  return user;
+};
+
 module.exports = mongoose.model("User", userSchema);

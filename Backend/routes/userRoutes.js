@@ -12,12 +12,16 @@ const {
   generateOTP,
   verifyOTPandSignUp,
   resendOTP,
+  forgotPassword,
+  resetPassword,
 } = require("../controllers/userController");
 const alreadyRegisteredCheck = require("../middleware/alreadyRegisteredCheck");
 const temporaryUserSignUpCheck = require("../middleware/temporaryUserSignUpCheck");
 const verifyOtpTemporaryUserCheck = require("../middleware/verifyOtpTemporaryUserCheck");
 const verifyOtpValidCheck = require("../middleware/verifyOTPValidCheck");
 const checkIfValidResendOTPReq = require("../middleware/checkIfValidResendOTPReq");
+const userExistsCheck = require("../middleware/userExistsCheck");
+const validateJwtToken = require("../middleware/validateJwtToken");
 
 const router = express.Router();
 
@@ -41,6 +45,8 @@ router
     verifyOtpValidCheck,
     verifyOTPandSignUp
   );
+router.route("/forgot-password").post(userExistsCheck, forgotPassword);
+router.route("/reset-password").post(validateJwtToken, resetPassword);
 router.route("/token-refresh").post(tokenRefresh);
 router.route("/logout").post(loggedInAuth, logout);
 router.use(requireAuth);

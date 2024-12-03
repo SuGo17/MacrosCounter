@@ -74,7 +74,7 @@ const generateOTP = async (req, res) => {
     GenerateEmail({
       email: email,
       otp,
-      subject: "Verify your account",
+      subject: "Macros Counter | Verify your account",
       html: htmlTemplate,
       callback: async (err, _) => {
         try {
@@ -148,7 +148,7 @@ const resendOTP = async (req, res) => {
   GenerateEmail({
     email: email,
     otp,
-    subject: "Verify your account",
+    subject: "Macros Counter | Verify your account",
     html: htmlTemplate,
     callback: async (err, _) => {
       try {
@@ -169,6 +169,124 @@ const resendOTP = async (req, res) => {
       }
     },
   });
+};
+
+const forgotPassword = async (req, res) => {
+  const otp = generateOTPfunction();
+  const { email } = req.body;
+  let token = jwt.sign({ email }, process.env.TOKEN_SECRET, {
+    expiresIn: "15m",
+  });
+  const resetUrl =
+    "https://macros-counter-sugo17.netlify.app/reset-password?token=" + token;
+  const htmlTemplate = `
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+        }
+        .content {
+            font-size: 16px;
+            color: #555555;
+            line-height: 1.5;
+            margin: 20px 0;
+        }
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .button {
+            display: inline-block;
+            background-color: #df2e38;
+            color: #ffffff !important;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 5px;
+        }
+        .footer {
+            font-size: 12px;
+            color: #aaaaaa;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Password Reset Request</div>
+        <div class="content">
+            Hello, <br><br>
+            You recently requested to reset your password for your account. Click the button below to reset it. This password reset link will expire in 15 minutes. If you did not request a password reset, please ignore this email.
+        </div>
+        <div class="button-container">
+            <a href="${resetUrl}" class="button">Reset Password</a>
+        </div>
+        <div class="footer">
+            If you have any questions, feel free to contact our support team at <a href="mailto:macros-counter@sugo.co.in">macros-counter@sugo.co.in</a>.
+            <br><br>
+            Thanks, <br>
+            The Macros Counter Team
+        </div>
+    </div>
+</body>
+</html>
+
+    `;
+  GenerateEmail({
+    email: email,
+    otp,
+    subject: "Macros Counter | Reset Your Password",
+    html: htmlTemplate,
+    callback: async (err, _) => {
+      try {
+        if (err) throw new Error(err);
+        return res.json({ message: "Success" });
+      } catch (error) {
+        return res.status(400).json({ message: err });
+      }
+    },
+  });
+};
+
+const resetPassword = async (req, res) => {
+  const { password } = req.body;
+  let { email } = req.cookies;
+
+  try {
+    await User.resetPassword(email, password);
+    return res.json({ message: "Password reset successful" });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
 };
 
 const signup = async (req, res) => {
@@ -301,4 +419,6 @@ module.exports = {
   generateOTP,
   verifyOTPandSignUp,
   resendOTP,
+  forgotPassword,
+  resetPassword,
 };
