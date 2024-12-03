@@ -26,6 +26,10 @@ const temporaryUserSchema = new Schema({
     type: Date,
     required: true,
   },
+  nextOtpAfter: {
+    type: Date,
+    required: true,
+  },
 });
 
 temporaryUserSchema.statics.temporarySignup = async function (
@@ -48,6 +52,7 @@ temporaryUserSchema.statics.temporarySignup = async function (
     name,
     otp,
     otpExpires: Date.now() + 5 * 60 * 1000,
+    nextOtpAfter: Date.now() + 30 * 1000,
   });
 
   return temporaryUser;

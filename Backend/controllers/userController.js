@@ -93,7 +93,6 @@ const generateOTP = async (req, res) => {
 
 const verifyOTPandSignUp = async (req, res) => {
   try {
-    const { otp } = req.body;
     const email = req.cookies.email;
     const date = new Date();
     date.setDate(date.getDate() + 1);
@@ -122,10 +121,54 @@ const verifyOTPandSignUp = async (req, res) => {
       { refreshToken: refreshTokenArr }
     );
     await TemporaryUser.findOneAndDelete({ email });
-    res.status(200).json({ email, token });
+    res.status(200).json({ email, token, refreshToken });
   } catch (error) {
     res.status(400).json({ error: err.message });
   }
+};
+
+const resendOTP = async (req, res) => {
+  const otp = generateOTPfunction();
+  const htmlTemplate = `
+        <html>
+        <body style="font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <h2 style="text-align: center; color: #df2e38;">Your New OTP Code</h2>
+                <p style="text-align: center; font-size: 18px; color: #333333;">We received a request to send you a One-Time Password (OTP). Use the following OTP to verify your identity:</p>
+                <h3 style="text-align: center; font-size: 36px; color: #df2e38; margin: 20px 0;">${otp}</h3>
+                <p style="text-align: center; font-size: 16px; color: #333333;">This OTP is valid for 5 minutes. If you didn't request this, please ignore this email.</p>
+                <div style="text-align: center; margin-top: 30px;">
+                    <p style="font-size: 14px; color: #888888;">If you have any questions, feel free to contact us.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+  const email = req.cookies.email;
+  GenerateEmail({
+    email: email,
+    otp,
+    subject: "Verify your account",
+    html: htmlTemplate,
+    callback: async (err, _) => {
+      try {
+        if (err) throw new Error(err);
+        await TemporaryUser.findOneAndUpdate(
+          { email: email },
+          {
+            $set: {
+              otp,
+              otpExpires: Date.now() + 5 * 60 * 1000,
+              nextOtpAfter: Date.now() + 30 * 1000,
+            },
+          }
+        );
+        return res.json({ message: "Success" });
+      } catch (error) {
+        return res.status(400).json({ message: err });
+      }
+    },
+  });
 };
 
 const signup = async (req, res) => {
@@ -257,4 +300,5 @@ module.exports = {
   updateDetails,
   generateOTP,
   verifyOTPandSignUp,
+  resendOTP,
 };
