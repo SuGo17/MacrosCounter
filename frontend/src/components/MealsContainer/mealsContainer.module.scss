@@ -6,7 +6,6 @@
   align-items: center;
   width: 100%;
   margin-bottom: 3rem;
-  padding-right: 1rem;
 
   .top {
     display: flex;
@@ -66,7 +65,6 @@
   .bottom {
     width: calc(100% - 1rem);
     margin-top: 1.4rem;
-    margin-right: 1rem;
     background: $background-color;
     border-radius: 1.4rem;
     min-height: 15rem;

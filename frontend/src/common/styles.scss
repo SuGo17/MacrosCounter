@@ -30,6 +30,7 @@ section {
   align-items: center;
   min-height: 85vh;
   padding: 2rem 7.4rem;
+  max-width: 1400px;
   @include laptop {
     padding: 2rem 5.2rem;
   }
