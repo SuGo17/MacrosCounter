@@ -173,12 +173,11 @@ const resendOTP = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   const otp = generateOTPfunction();
-  const { email } = req.body;
+  const { email, rootURL } = req.body;
   let token = jwt.sign({ email }, process.env.TOKEN_SECRET, {
     expiresIn: "15m",
   });
-  const resetUrl =
-    "https://macros-counter-sugo17.netlify.app/reset-password?token=" + token;
+  const resetUrl = rootURL + "/reset-password?token=" + token;
   const htmlTemplate = `
     <!DOCTYPE html>
 <html lang="en">

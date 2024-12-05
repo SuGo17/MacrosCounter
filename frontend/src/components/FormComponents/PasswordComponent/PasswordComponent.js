@@ -3,14 +3,22 @@ import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import styles from "../InputComponent/inputComponent.module.scss";
 
-function PasswordComponent({ id, value, setValue, setJoinErr }) {
+function PasswordComponent({
+  id,
+  value,
+  setValue,
+  isError = false,
+  setJoinErr,
+  label = "Password",
+  errorMessage = `Password field should not be empty.`,
+}) {
   const [showPass, setShowPass] = useState(false);
   const [passValue, setPassValue] = useState("");
   const [err, setErr] = useState(null);
   const passRef = useRef();
 
   const validate = () => {
-    !passValue ? setErr(`Password field should not be empty.`) : setErr(null);
+    !passValue || isError ? setErr(errorMessage) : setErr(null);
   };
 
   useEffect(() => {
@@ -44,7 +52,7 @@ function PasswordComponent({ id, value, setValue, setJoinErr }) {
   };
   return (
     <div className={styles["input-container"]}>
-      <label htmlFor={id}>Password:</label>
+      <label htmlFor={id}>{label}:</label>
       <div className={styles["pass-container"]}>
         <input
           type="password"

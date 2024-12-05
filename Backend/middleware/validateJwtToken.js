@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const validateJwtToken = async (req, res, next) => {
   const { authorization } = req.headers;
-  const token = authorization.split(" ")[1];
+  const token = authorization?.split(" ")[1];
   if (!token) return res.status(403).json({ message: "Invalid Request" });
   try {
     const { email } = jwt.verify(token, process.env.TOKEN_SECRET);
