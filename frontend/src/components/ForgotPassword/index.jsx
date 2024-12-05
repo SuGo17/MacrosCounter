@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styles from "./index.module.scss";
 import PasswordComponent from "../FormComponents/PasswordComponent/PasswordComponent";
-import { jwtDecode } from "jwt-decode";
 import fetchApi from "../../utils/fetch-utils";
 import { toast } from "react-toastify";
 import { toastOptions } from "../../reducers/userReducer";
