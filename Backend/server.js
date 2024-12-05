@@ -6,10 +6,12 @@ const adminRoutes = require("./routes/adminRoutes");
 const homeRoutes = require("./routes/homeRoutes");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
 
 const app = express();
+app.use(cookieParser());
 
 // app.get("/", (req, res) => {
 //   console.log("Req Received.");

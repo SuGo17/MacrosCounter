@@ -11,6 +11,7 @@ import AdminPanel from "../AdminPanel/AdminPanel";
 import Users from "../AdminPanel/Users/Users";
 import Macros from "../AdminPanel/Macros/Macros";
 import HomePage from "../HomePage/HomePage";
+import ForgotPassword from "../ForgotPassword";
 
 function RoutesComponent() {
   return (
@@ -28,6 +29,8 @@ function RoutesComponent() {
           <Route path="/join/login" element={<Login />} />
           <Route path="/join/signup" element={<Signup />} />
         </Route>
+        {/* prettier-ignore */}
+        <Route path="/reset-password" element={<ForgotPassword/>}/>
         {/* prettier-ignore */}
         <Route path="/admin-panel" element={<ProtectRoute admin={true}><AdminPanel/></ProtectRoute>}/>
         {/* prettier-ignore */}
