@@ -243,7 +243,7 @@ export const logoutUser = createAsyncThunk(
 export const signupUser = createAsyncThunk("user/signup", async (formData) => {
   try {
     const signupRes = await fetchApi({
-      urlExt: "user/signup",
+      urlExt: "user/verify-signup-otp",
       method: "POST",
       formData,
     });
