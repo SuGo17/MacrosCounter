@@ -7,11 +7,11 @@ function OtpPage({
   otpInputRefs,
   openModal,
   otp,
-  setOtp,
   handleChange,
   handleClick,
   handleKeyDown,
   submitHandler,
+  handleOtpResend,
 }) {
   return (
     <Modal
@@ -39,6 +39,16 @@ function OtpPage({
           );
         })}
       </div>
+      <p>
+        Click here to{" "}
+        <button
+          className={styles["btn-ghost"]}
+          onClick={handleOtpResend}
+          type="button"
+        >
+          Resend OTP
+        </button>
+      </p>
       <button
         className={styles["btn"]}
         type="submit"

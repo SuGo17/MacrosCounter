@@ -8,7 +8,7 @@
     display: flex;
     gap: 5px;
     margin-top: 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     .otpInput {
       width: 40px;
       height: 40px;
@@ -20,9 +20,19 @@
 
       &:focus,
       &:active {
-        border: 2px solid $primary-hover-color;
+        border: 2px solid $primary-color;
         outline: none;
       }
     }
+  }
+  .btn-ghost {
+    color: $primary-color;
+    background-color: transparent;
+    border: none;
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
   }
 }

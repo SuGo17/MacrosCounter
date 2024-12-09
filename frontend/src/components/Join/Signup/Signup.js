@@ -89,6 +89,28 @@ function Signup() {
       setLoading(false);
     }
   };
+  const handleOtpResend = async () => {
+    let formData = {
+      email: value["signup-email1"].toLowerCase(),
+    };
+    setLoading(true);
+    try {
+      const sendOtpRes = await fetchApi({
+        urlExt: "user/signup-otp-resend",
+        method: "POST",
+        formData,
+      });
+      console.log(sendOtpRes);
+      if (!sendOtpRes.ok) throw new Error(sendOtpRes.message);
+      setShowOTPComponent(true);
+      toast.success("Otp sent to requested email!", toastOptions);
+    } catch (error) {
+      toast.error(error.message, toastOptions);
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className={styles["form-container"]}>
       <form>
@@ -119,7 +141,7 @@ function Signup() {
           handleKeyDown={handleOtpKeyDown}
           otp={otp}
           otpInputRefs={otpInputRefs}
-          setOtp={setOtp}
+          handleOtpResend={handleOtpResend}
         />
         <button
           type="button"
