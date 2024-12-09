@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Modal from "../../../Modal/Modal";
 import styles from "./otpInput.module.scss";
 

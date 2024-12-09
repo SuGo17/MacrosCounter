@@ -25,7 +25,6 @@ function Signup() {
     handleKeyDown: handleOtpKeyDown,
     otp,
     otpInputRefs,
-    setOtp,
   } = useOtp(6);
   const [joinErr, setJoinErr] = useState({
     "signup-password1": false,
