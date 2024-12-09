@@ -1,7 +1,7 @@
 const TemporaryUser = require("../models/temporaryUserModal");
 
 const verifyOtpValidCheck = async (req, res, next) => {
-  const { email } = req.cookies;
+  const { email } = req.body;
   const { otp } = req.body;
   try {
     const user = await TemporaryUser.findOne({ email });

@@ -93,7 +93,7 @@ const generateOTP = async (req, res) => {
 
 const verifyOTPandSignUp = async (req, res) => {
   try {
-    const email = req.cookies.email;
+    const email = req.body.email;
     const date = new Date();
     date.setDate(date.getDate() + 1);
     const temporaryUser = await TemporaryUser.findOne({ email });
@@ -144,7 +144,7 @@ const resendOTP = async (req, res) => {
         </body>
         </html>
     `;
-  const email = req.cookies.email;
+  const email = req.body.email;
   GenerateEmail({
     email: email,
     otp,
