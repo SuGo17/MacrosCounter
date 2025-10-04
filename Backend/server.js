@@ -20,9 +20,24 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+const allowedOrigins = [
+  "https://macros-counter-sugo17.netlify.app",
+  "http://macros-counter:3000",
+  "https://macros-counter.sugo.co.in",
+];
+
 app.use(
   cors({
-    origin: "*",
+    origin: function (origin, callback) {
+      // allow requests with no origin (like curl or Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true); // allow this origin
+      } else {
+        callback(new Error("Not allowed by CORS")); // reject
+      }
+    },
+    credentials: true, // allow cookies/auth headers if needed
   })
 );
 
